@@ -26,6 +26,7 @@ const cargoDetailSchema = {
         cargoName: 'string',   //商品名称
         cargoPrice: 'string',   //商品价格
         dealTime: 'int',        //成交时间
+        customerReason: 'string?', //购买原因
         customerId: 'string'    //购买客户id
     }
 };
@@ -106,8 +107,9 @@ let DatabaseManager = {
                     orderId: createOrderNumber(),
                     cargoName: data.cargoName,
                     cargoPrice: data.cargoPrice,
-                    dealTime: new Date().getTime(),
+                    dealTime: data.dealTime,
                     customerId: customerid,
+                    customerReason:data.customerReason
                 })
             })
         } catch (e) {
@@ -128,6 +130,7 @@ let DatabaseManager = {
                 result[0].cargoName = data.cargoName;
                 result[0].cargoPrice = data.cargoPrice;
                 result[0].dealTime = data.dealTime;
+                result[0].customerReasonv = data.customerReason;
             })
         } catch (e) {
             Alert.alert(e.toString())
@@ -147,7 +150,7 @@ let DatabaseManager = {
      */
     queryCargoForCustomer(customerId) {
         let cargoDetail = realmInstance.objects('cargoDetail');
-        let result = customer.filtered(`customerId = "${customerId}"`);
+        let result = cargoDetail.filtered(`customerId = "${customerId}"`);
         return result;
     },
 

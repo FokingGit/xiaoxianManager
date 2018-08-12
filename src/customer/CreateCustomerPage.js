@@ -41,7 +41,7 @@ export default class CreateCustomerPage extends Component {
             headerLeft: (
                 <TouchableOpacity
                     onPress={() => {
-                        Alert.alert('新建用户信息尚未保存,是否退出', null,
+                        Alert.alert('用户信息尚未保存,是否退出', null,
                             [
                                 {text: "取消"},
                                 {
@@ -71,7 +71,7 @@ export default class CreateCustomerPage extends Component {
     }
 
     showExitAlert = () => {
-        Alert.alert('新建用户信息尚未保存,是否退出', null,
+        Alert.alert('用户信息尚未保存,是否退出', null,
             [
                 {text: "取消"},
                 {
@@ -262,7 +262,7 @@ export default class CreateCustomerPage extends Component {
                                         })
                                     }
                                 }
-                                value={this.state.carNumber}
+                                value={this.state.skinDesc}
                                 style={Style.item_input}>
 
                             </TextInput>
@@ -301,7 +301,7 @@ export default class CreateCustomerPage extends Component {
                             this.props.navigation.goBack()
                         }}
                     >
-                        <Text style={{color: 'white', fontSize: 16}}>确定新建</Text>
+                        <Text style={{color: 'white', fontSize: 16}}>保存</Text>
                     </TouchableOpacity>
                 </View>
 

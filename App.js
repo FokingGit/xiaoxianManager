@@ -10,6 +10,8 @@ import {
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import CustomerListPage from './src/customer/CustomerListPage'
 import CreateCustomerPage from './src/customer/CreateCustomerPage'
+import CustomerDetailPage from './src/customer/CustomerDetailPage'
+import CargoEditOrAddPage from './src/customer/CargoEditOrAddPage'
 import MePage from './src/account/MePage'
 
 const TAB_STACK = TabNavigator({
@@ -78,7 +80,10 @@ const APPSTACK = StackNavigator(
         MAIN: {screen: TAB_STACK},
         ME_PAGE: {screen: MePage},
         CUSTOMER_LIST: {screen: CustomerListPage},
-        CREATE_CUSTOMER: {screen: CreateCustomerPage}
+        CREATE_CUSTOMER: {screen: CreateCustomerPage},
+        CUSTOMER_DETAIL: {screen: CustomerDetailPage},
+        CARGO_ADD_EDIT: {screen: CargoEditOrAddPage},
+
     },
     {
         initialRouteName: 'MAIN',

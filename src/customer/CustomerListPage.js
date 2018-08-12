@@ -85,7 +85,9 @@ export default class CustomerListPage extends Component {
                 job: customerList[i].job,
                 address: customerList[i].address,
                 phone: customerList[i].phone,
-                skinDesc: customerList[i].skinDesc
+                skinDesc: customerList[i].skinDesc,
+                lastCousumeTime: customerList[i].lastCousumeTime,
+                customerId: customerList[i].customerId
             };
             displayData.push(item)
         }
@@ -105,6 +107,7 @@ export default class CustomerListPage extends Component {
 
 
     renderItem = (item, index) => {
+        console.log(item);
         return (
             <View style={styles.list_content}>
                 <View style={styles.list_content_titleView}>
@@ -112,7 +115,15 @@ export default class CustomerListPage extends Component {
                         style={styles.list_content_carName}> {item.name}</Text>
 
                     <TouchableOpacity style={styles.list_content_detailTouch}
-                                      onPress={}
+                                      onPress={() => {
+                                          this.props.navigation.navigate({
+                                              routeName: 'CUSTOMER_DETAIL',
+                                              key: 'list-customerDetail',
+                                              params: {
+                                                  customerDetail: item
+                                              }
+                                          });
+                                      }}
                     >
                         <Text style={styles.list_content_detail_text}>详情</Text>
                     </TouchableOpacity>
@@ -129,7 +140,7 @@ export default class CustomerListPage extends Component {
                 <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
                     <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>
                     <Text
-                        style={styles.list_content_rowText}>{item.lastCousumeTime}</Text>
+                        style={styles.list_content_rowText}>{Util.formatDate(item.lastCousumeTime)}</Text>
                 </View>
             </View>
         )
