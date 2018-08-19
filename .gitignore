@@ -4,7 +4,7 @@ captures/
 
 # IntelliJ
 *.iml
-.idea
+App/.idea
 
 App/node_modules
 
