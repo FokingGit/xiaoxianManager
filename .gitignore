@@ -6,15 +6,15 @@ captures/
 *.iml
 .idea
 
-node_modules
+App/node_modules
 
 #Android
-android/.gradle
-android/.idea
-android/build
-android/app/build
-android/app/*.iml
-android/local.properties
+App/android/.gradle
+App/android/.idea
+App/android/build
+App/android/app/build
+App/android/app/*.iml
+App/android/local.properties
 
 
 

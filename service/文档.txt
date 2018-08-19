@@ -1,0 +1,186 @@
+公共请求参数   timestamp   int  时间戳
+             signature   int  签名
+此两个参数为验签所用，防止被别人盗用，签名方式为（ signature = MD5（timestamp + "admin"） ），即，时间戳和admin字符串拼接后MD5加密为signature，所有接口都需要传这两个参数
+1.获取注册码
+    接口地址：hzp_api/htdocs_api/user/getCode.php
+    请求方式：post
+    请求参数：
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功",
+            "data": {
+                "code": "40153440944263"  //注册码
+            }
+        }
+
+2.注册
+    接口地址：hzp_api/htdocs_api/user/register.php
+    请求方式：post
+    请求参数：
+            code      int     注册码
+            phone     int     手机号
+            password  string  密码
+    返回结果：
+        失败时：
+        {
+            "code": 201,
+            "msg": "该注册码已被使用，请换个注册码注册"
+        }
+        {
+            "code": 201,
+            "msg": "该手机号已被使用，请换个手机号注册"
+        }
+        成功时：
+        {
+            "code": 200,
+            "msg": "操作成功",
+            "data": {
+                "uid": 7
+            }
+        }
+3.登录
+    接口地址：hzp_api/htdocs_api/user/login.php
+    请求方式：post
+    请求参数：
+            phone    int    手机号
+            password string 密码
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功",
+            "data": {
+                "uid": 7
+            }
+        }
+
+4.添加/修改客户信息
+    接口地址：hzp_api/htdocs_api/customer/operate.php
+    请求方式：post
+    请求参数：
+         必填
+            optType        string    add-添加（此时必填 uid 用户id）；edit-修改（此时必填 customer_id 客户id）
+         选填
+            name           string    客户名字
+            age            string    客户年龄
+            job            string    工作
+            phone          int       电话
+            address        string    住址
+            skindesc       string    肤质描述
+            consume_total  int       消费总金额（单位为元）
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功"
+        }
+
+5.客户列表/搜索
+    接口地址：hzp_api/htdocs_api/customer/getList.php
+    请求方式：post
+    请求参数：
+         必填
+            uid     int      用户uid
+         选填
+            search  string   客户名字/电话/地址（搜索时必填）
+            page    int      用户分页（默认为1）
+            num     int      每页显示条数（默认为10）
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功",
+            "data": {
+                "totalPage": 6,  //总页数
+                "currentPage": 1,  //第几页
+                "num": 2,  //每页显示条数
+                "total": 11,  //总数量
+                "list": [
+                    {
+                        "id": "11",  //客户id
+                        "name": "哈哈",  //用户姓名
+                        "age": "18",  //年龄
+                        "job": "程序猿",  //职业
+                        "phone": "18302426993",  //手机号
+                        "address": "北京",  //地址
+                        "skindesc": "皮肤敲好的",  //皮肤描述
+                        "consume_total": 10000000,  //总消费(单位为元)
+                        "last_time": "2018-08-16 12:48:05",  //
+                        "creat_time": "2018-08-16 12:48:05",  //
+                        "uid": "7"  //
+                    },
+                    {
+                        "id": "10",
+                        "name": "呵呵66嘻嘻",
+                        "age": "18",
+                        "job": "程序猿",
+                        "phone": "18302426993",
+                        "address": "北京",
+                        "skindesc": "皮肤敲好的",
+                        "consume_total": 10000000,
+                        "last_time": "2018-08-16 12:48:05",
+                        "creat_time": "2018-08-16 12:48:05",
+                        "uid": "7"
+                    }
+                ]
+            }
+        }
+
+6.添加/修改客户购买商品信息
+    接口地址：hzp_api/htdocs_api/order/operate.php
+    请求方式：post
+    请求参数：
+         必填
+            optType          string    add-添加（此时必填 customer_id 客户id）；edit-修改（此时必填 order_id 订单id）
+         选填
+            cargo_name       string    商品名字
+            cargo_price      string    商品价格
+            deal_time        int       成交时间（转成时间戳格式）
+            customer_reason  string    购买原因
+
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功"
+        }
+
+7.客户购买商品列表
+    接口地址：hzp_api/htdocs_api/customer/getList.php
+    请求方式：post
+    请求参数：
+         必填
+            customer_id    int    客户id
+         选填
+            page           int    用户分页（默认为1）
+            num            int    每页显示条数（默认为10）
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功",
+            "data": {
+                "totalPage": 4,
+                "currentPage": 1,
+                "num": 2,
+                "total": 8,
+                "list": [
+                    {
+                        "id": "9", //订单id
+                        "cargo_name": "迪奥999",  //商品名称
+                        "cargo_price": 100,  // 商品价格
+                        "deal_time": "2018-08-16 09:45:30",  //交易时间
+                        "customer_reason": "敲好用的",  //购买原因
+                        "customer_id": "11",  //客户id
+                        "creat_time": "2018-08-16 14:37:18",  //生成时间
+                        "orderid": "15344230383619"  //订单号
+                    },
+                    {
+                        "id": "8",
+                        "cargo_name": "好的",
+                        "cargo_price": 100,
+                        "deal_time": "2018-08-16 09:45:30",
+                        "customer_reason": "敲好用的",
+                        "customer_id": "11",
+                        "creat_time": "2018-08-16 14:22:54",
+                        "orderid": "15344221746595"
+                    }
+                ]
+            }
+        }
