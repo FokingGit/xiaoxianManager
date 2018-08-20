@@ -5,10 +5,12 @@ import {
     Text,
     TouchableOpacity,
     FlatList,
+    Alert,
     Dimensions,
     StyleSheet
 } from 'react-native'
 import DatabaseManager from '../utils/DatabaseManager'
+import HttpManager from '../utils/HttpManager'
 import Util from '../utils/Utils'
 import ColorRes from "../config/ColorRes";
 import DashLine from "./DashLine.js";
@@ -69,11 +71,22 @@ export default class CustomerListPage extends Component {
 
     componentDidMount() {
         this.fetchData();
+        this.fetchRegisterCode();
     }
 
     componentWillUnmount() {
         DatabaseManager.removeDataChangeListener(this.fetchData)
     }
+
+    fetchRegisterCode = () => {
+        HttpManager.fetchRegisterCode().then((res) => {
+            if (res.data.code === 200) {
+                Alert.alert(res.data.data.code + "")
+            }
+        }).catch((e) => {
+
+        })
+    };
 
     fetchData = () => {
         let displayData = [];

@@ -13,6 +13,8 @@ import CreateCustomerPage from './src/customer/CreateCustomerPage'
 import CustomerDetailPage from './src/customer/CustomerDetailPage'
 import CargoEditOrAddPage from './src/customer/CargoEditOrAddPage'
 import MePage from './src/account/MePage'
+import LoginPage from "./src/account/Login";
+import StorageHelper from "./src/utils/StorageHelper.js";
 
 const TAB_STACK = TabNavigator({
         CUSTOMER_HOME: {
@@ -83,6 +85,7 @@ const APPSTACK = StackNavigator(
         CREATE_CUSTOMER: {screen: CreateCustomerPage},
         CUSTOMER_DETAIL: {screen: CustomerDetailPage},
         CARGO_ADD_EDIT: {screen: CargoEditOrAddPage},
+        LOGIN: {screen: LoginPage},
 
     },
     {
@@ -94,9 +97,37 @@ const APPSTACK = StackNavigator(
 
 export default class App extends Component<Props> {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderView: null
+        };
+    }
+
+    componentWillMount() {
+        this.listener = DeviceEventEmitter.addListener('LoginStateChange', this.configMainPage);
+        StorageHelper.checkLoginState()
+    }
+
+    componentWillUnmount() {
+        this.listener.remove();
+    }
+
+    configMainPage = (userId) => {
+        if (userId) {
+            this.setState({
+                renderView: <APPSTACK/>
+            })
+        } else {
+            this.setState({
+                renderView: <LoginPage/>
+            })
+        }
+    }
+
 
     render() {
-        return <APPSTACK/>;
+        return this.state.renderView ? this.state.renderView : <View style={{backgroundColor: '#111'}}/>;
     }
 
 }

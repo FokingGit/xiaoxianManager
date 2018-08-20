@@ -8,8 +8,10 @@
     "bundle-android": "react-native bundle --entry-file index.js --platform android --dev false --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res/"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "^16.4.2",
     "react-native": "0.55.4",
+    "react-native-md5": "^1.0.0",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-navigation": "^1.5.8",
     "realm": "^2.13.0"
