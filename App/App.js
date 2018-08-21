@@ -105,7 +105,7 @@ export default class App extends Component<Props> {
     }
 
     componentWillMount() {
-        this.listener = DeviceEventEmitter.addListener('LoginStateChange', this.configMainPage);
+        this.listener = DeviceEventEmitter.addListener('LoginStateChange', (userId) => this.configMainPage(userId));
         StorageHelper.checkLoginState()
     }
 

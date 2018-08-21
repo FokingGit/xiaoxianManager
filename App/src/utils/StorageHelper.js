@@ -9,7 +9,7 @@ const KEY_USER_PHONE = 'phone'
 const functions = {
 
     setUID(uid) {
-        DeviceEventEmitter.emit('LoginStateChange', uid.length > 0 ? uid : null);
+        DeviceEventEmitter.emit('LoginStateChange', uid);
         return AsyncStorage.setItem(KEY_USER_ID, uid)
     },
     getUID() {

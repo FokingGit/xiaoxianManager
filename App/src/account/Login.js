@@ -37,7 +37,7 @@ export default class LoginPage extends Component {
     /**
      * 登录按钮事件
      */
-    loginEvent() {
+    loginEvent = () => {
         if (this.state.account.length === 0) {
             Alert.alert('提示', '请输入账号')
             return
@@ -45,14 +45,15 @@ export default class LoginPage extends Component {
             Alert.alert('提示', '请输入密码')
             return
         }
-        let loginThis = this
-        HttpManager.login(this.state.account, this.state.pwd)
-            .then(function (response) {
-                if (response.data.code == 200) {
-                    StorageHelper.setUID(response.data.data.id);
-                    StorageHelper.setPhone(this.state.account)
+
+        HttpManager
+            .login(parseInt(this.state.account), this.state.pwd)
+            .then((response) => {
+                if (response.data.code === 200) {
+                    StorageHelper.setUID(String(response.data.data.uid));
+                    StorageHelper.setPhone(String(this.state.account))
                 } else {
-                    alert('请检查用户名和密码！')
+                    Alert.alert('请检查用户名和密码！')
                 }
             })
             .catch(function (error) {

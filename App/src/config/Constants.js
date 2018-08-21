@@ -1,4 +1,3 @@
 module.exports = ({
-    REFRESHHOMEPAGE: 'refreshHomePage',
-    FROM_UPLOAD: 'from_upload'
+    SUCCESS_CODE: 200
 });

@@ -8,7 +8,6 @@ import {
     Dimensions,
     StyleSheet
 } from 'react-native'
-import DatabaseManager from '../utils/DatabaseManager'
 import Util from '../utils/Utils'
 import ColorRes from "../config/ColorRes";
 import DashLine from "./DashLine.js";
@@ -42,15 +41,12 @@ export default class CustomerDetailPage extends Component {
     };
 
     componentWillMount() {
-
         this.props.navigation.setParams({
             jumpToCreatCargo: this.jumpToCreatCargo
         })
-        DatabaseManager.addDataChangeListener(this.fetchData)
     }
 
     componentWillUnmount() {
-        DatabaseManager.removeDataChangeListener(this.fetchData)
     }
 
     componentDidMount() {
@@ -62,16 +58,6 @@ export default class CustomerDetailPage extends Component {
 
     fetchData = () => {
         let displayData = [];
-        let result = DatabaseManager.queryCargoForCustomer(this.props.navigation.state.params.customerDetail.customerId).sorted('dealTime', true);
-        for (let i = 0; i < result.length; i++) {
-            let item = {
-                cargoName: result[i].cargoName,
-                cargoPrice: result[i].cargoPrice,
-                dealTime: result[i].dealTime,
-                customerReason: result[i].customerReason,
-            }
-            displayData.push(item)
-        }
         this.setState({
             displayData: Util.clone(displayData)
         })

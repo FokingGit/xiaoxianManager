@@ -9,11 +9,12 @@ import {
     Dimensions,
     StyleSheet
 } from 'react-native'
-import DatabaseManager from '../utils/DatabaseManager'
 import HttpManager from '../utils/HttpManager'
 import Util from '../utils/Utils'
 import ColorRes from "../config/ColorRes";
+import Constants from "../config/Constants";
 import DashLine from "./DashLine.js";
+import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
 
 /**
  * 客户列表页
@@ -34,7 +35,7 @@ export default class CustomerListPage extends Component {
             headerTitle: (
                 <View style={{width: '100%', alignItems: 'center'}}>
                     <Text style={{color: '#ffffff', fontSize: 20}}>
-                        客户列表
+                        客户信息
                     </Text>
                 </View>),
             headerStyle: {
@@ -66,51 +67,41 @@ export default class CustomerListPage extends Component {
             searchCustomer: this.searchCustomer,
             createCustomer: this.createCustomer,
         });
-        DatabaseManager.addDataChangeListener(this.fetchData)
     }
 
     componentDidMount() {
-        this.fetchData();
-        this.fetchRegisterCode();
+        // this.fetchData();
     }
 
     componentWillUnmount() {
-        DatabaseManager.removeDataChangeListener(this.fetchData)
     }
 
-    fetchRegisterCode = () => {
-        HttpManager.fetchRegisterCode().then((res) => {
-            if (res.data.code === 200) {
-                Alert.alert(res.data.data.code + "")
-            }
-        }).catch((e) => {
-
-        })
-    };
 
     fetchData = () => {
-        let displayData = [];
-        let customerList = DatabaseManager.queryAllCustomer().sorted('lastCousumeTime', true);
-        for (let i = 0; i < customerList.length; i++) {
-            let item = {
-                name: customerList[i].name,
-                age: customerList[i].age,
-                job: customerList[i].job,
-                address: customerList[i].address,
-                phone: customerList[i].phone,
-                skinDesc: customerList[i].skinDesc,
-                lastCousumeTime: customerList[i].lastCousumeTime,
-                customerId: customerList[i].customerId
-            };
-            displayData.push(item)
-        }
+        HttpManager
+            .customerGetList(1)
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    Alert.alert(res.data.data.code + "")
+                } else {
 
+                }
+            });
+
+        let displayData = [];
         this.setState({
             displayData: Util.clone(displayData),
             isLoading: false
         })
     }
-
+    emptyComponent = () => {
+        return (
+            <View style={styles.empty_container}>
+                <Image style={styles.empty_image}
+                       source={require('../../assets/images/search_empty.png')}/>
+                <Text style={styles.empty_text}>暂无客户</Text>
+            </View>)
+    };
     searchCustomer = () => {
 
     };
@@ -161,10 +152,42 @@ export default class CustomerListPage extends Component {
 
     render() {
         return (
-            <FlatList
-                renderItem={({item, index}) => this.renderItem(item, index)}
-                data={this.state.displayData}
-            />
+            <ScrollableTabView
+                tabBarBackgroundColor={'white'}
+                tabBarPosition='top'
+                tabBarActiveTextColor='#DD433B'
+                tabBarInactiveTextColor='#999999'
+                tabBarTextStyle={{fontSize: 14, marginTop: 10}}
+                scrollWithoutAnimation={false}
+                tabBarUnderlineStyle={{backgroundColor: ColorRes.themeRed, height: 2}}
+                onChangeTab={(tab) => {
+                    console.log(tab)
+                }}>
+                <FlatList
+                    data={[{key: 'a'}, {key: 'b'}]}
+                    renderItem={({item}) => <Text>{item.key}</Text>}
+                    tabLabel={`全部(5)`}
+                    ListEmptyComponent={this.emptyComponent}
+                    key={1}
+                />
+                <FlatList
+                    data={[{key: 'a'}, {key: 'b'}]}
+                    renderItem={({item}) => <Text>{item.key}</Text>}
+                    tabLabel={`已回访(3)`}
+                    ListEmptyComponent={this.emptyComponent}
+                    key={2}
+                />
+                <FlatList
+                    data={[{key: 'a'}, {key: 'b'}]}
+                    renderItem={({item}) => <Text>{item.key}</Text>}
+                    tabLabel={`待回访(2})`}
+                    key={3}
+                    ListEmptyComponent={this.emptyComponent}
+                />
+                <View key={4} tabLabel={'老顾客'}>
+                    <Text>老顾客</Text>
+                </View>
+            </ScrollableTabView>
         )
     }
 

@@ -30,17 +30,24 @@ function buildUrl(moduleName) {
 
 async function execute(url, params) {
     let body = {
-        url: BASE_URL + url,
+        url: BASE_URL + url + addParams(buildParams(params)),
         method: 'POST',
-        headers: {'Content-Type': 'multipart/form-data '},
+        headers: {'Content-Type': 'multipart/form-data'},
         timeout: 10000,
-        data: buildParams(params)
     };
     return netClient(body);
 };
 
+function addParams(data) {
+    let ret = '?'
+    for (let it in data) {
+        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+    }
+    return ret
+}
+
 function buildParams(params) {
-    let timestamp = new Date().getTime();
+    let timestamp = parseInt(new Date().getTime() / 1000);
     if (Util.isEmpty(params)) {
         let bodyPatams = {
             timestamp: timestamp,
@@ -74,7 +81,7 @@ module.exports = {
         return execute(REGISTER, {code: registerCode, phone: account, password: password})
     },
     login(account, password) {
-        return execute(LOGIN, {phone: account, password: password})
+        return execute(LOGIN, {password: password, phone: account})
     },
     /**
      * 添加用户信息
@@ -118,13 +125,10 @@ module.exports = {
     /**
      * 获取客户列表
      */
-    customerGetList(page) {
+    async customerGetList(page) {
         let params = {};
-        StorageHelper.getUID().then((uid) => {
-            params.uid = uid;
-            params.page = page;
-            return execute(CUSTOMER_GETLIST, params)
-        });
+        let uid = await StorageHelper.getUID();
+        return execute(CUSTOMER_GETLIST, params)
     },
     /**
      * 搜索客户
@@ -150,8 +154,37 @@ module.exports = {
     customerCargoList(customer_id, page) {
         return execute(ORDER_GETLIST, {customer_id: customer_id, page: page})
     },
+    /**
+     * 客户添加商品
+     * @param customer_id
+     * @param cargoData
+     */
+    customerAddCargo(customer_id, cargoData) {
+        let params = {
+            optType: 'add',
+            customer_id: 'customer_id'
+        };
+        if (!Util.isEmpty(cargoData.cargo_name)) params.cargo_name = cargoData.cargo_name;
+        if (!Util.isEmpty(cargoData.cargo_price)) params.cargo_price = cargoData.cargo_price;
+        if (!Util.isEmpty(cargoData.deal_time)) params.deal_time = cargoData.deal_time;
+        if (!Util.isEmpty(cargoData.customer_reason)) params.customer_reason = cargoData.customer_reason;
+        return execute(ORDER_OPERATE, params)
 
+    },
+    /** 客户添加商品
+     * @param order_id  订单id
+     * @param cargoData 商品信息
+     */
+    customerEditCargo(order_id, cargoData) {
+        let params = {
+            optType: 'edit',
+            order_id: 'order_id'
+        };
+        if (!Util.isEmpty(cargoData.cargo_name)) params.cargo_name = cargoData.cargo_name;
+        if (!Util.isEmpty(cargoData.cargo_price)) params.cargo_price = cargoData.cargo_price;
+        if (!Util.isEmpty(cargoData.deal_time)) params.deal_time = cargoData.deal_time;
+        if (!Util.isEmpty(cargoData.customer_reason)) params.customer_reason = cargoData.customer_reason;
+        return execute(ORDER_OPERATE, params)
+    },
 };
-
-
 

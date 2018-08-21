@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import styleRes from '../config/StyleRes'
 import Util from '../utils/Utils'
-import DatabaseManager from '../utils/DatabaseManager'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
 let dateMap = new Map();
@@ -280,14 +279,6 @@ export default class CargoEditOrAddPage extends Component {
                         style={[styleRes.button_bg_red, {alignSelf: 'stretch'}]}
 
                         onPress={() => {
-                            let data = {
-                                customerReason: this.state.customerReason,
-                                dealTime: parseInt(this.state.dealTime),
-                                cargoPrice: this.state.cargoPrice,
-                                cargoName: this.state.cargoName,
-                            };
-                            DatabaseManager.createCargoForCustomer(this.props.navigation.state.params.customerId, data)
-                            this.props.navigation.goBack()
                         }}
                     >
                         <Text style={{color: 'white', fontSize: 16}}>保存</Text>

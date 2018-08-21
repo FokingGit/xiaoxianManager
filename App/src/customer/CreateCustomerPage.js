@@ -11,7 +11,6 @@ import {
     StyleSheet, BackHandler
 } from "react-native";
 import styleRes from '../config/StyleRes'
-import DatabaseManager from '../utils/DatabaseManager'
 
 
 export default class CreateCustomerPage extends Component {
@@ -289,15 +288,6 @@ export default class CreateCustomerPage extends Component {
                         style={[styleRes.button_bg_red, {alignSelf: 'stretch'}]}
 
                         onPress={() => {
-                            let data = {
-                                name: this.state.name,
-                                age: parseInt(this.state.age),
-                                job: this.state.job,
-                                phone: this.state.phone,
-                                address: this.state.address,
-                                skinDesc: this.state.skinDesc,
-                            }
-                            DatabaseManager.createCustomer(data)
                             this.props.navigation.goBack()
                         }}
                     >
