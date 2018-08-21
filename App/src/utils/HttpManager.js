@@ -30,20 +30,20 @@ function buildUrl(moduleName) {
 
 async function execute(url, params) {
     let body = {
-        url: BASE_URL + url + addParams(buildParams(params)),
+        url: BASE_URL + url,
         method: 'POST',
-        headers: {'Content-Type': 'multipart/form-data'},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         timeout: 10000,
+        data:buildParams(params),
+        transformRequest: [function (data) {
+            let ret = '';
+            for (let it in data) {
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret
+        }],
     };
     return netClient(body);
-};
-
-function addParams(data) {
-    let ret = '?'
-    for (let it in data) {
-        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-    }
-    return ret
 }
 
 function buildParams(params) {
