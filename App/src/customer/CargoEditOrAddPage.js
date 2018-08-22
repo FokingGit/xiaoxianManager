@@ -9,11 +9,13 @@ import {
     TextInput,
     Platform,
     TouchableWithoutFeedback,
-    StyleSheet, BackHandler
+    StyleSheet, BackHandler, DeviceEventEmitter
 } from "react-native";
 import styleRes from '../config/StyleRes'
 import Util from '../utils/Utils'
 import DateTimePicker from 'react-native-modal-datetime-picker'
+import HttpManager from "../utils/HttpManager";
+import Constant from "../config/Constants";
 
 let dateMap = new Map();
 dateMap.set('Jan', '01');
@@ -36,10 +38,10 @@ export default class CargoEditOrAddPage extends Component {
     constructor(props) {
         super(props)
         this.state = ({
-            cargoName: '',
-            cargoPrice: 0,
-            dealTime: 0,
-            customerReason: '',
+            cargo_name: '',
+            cargo_price: 0,
+            deal_time: 0,
+            customer_reason: '',
             isCreate: true,
             isDateTimePickerVisible: false
         })
@@ -96,10 +98,10 @@ export default class CargoEditOrAddPage extends Component {
                 //编辑商品
                 this.setState({
                     isCreate: false,
-                    cargoName: params.cargoName,
-                    cargoPrice: params.cargoPrice,
-                    dealTime: params.dealTime,
-                    customerReason: params.customerReason,
+                    cargo_name: params.cargoInfo.cargo_name,
+                    cargo_price: params.cargoInfo.cargo_price,
+                    deal_time: params.cargoInfo.deal_time,
+                    customer_reason: params.cargoInfo.customer_reason,
                 })
             }
         }
@@ -107,6 +109,7 @@ export default class CargoEditOrAddPage extends Component {
             isCreate: this.state.isCreate
         })
     }
+
 
     getRegisterDate = (date) => {
         if (Util.isEmpty(date) || date === 0) {
@@ -129,7 +132,7 @@ export default class CargoEditOrAddPage extends Component {
         console.log(time)
         this.setState({
             isDateTimePickerVisible: false,
-            dealTime: time
+            deal_time: time
         })
     }
 
@@ -153,11 +156,11 @@ export default class CargoEditOrAddPage extends Component {
                                 onEndEditing={
                                     (evt) => {
                                         this.setState({
-                                            cargoName: evt.nativeEvent.text
+                                            cargo_name: evt.nativeEvent.text
                                         })
                                     }
                                 }
-                                value={this.state.cargoName}
+                                value={this.state.cargo_name}
                                 style={Style.item_input}>
                             </TextInput>
                             : <TextInput
@@ -165,11 +168,11 @@ export default class CargoEditOrAddPage extends Component {
                                 onChangeText={
                                     (text) => {
                                         this.setState({
-                                            cargoName: text
+                                            cargo_name: text
                                         })
                                     }
                                 }
-                                value={this.state.cargoName}
+                                value={this.state.cargo_name}
                                 style={Style.item_input}>
                             </TextInput>
                     }
@@ -181,11 +184,11 @@ export default class CargoEditOrAddPage extends Component {
                 <View style={Style.item_bg}>
                     <Text style={Style.item_key}>商品价格:</Text>
                     <TextInput
-                        value={this.state.cargoPrice}
+                        value={String(this.state.cargo_price)}
                         onChangeText={
                             (text) => {
                                 this.setState({
-                                    cargoPrice: text
+                                    cargo_price: text
                                 })
                             }
                         }
@@ -194,8 +197,6 @@ export default class CargoEditOrAddPage extends Component {
 
                     </TextInput>
                 </View>
-                <View style={Style.item_line}/>
-
                 <View style={Style.item_line}/>
 
                 {/*成交时间*/}
@@ -210,7 +211,7 @@ export default class CargoEditOrAddPage extends Component {
                             fontSize: 14,
                             color: colorRes.fontPlaceholder,
                         }}>
-                            {this.getRegisterDate(this.state.dealTime)}
+                            {this.getRegisterDate(this.state.deal_time)}
                         </Text>
 
 
@@ -248,11 +249,11 @@ export default class CargoEditOrAddPage extends Component {
                                 onEndEditing={
                                     (evt) => {
                                         this.setState({
-                                            customerReason: evt.nativeEvent.text
+                                            customer_reason: evt.nativeEvent.text
                                         })
                                     }
                                 }
-                                value={this.state.customerReason}
+                                value={this.state.customer_reason}
                                 style={Style.item_input}>
 
                             </TextInput>
@@ -262,11 +263,11 @@ export default class CargoEditOrAddPage extends Component {
                                 onChangeText={
                                     (evt) => {
                                         this.setState({
-                                            customerReason: evt
+                                            customer_reason: evt
                                         })
                                     }
                                 }
-                                value={this.state.customerReason}
+                                value={this.state.customer_reason}
                                 style={Style.item_input}>
 
                             </TextInput>
@@ -279,6 +280,40 @@ export default class CargoEditOrAddPage extends Component {
                         style={[styleRes.button_bg_red, {alignSelf: 'stretch'}]}
 
                         onPress={() => {
+                            let data = {
+                                customer_reason: this.state.customer_reason,
+                                deal_time: parseInt(this.state.deal_time/1000),
+                                cargo_price: this.state.cargo_price,
+                                cargo_name: this.state.cargo_name,
+                            };
+
+                            if (this.state.isCreate) {
+                                HttpManager
+                                    .customerAddCargo(this.props.navigation.state.params.customer_id, data)
+                                    .then((response) => {
+                                        if (response.data.code === Constant.SUCCESS_CODE) {
+                                            //刷新首页
+                                            DeviceEventEmitter.emit(Constant.REFRESH_CUSTOMER, Constant.FROM_CREATE);
+                                            console.log('新建成功');
+                                            this.props.navigation.goBack()
+                                        } else {
+                                            Alert.alert('新建失败');
+                                        }
+                                    });
+                            } else {
+                                HttpManager
+                                    .customerEditCargo(this.props.navigation.state.params.cargoInfo.orderid, data)
+                                    .then((response) => {
+                                        if (response.data.code === Constant.SUCCESS_CODE) {
+                                            //刷新首页
+                                            DeviceEventEmitter.emit(Constant.REFRESH_CUSTOMER, Constant.FROM_CREATE);
+                                            console.log('编辑成功');
+                                            this.props.navigation.goBack()
+                                        } else {
+                                            Alert.alert('编辑失败');
+                                        }
+                                    });
+                            }
                         }}
                     >
                         <Text style={{color: 'white', fontSize: 16}}>保存</Text>

@@ -169,7 +169,13 @@ export default class CustomerListPage extends Component {
      * 创建客户
      */
     createCustomer = () => {
-        this.props.navigation.navigate({routeName: 'CREATE_CUSTOMER', key: 'list-create'})
+        this.props.navigation.navigate({
+            routeName: 'CREATE_CUSTOMER',
+            key: 'list-create',
+            params: {
+                isCreate: true
+            }
+        })
     };
 
 
@@ -301,7 +307,6 @@ export default class CustomerListPage extends Component {
             </ScrollableTabView>
         )
     }
-
 }
 const styles = StyleSheet.create({
     list_content: {

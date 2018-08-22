@@ -161,7 +161,7 @@ module.exports = {
     customerAddCargo(customer_id, cargoData) {
         let params = {
             optType: 'add',
-            customer_id: 'customer_id'
+            customer_id: customer_id
         };
         if (!Util.isEmpty(cargoData.cargo_name)) params.cargo_name = cargoData.cargo_name;
         if (!Util.isEmpty(cargoData.cargo_price)) params.cargo_price = cargoData.cargo_price;
@@ -170,14 +170,14 @@ module.exports = {
         return execute(ORDER_OPERATE, params)
 
     },
-    /** 客户添加商品
+    /** 客户编辑商品
      * @param order_id  订单id
      * @param cargoData 商品信息
      */
     customerEditCargo(order_id, cargoData) {
         let params = {
             optType: 'edit',
-            order_id: 'order_id'
+            order_id: order_id
         };
         if (!Util.isEmpty(cargoData.cargo_name)) params.cargo_name = cargoData.cargo_name;
         if (!Util.isEmpty(cargoData.cargo_price)) params.cargo_price = cargoData.cargo_price;

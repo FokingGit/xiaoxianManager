@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import styleRes from '../config/StyleRes'
 import HttpManager from '../utils/HttpManager'
+import Util from '../utils/Utils'
 
 
 export default class CreateCustomerPage extends Component {
@@ -35,7 +36,7 @@ export default class CreateCustomerPage extends Component {
             headerTitle: (
                 <View style={{width: '100%', alignItems: 'center'}}>
                     <Text style={{color: '#ffffff', fontSize: 20}}>
-                        新建用户
+                        {navigation.state.params.isCreate ? '新建用户' : '编辑用户'}
                     </Text>
                 </View>),
             headerStyle: {
@@ -71,6 +72,20 @@ export default class CreateCustomerPage extends Component {
 
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.showExitAlert);
+    }
+
+    componentDidMount() {
+        let params = this.props.navigation.state.params;
+        if (!params.isCreate) {
+            this.setState({
+                name: Util.isEmpty(params.customerDetail.name) ? '' : params.customerDetail.name,
+                age: Util.isEmpty(params.customerDetail.age) ? 0 : params.customerDetail.age,
+                phone: Util.isEmpty(params.customerDetail.phone) ? '' : params.customerDetail.phone,
+                job: Util.isEmpty(params.customerDetail.job) ? '' : params.customerDetail.job,
+                address: Util.isEmpty(params.customerDetail.address) ? '' : params.customerDetail.address,
+                skindesc: Util.isEmpty(params.customerDetail.skindesc) ? '' : params.customerDetail.skindesc
+            })
+        }
     }
 
     showExitAlert = () => {
@@ -302,19 +317,34 @@ export default class CreateCustomerPage extends Component {
                                 address: this.state.address,
                                 skindesc: this.state.skindesc,
                             };
-                            HttpManager
-                                .addCustomer(data)
-                                .then((response) => {
-                                    if (response.data.code === Constant.SUCCESS_CODE) {
-                                        //刷新首页
-                                        DeviceEventEmitter.emit(Constant.REFRESH_HOME, Constant.FROM_CREATE);
+                            if (this.props.navigation.state.params.isCreate) {
+                                HttpManager
+                                    .addCustomer(data)
+                                    .then((response) => {
+                                        if (response.data.code === Constant.SUCCESS_CODE) {
+                                            //刷新首页
+                                            DeviceEventEmitter.emit(Constant.REFRESH_HOME, Constant.FROM_CREATE);
+                                            console.log('新建成功');
+                                            this.props.navigation.goBack()
+                                        } else {
+                                            Alert.alert('新建失败');
+                                        }
+                                    });
+                            } else {
+                                HttpManager
+                                    .editCustomer(this.props.navigation.state.params.customerDetail.id, data)
+                                    .then((response) => {
+                                        if (response.data.code === Constant.SUCCESS_CODE) {
+                                            //刷新首页
+                                            DeviceEventEmitter.emit(Constant.REFRESH_HOME, Constant.FROM_CREATE);
+                                            console.log('编辑成功');
+                                            this.props.navigation.goBack()
+                                        } else {
+                                            Alert.alert('编辑失败');
+                                        }
+                                    });
+                            }
 
-                                        console.log('新建成功');
-                                        this.props.navigation.goBack()
-                                    } else {
-                                        Alert.alert('新建失败');
-                                    }
-                                });
                         }}
                     >
                         <Text style={{color: 'white', fontSize: 16}}>保存</Text>

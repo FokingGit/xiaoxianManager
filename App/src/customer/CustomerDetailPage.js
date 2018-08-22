@@ -5,12 +5,15 @@ import {
     Text,
     TouchableOpacity,
     FlatList,
+    Alert,
     Dimensions,
-    StyleSheet
+    StyleSheet, DeviceEventEmitter
 } from 'react-native'
 import Util from '../utils/Utils'
 import ColorRes from "../config/ColorRes";
 import DashLine from "./DashLine.js";
+import HttpManager from '../utils/HttpManager'
+import Constants from "../config/Constants";
 
 let screenW = Dimensions.get('window').width;
 export default class CustomerDetailPage extends Component {
@@ -43,10 +46,15 @@ export default class CustomerDetailPage extends Component {
     componentWillMount() {
         this.props.navigation.setParams({
             jumpToCreatCargo: this.jumpToCreatCargo
+        });
+
+        this.emitter = DeviceEventEmitter.addListener(Constants.REFRESH_CUSTOMER, (data) => {
+            this.fetchData()
         })
     }
 
     componentWillUnmount() {
+        this.emitter.remove()
     }
 
     componentDidMount() {
@@ -58,10 +66,22 @@ export default class CustomerDetailPage extends Component {
 
     fetchData = () => {
         let displayData = [];
-        this.setState({
-            displayData: Util.clone(displayData)
-        })
-    }
+        HttpManager
+            .customerCargoList(this.props.navigation.state.params.customerDetail.id, 1)
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    displayData = response.data.data.list;
+                } else {
+                    console.log(response)
+                }
+                this.setState({
+                    displayData: Util.clone(displayData)
+                })
+            })
+            .catch(e => {
+                Alert.alert(e)
+            });
+    };
 
     /**
      * 跳转添加商品
@@ -72,7 +92,8 @@ export default class CustomerDetailPage extends Component {
             key: 'customer-edit-cargo',
             params: {
                 isCreate: true,
-                customerId: this.state.customerDetail.customerId
+                customer_id: this.props.navigation.state.params.customerDetail.id
+
             }
         })
     };
@@ -82,11 +103,18 @@ export default class CustomerDetailPage extends Component {
             <View style={styles.list_content}>
                 <View style={styles.list_content_titleView}>
                     <Text
-                        style={styles.list_content_carName}> {item.cargoName}</Text>
+                        style={styles.list_content_carName}> {item.cargo_name}</Text>
 
                     <TouchableOpacity style={styles.list_content_detailTouch}
                                       onPress={() => {
-
+                                          this.props.navigation.navigate({
+                                              routeName: 'CARGO_ADD_EDIT',
+                                              key: 'customer-edit-cargo',
+                                              params: {
+                                                  isCreate: false,
+                                                  cargoInfo: item,
+                                              }
+                                          })
                                       }}
                     >
                         <Text style={styles.list_content_detail_text}>编辑</Text>
@@ -95,16 +123,16 @@ export default class CustomerDetailPage extends Component {
 
                 <View style={styles.list_content_access_stateView}>
                     <Text
-                        style={styles.list_content_assessNumber}>{item.cargoPrice + '元'}</Text>
+                        style={styles.list_content_assessNumber}>{item.cargo_price + '元'}</Text>
                 </View>
                 <View style={styles.list_content_access_infoView}>
                     <Text style={styles.list_content_rowTitle}>购买时间:</Text>
-                    <Text style={styles.list_content_rowText}>{Util.formatDate(item.dealTime)}</Text>
+                    <Text style={styles.list_content_rowText}>{item.deal_time}</Text>
                 </View>
                 <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
                     <Text style={styles.list_content_rowTitle}>购买原因:</Text>
                     <Text
-                        style={styles.list_content_rowText}>{item.customerReason}</Text>
+                        style={styles.list_content_rowText}>{item.customer_reason}</Text>
                 </View>
             </View>
         )
@@ -120,7 +148,14 @@ export default class CustomerDetailPage extends Component {
 
                         <TouchableOpacity style={styles.list_content_detailTouch}
                                           onPress={() => {
-
+                                              this.props.navigation.navigate({
+                                                  routeName: 'CREATE_CUSTOMER',
+                                                  key: 'list-create',
+                                                  params: {
+                                                      isCreate: false,
+                                                      customerDetail: this.state.customerDetail,
+                                                  }
+                                              })
                                           }}
                         >
                             <Text style={styles.list_content_detail_text}>编辑</Text>
