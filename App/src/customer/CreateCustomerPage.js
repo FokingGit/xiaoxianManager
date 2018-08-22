@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import colorRes from "../config/ColorRes";
 import dimenRes from "../config/DimenRes";
+import Constant from "../config/Constants";
 import {
     Alert,
     View,
@@ -8,9 +9,12 @@ import {
     TouchableOpacity,
     TextInput,
     Platform,
-    StyleSheet, BackHandler
+    StyleSheet,
+    BackHandler,
+    DeviceEventEmitter
 } from "react-native";
 import styleRes from '../config/StyleRes'
+import HttpManager from '../utils/HttpManager'
 
 
 export default class CreateCustomerPage extends Component {
@@ -22,7 +26,7 @@ export default class CreateCustomerPage extends Component {
             phone: '',
             job: '',
             address: '',
-            skinDesc: ''
+            skindesc: ''
         })
     }
 
@@ -252,30 +256,32 @@ export default class CreateCustomerPage extends Component {
 
                         Platform.OS === 'ios' ?
                             <TextInput
+                                multiline={true}
                                 placeholder='肤质描述'
                                 underlineColorAndroid="transparent"
                                 onEndEditing={
                                     (evt) => {
                                         this.setState({
-                                            skinDesc: evt.nativeEvent.text
+                                            skindesc: evt.nativeEvent.text
                                         })
                                     }
                                 }
-                                value={this.state.skinDesc}
+                                value={this.state.skindesc}
                                 style={Style.item_input}>
 
                             </TextInput>
                             : <TextInput
+                                multiline={true}
                                 placeholder='肤质描述'
                                 underlineColorAndroid="transparent"
                                 onChangeText={
                                     (evt) => {
                                         this.setState({
-                                            skinDesc: evt
+                                            skindesc: evt
                                         })
                                     }
                                 }
-                                value={this.state.skinDesc}
+                                value={this.state.skindesc}
                                 style={Style.item_input}>
 
                             </TextInput>
@@ -288,7 +294,27 @@ export default class CreateCustomerPage extends Component {
                         style={[styleRes.button_bg_red, {alignSelf: 'stretch'}]}
 
                         onPress={() => {
-                            this.props.navigation.goBack()
+                            let data = {
+                                name: this.state.name,
+                                age: parseInt(this.state.age),
+                                job: this.state.job,
+                                phone: this.state.phone,
+                                address: this.state.address,
+                                skindesc: this.state.skindesc,
+                            };
+                            HttpManager
+                                .addCustomer(data)
+                                .then((response) => {
+                                    if (response.data.code === Constant.SUCCESS_CODE) {
+                                        //刷新首页
+                                        DeviceEventEmitter.emit(Constant.REFRESH_HOME, Constant.FROM_CREATE);
+
+                                        console.log('新建成功');
+                                        this.props.navigation.goBack()
+                                    } else {
+                                        Alert.alert('新建失败');
+                                    }
+                                });
                         }}
                     >
                         <Text style={{color: 'white', fontSize: 16}}>保存</Text>

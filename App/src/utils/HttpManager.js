@@ -34,7 +34,7 @@ async function execute(url, params) {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         timeout: 10000,
-        data:buildParams(params),
+        data: buildParams(params),
         transformRequest: [function (data) {
             let ret = '';
             for (let it in data) {
@@ -88,38 +88,36 @@ module.exports = {
      * @param customerData
      * @returns {Promise<*>}
      */
-    addCustomer(customerData) {
+    async addCustomer(customerData) {
         let params = {};
-        StorageHelper.getUID().then((uid) => {
-            params.optType = 'add';
-            params.uid = uid;
-            if (!Util.isEmpty(customerData.name)) params.name = customerData.name;
-            if (!Util.isEmpty(customerData.age)) params.age = customerData.age;
-            if (!Util.isEmpty(customerData.job)) params.job = customerData.job;
-            if (!Util.isEmpty(customerData.phone)) params.phone = customerData.phone;
-            if (!Util.isEmpty(customerData.address)) params.address = customerData.address;
-            if (!Util.isEmpty(customerData.skindesc)) params.skindesc = customerData.skindesc;
-            return execute(CUSTOMER_OPERATE, params)
-        });
+        let uid = await StorageHelper.getUID();
+        params.optType = 'add';
+        params.uid = uid;
+        if (!Util.isEmpty(customerData.name)) params.name = customerData.name;
+        if (!Util.isEmpty(customerData.age)) params.age = customerData.age;
+        if (!Util.isEmpty(customerData.job)) params.job = customerData.job;
+        if (!Util.isEmpty(customerData.phone)) params.phone = customerData.phone;
+        if (!Util.isEmpty(customerData.address)) params.address = customerData.address;
+        if (!Util.isEmpty(customerData.skindesc)) params.skindesc = customerData.skindesc;
+        return execute(CUSTOMER_OPERATE, params)
     },
     /**
      * 编辑用户信息
      * @param customerData
      * @returns {Promise<*>}
      */
-    editCustomer(customerId, customerData) {
+    async editCustomer(customerId, customerData) {
         let params = {};
-        StorageHelper.getUID().then((uid) => {
-            params.optType = 'edit';
-            params.customer_id = customerId;
-            if (!Util.isEmpty(customerData.name)) params.name = customerData.name;
-            if (!Util.isEmpty(customerData.age)) params.age = customerData.age;
-            if (!Util.isEmpty(customerData.job)) params.job = customerData.job;
-            if (!Util.isEmpty(customerData.phone)) params.phone = customerData.phone;
-            if (!Util.isEmpty(customerData.address)) params.address = customerData.address;
-            if (!Util.isEmpty(customerData.skindesc)) params.skindesc = customerData.skindesc;
-            return execute(CUSTOMER_OPERATE, params)
-        });
+        let uid = await StorageHelper.getUID();
+        params.optType = 'edit';
+        params.customer_id = customerId;
+        if (!Util.isEmpty(customerData.name)) params.name = customerData.name;
+        if (!Util.isEmpty(customerData.age)) params.age = customerData.age;
+        if (!Util.isEmpty(customerData.job)) params.job = customerData.job;
+        if (!Util.isEmpty(customerData.phone)) params.phone = customerData.phone;
+        if (!Util.isEmpty(customerData.address)) params.address = customerData.address;
+        if (!Util.isEmpty(customerData.skindesc)) params.skindesc = customerData.skindesc;
+        return execute(CUSTOMER_OPERATE, params)
     },
 
     /**
@@ -128,6 +126,8 @@ module.exports = {
     async customerGetList(page) {
         let params = {};
         let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.page = page;
         return execute(CUSTOMER_GETLIST, params)
     },
     /**
@@ -136,14 +136,13 @@ module.exports = {
      * @param page 第几页
      * @param num  每页数量
      */
-    searchCustomerList(content, page) {
+    async searchCustomerList(content, page) {
         let params = {};
-        StorageHelper.getUID().then((uid) => {
-            params.uid = uid;
-            params.search = search;
-            params.page = page;
-            return execute(CUSTOMER_GETLIST, params)
-        });
+        let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.search = search;
+        params.page = page;
+        return execute(CUSTOMER_GETLIST, params)
     },
     /**
      * 客户购买商品列表

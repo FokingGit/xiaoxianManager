@@ -7,7 +7,8 @@ import {
     FlatList,
     Alert,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    ActivityIndicator, DeviceEventEmitter
 } from 'react-native'
 import HttpManager from '../utils/HttpManager'
 import Util from '../utils/Utils'
@@ -22,10 +23,24 @@ import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-s
 let screenW = Dimensions.get('window').width;
 export default class CustomerListPage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = ({
-            displayData: [],
-            isLoading: true
+            isNeedVisiteLoading: true,
+            isVisitedLoading: true,
+            isAllCustomerLoading: true,
+
+            allCustomerData: [], //全部客户数据
+            allCustomerCount: 0, //全部客户数量
+            allCustomerCurrentPage: 0,
+
+            needVisiteCustomerData: [], //待回访客户数据
+            needVisiteCustomerCount: 0, //待回访客户数量
+            needVisiteCurrentPage: 0,
+
+            visitedCustomerData: [], //已回访客户数据
+            visitedCustomerCount: 0, //已回访客户数量
+            visitedCurrentPage: 0,
+
         })
     }
 
@@ -67,33 +82,74 @@ export default class CustomerListPage extends Component {
             searchCustomer: this.searchCustomer,
             createCustomer: this.createCustomer,
         });
+        this.emitter = DeviceEventEmitter.addListener(Constants.REFRESH_HOME, (data) => {
+            this.refs.scrollableTabView.goToPage(0);
+            this.fetchAllFirstPageData()
+        })
     }
 
     componentDidMount() {
-        // this.fetchData();
+        this.fetchAllFirstPageData();
     }
 
     componentWillUnmount() {
+        this.emitter.remove()
     }
 
+    /**
+     * 获取全部tab第一页数据
+     */
+    fetchAllFirstPageData = () => {
+        this.setState({
+            allCustomerCurrentPage: 1
+        });
 
-    fetchData = () => {
+        let displayData = [];
         HttpManager
             .customerGetList(1)
             .then((response) => {
                 if (response.data.code === Constants.SUCCESS_CODE) {
-                    Alert.alert(res.data.data.code + "")
+                    displayData = response.data.data.list;
                 } else {
-
+                    console.log(response);
                 }
+                this.setState({
+                    allCustomerData: Util.clone(displayData),
+                    isAllCustomerLoading: false,
+                    allCustomerCount: response.data.data.total
+                })
+            })
+            .catch((e) => {
+                Alert.alert(e)
             });
 
-        let displayData = [];
+    };
+
+    /**
+     * 获取分页数据
+     * @param page
+     */
+    fetchAllPerPageData = (page) => {
         this.setState({
-            displayData: Util.clone(displayData),
-            isLoading: false
-        })
-    }
+            allCustomerCurrentPage: page
+        });
+        let displayData = [];
+        HttpManager
+            .customerGetList(page)
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    displayData = this.state.allCustomerData.concat(response.data.data.list);
+                } else {
+                    console.log(response);
+                }
+                this.setState({
+                    allCustomerData: Util.clone(displayData),
+                    isAllCustomerLoading: false
+                })
+            });
+
+    };
+
     emptyComponent = () => {
         return (
             <View style={styles.empty_container}>
@@ -102,9 +158,16 @@ export default class CustomerListPage extends Component {
                 <Text style={styles.empty_text}>暂无客户</Text>
             </View>)
     };
+
+    /**
+     * 搜索用户
+     */
     searchCustomer = () => {
 
     };
+    /**
+     * 创建客户
+     */
     createCustomer = () => {
         this.props.navigation.navigate({routeName: 'CREATE_CUSTOMER', key: 'list-create'})
     };
@@ -135,16 +198,16 @@ export default class CustomerListPage extends Component {
 
                 <View style={styles.list_content_access_stateView}>
                     <Text
-                        style={styles.list_content_assessNumber}>{item.phone}</Text>
+                        style={styles.list_content_assessNumber}>{String(item.phone)}</Text>
                     <View style={styles.list_content_assessPartingLine}/>
                     <Text
-                        style={styles.list_content_assessStatus}>年龄：{item.age}</Text>
+                        style={styles.list_content_assessStatus}>年龄：{String(item.age)}</Text>
                 </View>
                 <DashLine backgroundColor={'#b0b0b0'} len={50} width={screenW - 30}/>
                 <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
                     <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>
                     <Text
-                        style={styles.list_content_rowText}>{Util.formatDate(item.lastCousumeTime)}</Text>
+                        style={styles.list_content_rowText}>{item.last_time}</Text>
                 </View>
             </View>
         )
@@ -153,37 +216,85 @@ export default class CustomerListPage extends Component {
     render() {
         return (
             <ScrollableTabView
+                ref='scrollableTabView'
                 tabBarBackgroundColor={'white'}
                 tabBarPosition='top'
-                tabBarActiveTextColor='#DD433B'
-                tabBarInactiveTextColor='#999999'
+                tabBarActiveTextColor={'#DD433B'}
+                tabBarInactiveTextColor={'#999999'}
                 tabBarTextStyle={{fontSize: 14, marginTop: 10}}
                 scrollWithoutAnimation={false}
                 tabBarUnderlineStyle={{backgroundColor: ColorRes.themeRed, height: 2}}
-                onChangeTab={(tab) => {
-                    console.log(tab)
-                }}>
-                <FlatList
-                    data={[{key: 'a'}, {key: 'b'}]}
-                    renderItem={({item}) => <Text>{item.key}</Text>}
-                    tabLabel={`全部(5)`}
-                    ListEmptyComponent={this.emptyComponent}
-                    key={1}
-                />
-                <FlatList
-                    data={[{key: 'a'}, {key: 'b'}]}
-                    renderItem={({item}) => <Text>{item.key}</Text>}
-                    tabLabel={`已回访(3)`}
-                    ListEmptyComponent={this.emptyComponent}
-                    key={2}
-                />
-                <FlatList
-                    data={[{key: 'a'}, {key: 'b'}]}
-                    renderItem={({item}) => <Text>{item.key}</Text>}
-                    tabLabel={`待回访(2})`}
-                    key={3}
-                    ListEmptyComponent={this.emptyComponent}
-                />
+                onChangeTab={(index) => {
+
+                }}
+            >
+                {this.state.isAllCustomerLoading ?
+                    <View
+                        tabLabel={`全部(0)`}
+                        key={1}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}><ActivityIndicator
+                        size={"large"}
+                        color={ColorRes.themeRed}
+                    /></View> :
+                    <FlatList
+                        data={this.state.allCustomerData}
+                        refreshing={this.state.isAllCustomerLoading}
+                        onRefresh={() => this.fetchAllFirstPageData()}
+                        keyExtractor={() => Util.generateRandomStr()}
+                        renderItem={({item, index}) => this.renderItem(item, index)}
+                        tabLabel={`全部(${this.state.allCustomerCount})`}
+                        onEndReached={() => this.fetchAllPerPageData(this.state.allCustomerCurrentPage + 1)}
+                        onEndReachedThreshold={0.1}
+                        ListEmptyComponent={this.emptyComponent}
+                        key={1}
+                    />}
+
+                {this.state.isVisitedLoading ?
+                    <View
+                        tabLabel={`已回访(0)`}
+                        key={2}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}><ActivityIndicator
+                        size={"large"}
+                        color={ColorRes.themeRed}
+                    /></View> :
+                    <FlatList
+                        data={this.state.visitedCustomerData}
+                        renderItem={({item, index}) => this.renderItem()}
+                        tabLabel={`已回访(${this.state.visitedCustomerCount})`}
+                        ListEmptyComponent={this.emptyComponent}
+                        key={2}
+                    />}
+                {this.state.isNeedVisiteLoading ?
+                    <View
+                        tabLabel={`待回访(0)`}
+                        key={2}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}><ActivityIndicator
+                        size={"large"}
+                        color={ColorRes.themeRed}
+                    /></View> :
+                    <FlatList
+                        data={this.state.needVisiteCustomerData}
+                        renderItem={({item, index}) => this.renderItem()}
+                        tabLabel={`待回访(${this.state.needVisiteCustomerCount})`}
+                        key={3}
+                        ListEmptyComponent={this.emptyComponent}
+                    />
+                }
                 <View key={4} tabLabel={'老顾客'}>
                     <Text>老顾客</Text>
                 </View>
@@ -220,7 +331,6 @@ const styles = StyleSheet.create({
 
     list_content_carName: {
         marginLeft: 16,
-        fontFamily: 'PingFangSC-Medium',
         fontSize: 18,
         color: '#111',
         flex: 1
@@ -236,14 +346,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     list_content_detail_text: {
-        fontFamily: 'PingFangSC-Regular',
         fontSize: 12,
         color: ColorRes.themeRed
 
     },
     list_content_assessNumber: {
         marginLeft: 15,
-        fontFamily: 'PingFangSC-Regular',
         fontSize: 12
     },
     list_content_assessPartingLine: {
@@ -255,19 +363,37 @@ const styles = StyleSheet.create({
     },
     list_content_assessStatus: {
         marginLeft: 8,
-        fontFamily: 'PingFangSC-Regular',
         fontSize: 12
     },
     list_content_rowTitle: {
         marginLeft: 15,
-        fontFamily: 'PingFangSC-Regular',
         fontSize: 14,
         color: '#777'
     },
     list_content_rowText: {
         marginLeft: 8,
-        fontFamily: 'PingFangSC-Regular',
         fontSize: 14,
         color: '#111'
+    },
+    list: {
+        backgroundColor: '#ebebeb',
+        width: '100%'
+    },
+    empty_container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 400,
+        width: '100%'
+    },
+    empty_image: {
+        alignSelf: 'center',
+        width: 240,
+        height: 160
+    },
+    empty_text: {
+        fontSize: 16,
+        color: '#AAAAAA',
+        marginTop: 10,
+        alignSelf: "center"
     }
 });

@@ -145,12 +145,12 @@ export default class CustomerDetailPage extends Component {
                     </View>
                     <View style={[styles.list_content_access_infoView]}>
                         <Text style={styles.list_content_rowTitle}>肤质描述:</Text>
-                        <Text style={styles.list_content_rowText}>{this.state.customerDetail.skinDesc}</Text>
+                        <Text style={styles.list_content_rowText}>{this.state.customerDetail.skindesc}</Text>
                     </View>
                     <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
                         <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>
                         <Text
-                            style={styles.list_content_rowText}>{Util.formatDate(this.state.customerDetail.lastCousumeTime)}</Text>
+                            style={styles.list_content_rowText}>{this.state.customerDetail.last_time}</Text>
                     </View>
                 </View>
 
