@@ -163,7 +163,13 @@ export default class LoginPage extends Component {
                     paddingRight: 20,
                     height: 50,
                 }}>
-                    <Text style={{fontSize: 12, color: '#dd433b'}}>立即注册</Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.props.navigation.navigate({routeName: 'REGISTER', key: 'login-register'})
+                        }}
+                    >
+                        <Text style={{fontSize: 12, color: '#dd433b'}}>立即注册</Text>
+                    </TouchableOpacity>
                 </View>
 
             </TouchableOpacity>
