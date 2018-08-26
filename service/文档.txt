@@ -1,4 +1,5 @@
-公共请求参数   timestamp   int  时间戳
+﻿接口ip：45.62.105.17
+公共请求参数   timestamp   int  10位时间戳
              signature   int  签名
 此两个参数为验签所用，防止被别人盗用，签名方式为（ signature = MD5（timestamp + "admin"） ），即，时间戳和admin字符串拼接后MD5加密为signature，所有接口都需要传这两个参数
 1.获取注册码
@@ -67,7 +68,6 @@
             phone          int       电话
             address        string    住址
             skindesc       string    肤质描述
-            consume_total  int       消费总金额（单位为元）
     返回结果：
         {
             "code": 200,
@@ -79,11 +79,14 @@
     请求方式：post
     请求参数：
          必填
-            uid     int      用户uid
+            uid        int      用户uid
          选填
-            search  string   客户名字/电话/地址（搜索时必填）
-            page    int      用户分页（默认为1）
-            num     int      每页显示条数（默认为10）
+            search     string   客户名字/电话/地址（搜索时必填）
+            is_visit   int      1（回访时必填）
+            starttime  int      开始时间（10位时间戳，筛选时必填）
+            endtime    int      结束时间（10位时间戳，筛选时必填）
+            page       int      用户分页（默认为1）
+            num        int      每页显示条数（默认为10）
     返回结果：
         {
             "code": 200,
@@ -103,6 +106,7 @@
                         "address": "北京",  //地址
                         "skindesc": "皮肤敲好的",  //皮肤描述
                         "consume_total": 10000000,  //总消费(单位为元)
+                        "visit_num": "0",  //回访次数
                         "last_time": "2018-08-16 12:48:05",  //
                         "creat_time": "2018-08-16 12:48:05",  //
                         "uid": "7"  //
@@ -133,7 +137,7 @@
          选填
             cargo_name       string    商品名字
             cargo_price      string    商品价格
-            deal_time        int       成交时间（转成时间戳格式）
+            deal_time        int       成交时间（转成10位时间戳格式）
             customer_reason  string    购买原因
 
     返回结果：
@@ -143,7 +147,7 @@
         }
 
 7.客户购买商品列表
-    接口地址：hzp_api/htdocs_api/customer/getList.php
+    接口地址：hzp_api/htdocs_api/order/getList.php
     请求方式：post
     请求参数：
          必填
@@ -183,4 +187,16 @@
                     }
                 ]
             }
+        }
+
+8.确认回访
+    接口地址：hzp_api/htdocs_api/customer/sure_visit.php
+    请求方式：post
+    请求参数：
+         必填
+            customer_id    int    客户id
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功"
         }
