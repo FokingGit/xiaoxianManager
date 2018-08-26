@@ -25,10 +25,10 @@ const TAB_STACK = TabNavigator({
                 tabBarIcon: ({tintColor, focused}) => {
                     if (focused) {
                         return <Image style={[Style.tab, {tintColor: tintColor}]}
-                                      source={require('./assets/images/car_assess_selected.png')}/>
+                                      source={require('./assets/images/customer_select.png')}/>
                     } else {
                         return <Image style={[Style.tab, {tintColor: tintColor}]}
-                                      source={require('./assets/images/car_assess_unselected.png')}/>
+                                      source={require('./assets/images/customer_unselected.png')}/>
                     }
                 },
             }
@@ -87,8 +87,6 @@ const APPSTACK = StackNavigator(
         CUSTOMER_DETAIL: {screen: CustomerDetailPage},
         CARGO_ADD_EDIT: {screen: CargoEditOrAddPage},
         LOGIN: {screen: LoginPage},
-        REGISTER: {screen: RegisterPage},
-
     },
     {
         initialRouteName: 'MAIN',
@@ -96,8 +94,17 @@ const APPSTACK = StackNavigator(
     }
 );
 
+const LOGIN_STACK = StackNavigator(
+    {
+        LOGIN: {screen: LoginPage},
+        REGISTER: {screen: RegisterPage},
+    }, {
+        initialRouteName: 'LOGIN',
+        navigationOptions: navigationStyle
+    });
 
-export default class App extends Component<Props> {
+
+export default class App extends Component {
 
     constructor(props) {
         super(props);
@@ -122,7 +129,7 @@ export default class App extends Component<Props> {
             })
         } else {
             this.setState({
-                renderView: <LoginPage/>
+                renderView: <LOGIN_STACK/>
             })
         }
     }

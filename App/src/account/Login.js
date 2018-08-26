@@ -164,9 +164,9 @@ export default class LoginPage extends Component {
                     height: 50,
                 }}>
                     <TouchableOpacity
-                        onPress={() => {
-                            this.props.navigation.navigate({routeName: 'REGISTER', key: 'login-register'})
-                        }}
+                        onPress={() =>
+                            this.gotiRegister()
+                        }
                     >
                         <Text style={{fontSize: 12, color: '#dd433b'}}>立即注册</Text>
                     </TouchableOpacity>
@@ -175,6 +175,10 @@ export default class LoginPage extends Component {
             </TouchableOpacity>
         );
 
+    }
+
+    gotiRegister = () => {
+        this.props.navigation.navigate({routeName: 'REGISTER', key: 'login-register'})
     }
 }
 
