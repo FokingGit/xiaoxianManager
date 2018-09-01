@@ -14,6 +14,7 @@ import CustomerDetailPage from './src/customer/CustomerDetailPage'
 import CargoEditOrAddPage from './src/customer/CargoEditOrAddPage'
 import MePage from './src/account/MePage'
 import LoginPage from "./src/account/Login";
+import Setting from "./src/account/Setting";
 import RegisterPage from "./src/account/Register";
 import StorageHelper from "./src/utils/StorageHelper.js";
 
@@ -87,6 +88,7 @@ const APPSTACK = StackNavigator(
         CUSTOMER_DETAIL: {screen: CustomerDetailPage},
         CARGO_ADD_EDIT: {screen: CargoEditOrAddPage},
         LOGIN: {screen: LoginPage},
+        SETTING: {screen: Setting},
     },
     {
         initialRouteName: 'MAIN',

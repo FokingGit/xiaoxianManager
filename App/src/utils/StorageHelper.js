@@ -8,15 +8,24 @@ const KEY_USER_PHONE = 'phone'
 
 const functions = {
 
-    setUID(uid) {
-        DeviceEventEmitter.emit('LoginStateChange', uid);
-        return AsyncStorage.setItem(KEY_USER_ID, uid)
+    async setUID(uid) {
+        try {
+            await AsyncStorage.setItem(KEY_USER_ID, uid)
+            DeviceEventEmitter.emit('LoginStateChange', uid);
+        } catch (e) {
+            console.log(e)
+        }
     },
     getUID() {
         return AsyncStorage.getItem(KEY_USER_ID)
     },
-    setPhone(phone) {
-        return AsyncStorage.setItem(KEY_USER_PHONE, phone)
+    async setPhone(phone) {
+        try {
+            await AsyncStorage.setItem(KEY_USER_PHONE, phone)
+            DeviceEventEmitter.emit('LoginStateChange', uid);
+        } catch (e) {
+            console.log(e)
+        }
     },
     getPhone() {
         return AsyncStorage.getItem(KEY_USER_PHONE)

@@ -306,7 +306,17 @@ export default class CreateCustomerPage extends Component {
 
                 <View style={{flex: 1, justifyContent: 'flex-end'}}>
                     <TouchableOpacity
-                        style={[styleRes.button_bg_red, {alignSelf: 'stretch'}]}
+                        style={{
+                            height: 50,
+                            borderRadius: 25,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#dd433b',
+                            position: 'absolute',
+                            bottom: 30,
+                            right: 30,
+                            left: 30
+                        }}
 
                         onPress={() => {
                             let data = {
