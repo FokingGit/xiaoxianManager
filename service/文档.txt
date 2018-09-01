@@ -22,6 +22,8 @@
             code      int     注册码
             phone     int     手机号
             password  string  密码
+            encrypted string  密保问题
+            answer    string  密保答案
     返回结果：
         失败时：
         {
@@ -54,8 +56,52 @@
                 "uid": 7
             }
         }
+4.确认回访
+    接口地址：hzp_api/htdocs_api/customer/sureVisit.php
+    请求方式：post
+    请求参数：
+         必填
+            uid            int    用户uid
+            customer_id    int    客户id
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功"
+        }
 
-4.添加/修改客户信息
+5.找回密码
+    接口地址：hzp_api/htdocs_api/customer/findBackPass.php
+    请求方式：post
+    请求参数：
+         必填
+             uid    int    用户id
+            answer   string    密保答案
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功"
+        }
+
+        {
+          "code": 201,
+          "msg": "您的密保答案不正确，请重试"
+        }
+
+6.获取用于密保问题
+    接口地址：hzp_api/htdocs_api/customer/findEncrypted.php
+    请求方式：post
+    请求参数：
+         必填
+            uid    int    用户id
+    返回结果：
+        {
+          "code": 200,
+          "msg": "操作成功",
+          "data": {
+            "encrypted": "我老婆黑不黑"
+          }
+}
+7.添加/修改客户信息
     接口地址：hzp_api/htdocs_api/customer/operate.php
     请求方式：post
     请求参数：
@@ -74,7 +120,7 @@
             "msg": "操作成功"
         }
 
-5.客户列表/搜索
+8.客户列表/搜索
     接口地址：hzp_api/htdocs_api/customer/getList.php
     请求方式：post
     请求参数：
@@ -82,7 +128,7 @@
             uid        int      用户uid
          选填
             search     string   客户名字/电话/地址（搜索时必填）
-            is_visit   int      1（回访时必填）
+            is_visit   int      1（回访时必填:1-未回访;2-已回访）
             starttime  int      开始时间（10位时间戳，筛选时必填）
             endtime    int      结束时间（10位时间戳，筛选时必填）
             page       int      用户分页（默认为1）
@@ -128,7 +174,7 @@
             }
         }
 
-6.添加/修改客户购买商品信息
+9.添加/修改客户购买商品信息
     接口地址：hzp_api/htdocs_api/order/operate.php
     请求方式：post
     请求参数：
@@ -146,7 +192,7 @@
             "msg": "操作成功"
         }
 
-7.客户购买商品列表
+10.客户购买商品列表
     接口地址：hzp_api/htdocs_api/order/getList.php
     请求方式：post
     请求参数：
@@ -189,12 +235,26 @@
             }
         }
 
-8.确认回访
-    接口地址：hzp_api/htdocs_api/customer/sure_visit.php
+
+11.删除客户
+    接口地址：hzp_api/htdocs_api/customer/delete.php
     请求方式：post
     请求参数：
          必填
+            uid            int    用户uid
             customer_id    int    客户id
+    返回结果：
+        {
+            "code": 200,
+            "msg": "操作成功"
+        }
+
+12.删除订单
+    接口地址：hzp_api/htdocs_api/order/delete.php
+    请求方式：post
+    请求参数：
+         必填
+            order_id       int    订单id
     返回结果：
         {
             "code": 200,
