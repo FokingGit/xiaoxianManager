@@ -4,19 +4,12 @@ import com.android.build.OutputFile
 
 
 project.ext.react = [
-    entryFile: "index.js"
+        entryFile: "index.js"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
 
-/**
- * Set this to true to create two separate APKs instead of one:
- *   - An APK that only works on ARM devices
- *   - An APK that only works on x86 devices
- * The advantage is the size of the APK is reduced by about 4MB.
- * Upload all the APKs to the Play Store and people will download
- * the correct one based on the CPU architecture of their device.
- */
+
 def enableSeparateBuildPerCPUArchitecture = false
 
 /**
@@ -25,9 +18,16 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'xiaoxian'
+            keyPassword 'xiaoxian'
+            storeFile file('../xiaoxian.jks')
+            storePassword 'xiaoxian'
+        }
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
     defaultConfig {
         applicationId "com.xiaoxianmanager"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -35,7 +35,7 @@ android {
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi-v7a", "x86", "armeabi"
         }
     }
     splits {
@@ -50,14 +50,19 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.config
+        }
+
+        dev {
+            matchingFallbacks = ['debug', 'release']
+            versionNameSuffix '-dev'
+            signingConfig signingConfigs.config
         }
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            // For each separate APK per architecture, set a unique version code as described here:
-            // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -68,13 +73,16 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    compile project(':react-native-update')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+    // From node_modules
 }
 
-// Run this once to be able to run the application with BUCK
-// puts all compile dependencies into folder libs for BUCK to use
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'

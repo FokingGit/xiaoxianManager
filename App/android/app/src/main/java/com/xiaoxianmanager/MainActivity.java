@@ -1,6 +1,7 @@
 package com.xiaoxianmanager;
 
 import com.facebook.react.ReactActivity;
+import com.tencent.bugly.crashreport.CrashReport;
 
 public class MainActivity extends ReactActivity {
 

@@ -1,2 +1,4 @@
 rootProject.name = 'xiaoxianManager'
+include ':react-native-update'
+project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
 include ':app'

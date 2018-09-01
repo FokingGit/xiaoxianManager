@@ -3,10 +3,14 @@ package com.xiaoxianmanager;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+
+import cn.reactnative.modules.update.UpdateContext;
+import cn.reactnative.modules.update.UpdatePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +26,15 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage()
+          new MainReactPackage(),
+            new UpdatePackage()
       );
     }
+
+      @Override
+      protected String getJSBundleFile() {
+          return UpdateContext.getBundleUrl(MainApplication.this);
+      }
 
     @Override
     protected String getJSMainModuleName() {
@@ -40,6 +50,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    CrashReport.initCrashReport(getApplicationContext(), "69edbc3311", true);
     SoLoader.init(this, /* native exopackage */ false);
   }
 }
