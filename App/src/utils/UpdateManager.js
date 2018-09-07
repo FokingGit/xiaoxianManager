@@ -1,28 +1,14 @@
-import React, {
-    Component,
-} from 'react';
+import React, {} from 'react';
 
 import {
-    AppRegistry,
-    StyleSheet,
-    Platform,
-    Text,
-    View,
     Alert,
-    TouchableOpacity,
-    Linking,
+    Platform,
 } from 'react-native';
 
 import {
-    isFirstTime,
-    isRolledBack,
-    packageVersion,
-    currentVersion,
     checkUpdate,
-    downloadUpdate,
-    switchVersion,
+    downloadUpdate, markSuccess,
     switchVersionLater,
-    markSuccess,
 } from 'react-native-update';
 
 import _updateConfig from '../../update.json';
@@ -32,10 +18,23 @@ const functions = {
     checkUpdate() {
         checkUpdate(appKey).then(info => {
             if (info.expired) {
-            } else if (info.upToDate) {
 
+            } else if (info.upToDate) {
+                Alert.alert('已是最新')
             } else {
-                this.doUpdate(info)
+                Alert.alert('提示', '需要更新', [
+                    {
+                        text: '是', onPress: () => {
+                            this.doUpdate(info)
+                        }
+                    },
+                    {
+                        text: '否', onPress: () => {
+
+                        }
+                    },
+                ]);
+
             }
         });
     },

@@ -260,26 +260,6 @@ export default class CustomerListPage extends Component {
                         key={1}
                     />}
 
-                {this.state.isVisitedLoading ?
-                    <View
-                        tabLabel={`已回访(0)`}
-                        key={2}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}><ActivityIndicator
-                        size={"large"}
-                        color={ColorRes.themeRed}
-                    /></View> :
-                    <FlatList
-                        data={this.state.visitedCustomerData}
-                        renderItem={({item, index}) => this.renderItem()}
-                        tabLabel={`已回访(${this.state.visitedCustomerCount})`}
-                        ListEmptyComponent={this.emptyComponent}
-                        key={2}
-                    />}
                 {this.state.isNeedVisiteLoading ?
                     <View
                         tabLabel={`待回访(0)`}
@@ -301,6 +281,26 @@ export default class CustomerListPage extends Component {
                         ListEmptyComponent={this.emptyComponent}
                     />
                 }
+                {this.state.isVisitedLoading ?
+                    <View
+                        tabLabel={`已回访(0)`}
+                        key={2}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}><ActivityIndicator
+                        size={"large"}
+                        color={ColorRes.themeRed}
+                    /></View> :
+                    <FlatList
+                        data={this.state.visitedCustomerData}
+                        renderItem={({item, index}) => this.renderItem()}
+                        tabLabel={`已回访(${this.state.visitedCustomerCount})`}
+                        ListEmptyComponent={this.emptyComponent}
+                        key={2}
+                    />}
                 <View key={4} tabLabel={'老顾客'}>
                     <Text>老顾客</Text>
                 </View>

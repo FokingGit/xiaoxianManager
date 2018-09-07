@@ -12,8 +12,8 @@ SYSTEMSTATUS=0
 STEP1STATUS=0
 
 #pushy login info
-PUSHYEMAIL="fengjianjian@ablecloud.cn"
-PUSHYPASSWORD="Ablecloud2018"
+PUSHYEMAIL="mister_fengjian@163.com"
+PUSHYPASSWORD="521WANGxian"
 
 echo '\033[30;1m提交热更新 \033[0m'
 
