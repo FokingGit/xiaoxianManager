@@ -218,7 +218,9 @@ export default class CustomerListPage extends Component {
      * 搜索用户
      */
     searchCustomer = () => {
-
+        this.props.navigation.navigate({
+            routeName: "SEARCH"
+        })
     };
 
     /**
@@ -283,7 +285,6 @@ export default class CustomerListPage extends Component {
                                                   {
                                                       text: '是', onPress: () => this.confirmVisited(item.id)
                                                   }
-
                                               ])
                                           }
                                           }>
@@ -439,9 +440,13 @@ export default class CustomerListPage extends Component {
                     <FlatList
                         keyExtractor={(item) => item.last_time}
                         data={this.state.visitedCustomerData}
+                        refreshing={this.state.isVisitedLoading}
+                        onRefresh={() => this.handleNeedVisitedNetWork(1, 2)}
                         renderItem={({item, index}) => this.renderItem(item, index, 2)}
                         tabLabel={`已回访(${this.state.visitedCustomerCount})`}
                         ListEmptyComponent={this.emptyComponent}
+                        onEndReached={() => this.handleNeedVisitedNetWork(this.state.visitedCurrentPage + 1, 2)}
+                        onEndReachedThreshold={0.1}
                         key={3}
                     />}
                 <View key={4} tabLabel={'老顾客'}>

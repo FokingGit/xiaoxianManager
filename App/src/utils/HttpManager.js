@@ -196,7 +196,7 @@ module.exports = {
         let params = {};
         let uid = await StorageHelper.getUID();
         params.uid = uid;
-        params.search = search;
+        params.search = content;
         params.page = page;
         return execute(CUSTOMER_GETLIST, params)
     },

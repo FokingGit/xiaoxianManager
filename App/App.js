@@ -22,6 +22,7 @@ import {
     isFirstTime, isRolledBack,
     markSuccess,
 } from 'react-native-update';
+import SearchPage from "./src/customer/SearchPage";
 
 const TAB_STACK = TabNavigator({
         CUSTOMER_HOME: {
@@ -94,6 +95,7 @@ const APPSTACK = StackNavigator(
         CARGO_ADD_EDIT: {screen: CargoEditOrAddPage},
         LOGIN: {screen: LoginPage},
         SETTING: {screen: Setting},
+        SEARCH: {screen: SearchPage},
     },
     {
         initialRouteName: 'MAIN',
