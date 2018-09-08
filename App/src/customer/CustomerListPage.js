@@ -22,6 +22,8 @@ import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-s
  */
 let screenW = Dimensions.get('window').width;
 export default class CustomerListPage extends Component {
+
+
     constructor(props) {
         super(props);
         this.state = ({
@@ -41,7 +43,14 @@ export default class CustomerListPage extends Component {
             visitedCustomerCount: 0, //已回访客户数量
             visitedCurrentPage: 0,
 
+
+            isShowALL: true, //默认是显示全部客户
+            isShowNeedVisit: true,
+            isShowAlreadyVisit: true,
+            isShowOldCustomer: true
+
         })
+        this.lastSelectedIndex = -1
     }
 
 
@@ -150,6 +159,50 @@ export default class CustomerListPage extends Component {
 
     };
 
+    handleNeedVisitedNetWork = (page, type) => {
+        let displayData = [];
+        HttpManager
+            .customerVisitedGetList(page, type)
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    if (type === 1) {
+                        //待回访
+                        if (page === 1) {
+                            //第一页数据
+                            displayData = response.data.data.list;
+                        } else {
+                            //更多
+                            displayData = this.state.needVisiteCustomerData.concat(response.data.data.list);
+                        }
+                        this.setState({
+                            needVisiteCustomerData: Util.clone(displayData),
+                            isNeedVisiteLoading: false,
+                            needVisiteCustomerCount: response.data.data.total,
+                            needVisiteCurrentPage: page
+                        })
+                    } else if (type === 2) {
+                        //已回访
+                        if (page === 1) {
+                            //第一页数据
+                            displayData = response.data.data.list
+                        } else {
+                            //更多
+                            displayData = this.state.visitedCustomerData.concat(response.data.data.list);
+                        }
+                        this.setState({
+                            visitedCustomerData: Util.clone(displayData),
+                            isVisitedLoading: false,
+                            visitedCustomerCount: response.data.data.total,
+                            visitedCurrentPage: page
+                        })
+                    }
+                } else {
+                    console.log(response);
+                }
+            })
+            .catch((e) => Alert.alert(e.toString()))
+    };
+
     emptyComponent = () => {
         return (
             <View style={styles.empty_container}>
@@ -177,7 +230,33 @@ export default class CustomerListPage extends Component {
             }
         })
     };
-
+    /**
+     * 当前选中的页面
+     * @param index 0.全部 1.待回访 2.已回访 3.老顾客
+     */
+    currentSelectedPage = (index) => {
+        console.log(index)
+        // switch (index.i) {
+        //     case 0:
+        //         if (this.state.allCustomerData.length === 0) {
+        //             this.fetchAllFirstPageData()
+        //         }
+        //         break;
+        //     case 1:
+        //         if (this.state.needVisiteCustomerData.length === 0) {
+        //             this.handleNeedVisitedNetWork(1, 1)
+        //         }
+        //         break;
+        //     case 2:
+        //         if (this.state.visitedCustomerData.length === 0) {
+        //             this.handleNeedVisitedNetWork(1, 2)
+        //         }
+        //         break;
+        //     case 3:
+        //         break;
+        // }
+        // this.lastSelectedIndex = index.i
+    };
 
     renderItem = (item, index) => {
         console.log(item);
@@ -231,60 +310,87 @@ export default class CustomerListPage extends Component {
                 scrollWithoutAnimation={false}
                 tabBarUnderlineStyle={{backgroundColor: ColorRes.themeRed, height: 2}}
                 onChangeTab={(index) => {
-
+                    // if (index.i !== this.lastSelectedIndex)
+                        // this.currentSelectedPage(index);
                 }}
             >
-                {this.state.isAllCustomerLoading ?
-                    <View
-                        tabLabel={`全部(0)`}
-                        key={1}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}><ActivityIndicator
-                        size={"large"}
-                        color={ColorRes.themeRed}
-                    /></View> :
-                    <FlatList
-                        data={this.state.allCustomerData}
-                        refreshing={this.state.isAllCustomerLoading}
-                        onRefresh={() => this.fetchAllFirstPageData()}
-                        keyExtractor={() => Util.generateRandomStr()}
-                        renderItem={({item, index}) => this.renderItem(item, index)}
-                        tabLabel={`全部(${this.state.allCustomerCount})`}
-                        onEndReached={() => this.fetchAllPerPageData(this.state.allCustomerCurrentPage + 1)}
-                        onEndReachedThreshold={0.1}
-                        ListEmptyComponent={this.emptyComponent}
-                        key={1}
-                    />}
-
-                {this.state.isNeedVisiteLoading ?
-                    <View
-                        tabLabel={`待回访(0)`}
-                        key={2}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}><ActivityIndicator
-                        size={"large"}
-                        color={ColorRes.themeRed}
-                    /></View> :
-                    <FlatList
-                        data={this.state.needVisiteCustomerData}
-                        renderItem={({item, index}) => this.renderItem()}
-                        tabLabel={`待回访(${this.state.needVisiteCustomerCount})`}
-                        key={3}
-                        ListEmptyComponent={this.emptyComponent}
-                    />
+                {
+                    this.state.isShowALL ?
+                        (this.state.isAllCustomerLoading ?
+                            <View
+                                tabLabel={`全部(0)`}
+                                key={1}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}><ActivityIndicator
+                                size={"large"}
+                                color={ColorRes.themeRed}
+                            /></View> :
+                            <FlatList
+                                data={this.state.allCustomerData}
+                                refreshing={this.state.isAllCustomerLoading}
+                                onRefresh={() => this.fetchAllFirstPageData()}
+                                keyExtractor={(item) => item.last_time}
+                                renderItem={({item, index}) => this.renderItem(item, index)}
+                                tabLabel={`全部(${this.state.allCustomerCount})`}
+                                onEndReached={() => this.fetchAllPerPageData(this.state.allCustomerCurrentPage + 1)}
+                                onEndReachedThreshold={0.1}
+                                ListEmptyComponent={this.emptyComponent}
+                                key={11}
+                            />) : <View
+                            tabLabel={`全部(${this.state.allCustomerCount})`}
+                            key={111}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}/>
                 }
-                {this.state.isVisitedLoading ?
+
+
+                {this.state.isShowNeedVisit ? (this.state.isNeedVisiteLoading ?
+                        <View
+                            tabLabel={`待回访(0)`}
+                            key={2}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}><ActivityIndicator
+                            size={"large"}
+                            color={ColorRes.themeRed}
+                        /></View> :
+                        <FlatList
+                            data={this.state.needVisiteCustomerData}
+                            refreshing={this.state.isNeedVisiteLoading}
+                            onRefresh={() => this.handleNeedVisitedNetWork(1, 1)}
+                            keyExtractor={(item) => item.last_time}
+                            renderItem={({item, index}) => this.renderItem(item, index)}
+                            tabLabel={`待回访(${this.state.needVisiteCustomerCount})`}
+                            onEndReached={() => this.handleNeedVisitedNetWork(this.state.needVisiteCurrentPage + 1, 1)}
+                            onEndReachedThreshold={0.1}
+                            key={22}
+                            ListEmptyComponent={this.emptyComponent}
+                        />
+                ) : <View
+                    tabLabel={`待回访(${this.state.needVisiteCustomerCount})`}
+                    key={222}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}/>}
+
+                {this.state.isShowAlreadyVisit ? (this.state.isVisitedLoading ?
                     <View
                         tabLabel={`已回访(0)`}
-                        key={2}
+                        key={3}
                         style={{
                             width: '100%',
                             height: '100%',
@@ -295,18 +401,29 @@ export default class CustomerListPage extends Component {
                         color={ColorRes.themeRed}
                     /></View> :
                     <FlatList
+                        keyExtractor={(item) => item.last_time}
                         data={this.state.visitedCustomerData}
-                        renderItem={({item, index}) => this.renderItem()}
+                        renderItem={({item, index}) => this.renderItem(item, index)}
                         tabLabel={`已回访(${this.state.visitedCustomerCount})`}
                         ListEmptyComponent={this.emptyComponent}
-                        key={2}
-                    />}
+                        key={33}
+                    />) : <View
+                    tabLabel={`已回访(${this.state.visitedCustomerCount})`}
+                    key={333}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}/>}
                 <View key={4} tabLabel={'老顾客'}>
                     <Text>老顾客</Text>
                 </View>
             </ScrollableTabView>
         )
     }
+
+
 }
 const styles = StyleSheet.create({
     list_content: {

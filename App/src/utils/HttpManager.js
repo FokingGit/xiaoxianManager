@@ -139,6 +139,53 @@ module.exports = {
         return execute(CUSTOMER_GETLIST, params)
     },
     /**
+     * 获取回访信息
+     * @param page 页码
+     * @param type 1-未回访;2-已回访）
+     * @returns {Promise<*>}
+     */
+    async customerVisitedGetList(page, type) {
+        let params = {};
+        let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.page = page;
+        params.is_visit = type;
+        return execute(CUSTOMER_GETLIST, params)
+    },
+    /**
+     * 搜索用户
+     * @param page
+     * @param searchContent 搜索内容
+     * @returns {Promise<*>}
+     */
+    async customerSearchGetList(page, searchContent) {
+        let params = {};
+        let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.page = page;
+        params.search = searchContent;
+        return execute(CUSTOMER_GETLIST, params)
+    },
+
+    /**
+     * 老顾客
+     * @param page
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @returns {Promise<*>}
+     */
+    async oldCustomerGetList(page, startTime, endTime) {
+        let params = {};
+        let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.page = page;
+        params.starttime = startTime;
+        params.endtime = endtime;
+        return execute(CUSTOMER_GETLIST, params)
+    },
+
+
+    /**
      * 搜索客户
      * @param content 搜索关键字
      * @param page 第几页
