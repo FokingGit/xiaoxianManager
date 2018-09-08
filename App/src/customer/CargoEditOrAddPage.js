@@ -106,16 +106,17 @@ export default class CargoEditOrAddPage extends Component {
             }
         }
         this.props.navigation.setParams({
-            isCreate: this.state.isCreate
+            isCreate: this.props.navigation.state.params.isCreate
         })
     }
 
 
     getRegisterDate = (date) => {
+        date = parseInt(date)
         if (Util.isEmpty(date) || date === 0) {
             return ''
         } else {
-            let registerDate = new Date(date);
+            let registerDate = new Date(date * 1000);
             return `${registerDate.getFullYear()}-${registerDate.getMonth() + 1}-${registerDate.getDate()}`;
         }
     };
@@ -128,7 +129,7 @@ export default class CargoEditOrAddPage extends Component {
 
         let dateStr = `${year}-${month}-${day}`;
         console.log(dateStr)
-        let time = new Date(dateStr).getTime();
+        let time = parseInt(new Date(dateStr).getTime()/1000);
         console.log(time)
         this.setState({
             isDateTimePickerVisible: false,
@@ -282,7 +283,7 @@ export default class CargoEditOrAddPage extends Component {
                         onPress={() => {
                             let data = {
                                 customer_reason: this.state.customer_reason,
-                                deal_time: parseInt(this.state.deal_time/1000),
+                                deal_time: parseInt(this.state.deal_time),
                                 cargo_price: this.state.cargo_price,
                                 cargo_name: this.state.cargo_name,
                             };

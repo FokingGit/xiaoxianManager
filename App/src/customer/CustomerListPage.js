@@ -513,7 +513,7 @@ export default class CustomerListPage extends Component {
                                     }
                                     }>
                                     <Text
-                                        style={styles.list_content_watchReport_text}>选择时间</Text>
+                                        style={styles.list_content_watchReport_text}>重新选择时间</Text>
                                 </TouchableOpacity>
                             </View>
                             <FlatList
