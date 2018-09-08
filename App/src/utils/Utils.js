@@ -33,7 +33,7 @@ module.exports = {
             return '';
         }
         let date = new Date();
-        date.setTime(parseInt(timestamp));
+        date.setTime(parseInt(timestamp) * 1000);
         formater = (formater != null) ? formater : 'yyyy-MM-dd hh:mm';
         Date.prototype.Format = function (fmt) {
             var o = {

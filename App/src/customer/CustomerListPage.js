@@ -213,7 +213,7 @@ export default class CustomerListPage extends Component {
                 <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
                     <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>
                     <Text
-                        style={styles.list_content_rowText}>{item.last_time}</Text>
+                        style={styles.list_content_rowText}>{Util.formatDate(item.last_time)}</Text>
                 </View>
             </View>
         )

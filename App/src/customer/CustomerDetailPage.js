@@ -185,12 +185,13 @@ export default class CustomerDetailPage extends Component {
                     <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
                         <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>
                         <Text
-                            style={styles.list_content_rowText}>{this.state.customerDetail.last_time}</Text>
+                            style={styles.list_content_rowText}>{Util.formatDate(this.state.customerDetail.last_time)}</Text>
                     </View>
                 </View>
 
                 <FlatList
                     style={{marginTop: 10}}
+                    keyExtractor={({item, index}) => String(index)}
                     renderItem={({item, index}) => this.renderItem(item, index)}
                     data={this.state.displayData}
                 />

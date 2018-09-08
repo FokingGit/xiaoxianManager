@@ -75,10 +75,18 @@ module.exports = {
      * @param account
      * @param password
      * @param registerCode
+     * @param encrypted 密保问题
+     * @param answer 密保答案
      * @returns {Promise<*>}
      */
-    register(account, password, registerCode) {
-        return execute(REGISTER, {code: registerCode, phone: account, password: password})
+    register(account, password, registerCode, encrypted, answer) {
+        return execute(REGISTER, {
+            code: registerCode,
+            phone: account,
+            password: password,
+            encrypted: encrypted,
+            answer: answer
+        })
     },
     login(account, password) {
         return execute(LOGIN, {password: password, phone: account})

@@ -66,7 +66,7 @@ export default class RegisterPage extends Component {
         }
 
         HttpManager
-            .register(this.state.account, this.state.pwd, this.state.registerCode)
+            .register(this.state.account, this.state.pwd, this.state.registerCode, this.state.question, this.state.answer)
             .then((response) => {
                 if (response.data.code === 200) {
                     StorageHelper.setUID(String(response.data.data.uid));
