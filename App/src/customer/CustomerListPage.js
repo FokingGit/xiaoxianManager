@@ -99,6 +99,8 @@ export default class CustomerListPage extends Component {
 
     componentDidMount() {
         this.fetchAllFirstPageData();
+        this.handleNeedVisitedNetWork(1, 1)
+        this.handleNeedVisitedNetWork(1, 2)
     }
 
     componentWillUnmount() {
@@ -218,6 +220,7 @@ export default class CustomerListPage extends Component {
     searchCustomer = () => {
 
     };
+
     /**
      * 创建客户
      */
@@ -230,42 +233,65 @@ export default class CustomerListPage extends Component {
             }
         })
     };
-    /**
-     * 当前选中的页面
-     * @param index 0.全部 1.待回访 2.已回访 3.老顾客
-     */
-    currentSelectedPage = (index) => {
-        console.log(index)
-        // switch (index.i) {
-        //     case 0:
-        //         if (this.state.allCustomerData.length === 0) {
-        //             this.fetchAllFirstPageData()
-        //         }
-        //         break;
-        //     case 1:
-        //         if (this.state.needVisiteCustomerData.length === 0) {
-        //             this.handleNeedVisitedNetWork(1, 1)
-        //         }
-        //         break;
-        //     case 2:
-        //         if (this.state.visitedCustomerData.length === 0) {
-        //             this.handleNeedVisitedNetWork(1, 2)
-        //         }
-        //         break;
-        //     case 3:
-        //         break;
-        // }
-        // this.lastSelectedIndex = index.i
-    };
 
-    renderItem = (item, index) => {
-        console.log(item);
+    /**
+     * 确认回访
+     * @param customer_id
+     */
+    confirmVisited = (customer_id) => {
+        HttpManager
+            .confirmVisited(customer_id)
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    //确认回访成功
+                    for (let i = 0; i < this.state.needVisiteCustomerData.length; i++) {
+                        if (this.state.needVisiteCustomerData[i].id === customer_id) {
+                            this.state.needVisiteCustomerData.splice(i, 1)
+                            this.setState({
+                                needVisiteCustomerData: this.state.needVisiteCustomerData
+                            })
+                        }
+                    }
+                    this.handleNeedVisitedNetWork(1, 2)
+                } else {
+                    console.log(response);
+                }
+            })
+            .catch((e) => Alert.alert(e.toString()))
+    };
+    /**
+     * 全部的item
+     * @param item
+     * @param index
+     * @param type 0.全部 1.待回仿 2.已回访
+     * @returns {*}
+     */
+    renderItem = (item, index, type) => {
         return (
             <View style={styles.list_content}>
                 <View style={styles.list_content_titleView}>
                     <Text
                         style={styles.list_content_carName}> {item.name}</Text>
 
+                    {type === 1
+                        ?
+                        <TouchableOpacity style={styles.list_content_watchReportTouch}
+                                          onPress={() => {
+                                              //todo 确认回访
+                                              Alert.alert('提示', "已确认回访？", [
+                                                  {text: '点错了'},
+                                                  {
+                                                      text: '是', onPress: () => this.confirmVisited(item.id)
+                                                  }
+
+                                              ])
+                                          }
+                                          }>
+                            <Text
+                                style={styles.list_content_watchReport_text}>确认回访</Text>
+                        </TouchableOpacity>
+                        : null
+                    }
                     <TouchableOpacity style={styles.list_content_detailTouch}
                                       onPress={() => {
                                           this.props.navigation.navigate({
@@ -279,6 +305,7 @@ export default class CustomerListPage extends Component {
                     >
                         <Text style={styles.list_content_detail_text}>详情</Text>
                     </TouchableOpacity>
+
                 </View>
 
                 <View style={styles.list_content_access_stateView}>
@@ -289,14 +316,43 @@ export default class CustomerListPage extends Component {
                         style={styles.list_content_assessStatus}>年龄：{String(item.age)}</Text>
                 </View>
                 <DashLine backgroundColor={'#b0b0b0'} len={50} width={screenW - 30}/>
-                <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
-                    <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>
-                    <Text
-                        style={styles.list_content_rowText}>{Util.formatDate(item.last_time)}</Text>
-                </View>
+                {
+                    type === 0 ?
+                        <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
+                            <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>
+                            <Text
+                                style={styles.list_content_rowText}>{Util.formatDate(item.last_time)}</Text>
+                        </View> : null
+                }
+                {
+                    type === 1 ?
+                        <View style={{
+                            marginBottom: 10,
+                            width: '100%',
+                            marginTop: 10,
+                            alignItems: 'flex-start',
+                            flexDirection: 'row',
+                            marginRight: 10
+                        }}>
+                            <Text style={styles.list_content_rowTitle}>肤质描述:</Text>
+                            <Text
+                                style={[styles.list_content_rowText, {flex: 1, marginRight: 10}]}>{item.skindesc}</Text>
+                        </View> : null
+                }
+                {
+                    type === 2 ?
+                        <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
+                            <Text style={styles.list_content_rowTitle}>回访次数:</Text>
+                            <Text
+                                style={styles.list_content_rowText}>{item.visit_num}</Text>
+                        </View> : null
+                }
+
+
             </View>
         )
     };
+
 
     render() {
         return (
@@ -304,58 +360,18 @@ export default class CustomerListPage extends Component {
                 ref='scrollableTabView'
                 tabBarBackgroundColor={'white'}
                 tabBarPosition='top'
+                initialPage={0}
                 tabBarActiveTextColor={'#DD433B'}
                 tabBarInactiveTextColor={'#999999'}
                 tabBarTextStyle={{fontSize: 14, marginTop: 10}}
                 scrollWithoutAnimation={false}
                 tabBarUnderlineStyle={{backgroundColor: ColorRes.themeRed, height: 2}}
-                onChangeTab={(index) => {
-                    // if (index.i !== this.lastSelectedIndex)
-                        // this.currentSelectedPage(index);
-                }}
             >
                 {
-                    this.state.isShowALL ?
-                        (this.state.isAllCustomerLoading ?
-                            <View
-                                tabLabel={`全部(0)`}
-                                key={1}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}><ActivityIndicator
-                                size={"large"}
-                                color={ColorRes.themeRed}
-                            /></View> :
-                            <FlatList
-                                data={this.state.allCustomerData}
-                                refreshing={this.state.isAllCustomerLoading}
-                                onRefresh={() => this.fetchAllFirstPageData()}
-                                keyExtractor={(item) => item.last_time}
-                                renderItem={({item, index}) => this.renderItem(item, index)}
-                                tabLabel={`全部(${this.state.allCustomerCount})`}
-                                onEndReached={() => this.fetchAllPerPageData(this.state.allCustomerCurrentPage + 1)}
-                                onEndReachedThreshold={0.1}
-                                ListEmptyComponent={this.emptyComponent}
-                                key={11}
-                            />) : <View
-                            tabLabel={`全部(${this.state.allCustomerCount})`}
-                            key={111}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}/>
-                }
-
-
-                {this.state.isShowNeedVisit ? (this.state.isNeedVisiteLoading ?
+                    this.state.isAllCustomerLoading ?
                         <View
-                            tabLabel={`待回访(0)`}
-                            key={2}
+                            tabLabel={`全部(0)`}
+                            key={1}
                             style={{
                                 width: '100%',
                                 height: '100%',
@@ -366,28 +382,48 @@ export default class CustomerListPage extends Component {
                             color={ColorRes.themeRed}
                         /></View> :
                         <FlatList
-                            data={this.state.needVisiteCustomerData}
-                            refreshing={this.state.isNeedVisiteLoading}
-                            onRefresh={() => this.handleNeedVisitedNetWork(1, 1)}
+                            data={this.state.allCustomerData}
+                            refreshing={this.state.isAllCustomerLoading}
+                            onRefresh={() => this.fetchAllFirstPageData()}
                             keyExtractor={(item) => item.last_time}
-                            renderItem={({item, index}) => this.renderItem(item, index)}
-                            tabLabel={`待回访(${this.state.needVisiteCustomerCount})`}
-                            onEndReached={() => this.handleNeedVisitedNetWork(this.state.needVisiteCurrentPage + 1, 1)}
+                            renderItem={({item, index}) => this.renderItem(item, index, 0)}
+                            tabLabel={`全部(${this.state.allCustomerCount})`}
+                            onEndReached={() => this.fetchAllPerPageData(this.state.allCustomerCurrentPage + 1)}
                             onEndReachedThreshold={0.1}
-                            key={22}
                             ListEmptyComponent={this.emptyComponent}
+                            key={1}
                         />
-                ) : <View
-                    tabLabel={`待回访(${this.state.needVisiteCustomerCount})`}
-                    key={222}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}/>}
+                }
 
-                {this.state.isShowAlreadyVisit ? (this.state.isVisitedLoading ?
+
+                {this.state.isNeedVisiteLoading ?
+                    <View
+                        tabLabel={`待回访(0)`}
+                        key={2}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}><ActivityIndicator
+                        size={"large"}
+                        color={ColorRes.themeRed}
+                    /></View> :
+                    <FlatList
+                        data={this.state.needVisiteCustomerData}
+                        refreshing={this.state.isNeedVisiteLoading}
+                        onRefresh={() => this.handleNeedVisitedNetWork(1, 1)}
+                        keyExtractor={(item) => item.last_time}
+                        renderItem={({item, index}) => this.renderItem(item, index, 1)}
+                        tabLabel={`待回访(${this.state.needVisiteCustomerCount})`}
+                        onEndReached={() => this.handleNeedVisitedNetWork(this.state.needVisiteCurrentPage + 1, 1)}
+                        onEndReachedThreshold={0.1}
+                        key={2}
+                        ListEmptyComponent={this.emptyComponent}
+                    />
+                }
+
+                {this.state.isVisitedLoading ?
                     <View
                         tabLabel={`已回访(0)`}
                         key={3}
@@ -403,19 +439,11 @@ export default class CustomerListPage extends Component {
                     <FlatList
                         keyExtractor={(item) => item.last_time}
                         data={this.state.visitedCustomerData}
-                        renderItem={({item, index}) => this.renderItem(item, index)}
+                        renderItem={({item, index}) => this.renderItem(item, index, 2)}
                         tabLabel={`已回访(${this.state.visitedCustomerCount})`}
                         ListEmptyComponent={this.emptyComponent}
-                        key={33}
-                    />) : <View
-                    tabLabel={`已回访(${this.state.visitedCustomerCount})`}
-                    key={333}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}/>}
+                        key={3}
+                    />}
                 <View key={4} tabLabel={'老顾客'}>
                     <Text>老顾客</Text>
                 </View>
@@ -475,6 +503,19 @@ const styles = StyleSheet.create({
     list_content_assessNumber: {
         marginLeft: 15,
         fontSize: 12
+    },
+    list_content_watchReportTouch: {
+        marginRight: 15,
+        width: 88,
+        borderRadius: 2,
+        backgroundColor: ColorRes.themeRed,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    list_content_watchReport_text: {
+        fontFamily: 'PingFangSC-Regular',
+        fontSize: 12,
+        color: '#fff'
     },
     list_content_assessPartingLine: {
         marginLeft: 8,

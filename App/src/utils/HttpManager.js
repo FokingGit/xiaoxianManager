@@ -17,6 +17,7 @@ const CUSTOMER_OPERATE = `${buildUrl(CUSTOMER)}/operate.php`;//添加/修改客�
 const CUSTOMER_GETLIST = `${buildUrl(CUSTOMER)}/getList.php`;//客户列表/搜索
 const ORDER_GETLIST = `${buildUrl(ORDER)}/getList.php`;//客户购买商品列表
 const ORDER_OPERATE = `${buildUrl(ORDER)}/operate.php`;// 添加/修改客户购买商品信息
+const CONFIRM_VISIT = `${buildUrl(CUSTOMER)}/sureVisit.php`;// 确认回访
 
 
 /**
@@ -239,6 +240,18 @@ module.exports = {
         if (!Util.isEmpty(cargoData.deal_time)) params.deal_time = cargoData.deal_time;
         if (!Util.isEmpty(cargoData.customer_reason)) params.customer_reason = cargoData.customer_reason;
         return execute(ORDER_OPERATE, params)
+    },
+    /**
+     * 确认回访
+     * @param customer_id 客户id
+     * @returns {Promise<*>}
+     */
+    async confirmVisited(customer_id) {
+        let params = {};
+        let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.customer_id = customer_id;
+        return execute(CONFIRM_VISIT, params)
     },
 };
 
