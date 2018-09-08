@@ -30,6 +30,7 @@ export default class CustomerListPage extends Component {
             isNeedVisiteLoading: true,
             isVisitedLoading: true,
             isAllCustomerLoading: true,
+            isHistoryCustomerLoading: true,
 
             allCustomerData: [], //全部客户数据
             allCustomerCount: 0, //全部客户数量
@@ -42,6 +43,12 @@ export default class CustomerListPage extends Component {
             visitedCustomerData: [], //已回访客户数据
             visitedCustomerCount: 0, //已回访客户数量
             visitedCurrentPage: 0,
+
+            historyCustomerData: [], //指定日期的客户数据
+            historyCustomerCount: 0, //指定日期的客户数量
+            historyCurrentPage: 0,
+            startTime: parseInt((new Date().getTime() - 30 * 24 * 60 * 60 * 1000) / 1000),
+            endTime: parseInt(new Date().getTime() / 1000),
 
 
             isShowALL: true, //默认是显示全部客户
@@ -101,6 +108,7 @@ export default class CustomerListPage extends Component {
         this.fetchAllFirstPageData();
         this.handleNeedVisitedNetWork(1, 1)
         this.handleNeedVisitedNetWork(1, 2)
+        this.historyCustomer(1, this.state.startTime, this.state.endTime)
     }
 
     componentWillUnmount() {
@@ -260,6 +268,42 @@ export default class CustomerListPage extends Component {
                 }
             })
             .catch((e) => Alert.alert(e.toString()))
+    };
+
+    /**
+     * 历史客户
+     * @param page
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     */
+    historyCustomer = (page, startTime, endTime) => {
+        let displayData = [];
+        if (page === 1) {
+            this.setState({
+                isHistoryCustomerLoading: true
+            })
+        }
+        HttpManager
+            .historyCustomerGetList(page, startTime, endTime)
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    if (page === 1) {
+                        //第一页数据
+                        displayData = response.data.data.list;
+                    } else {
+                        //更多
+                        displayData = this.state.historyCustomerData.concat(response.data.data.list);
+                    }
+                    this.setState({
+                        historyCustomerCount: response.data.data.total,
+                        historyCustomerData: Util.clone(displayData),
+                        isHistoryCustomerLoading: false
+                    })
+                } else {
+                    console.log(response);
+                }
+            })
+            .catch(e => Alert.alert(e.toString()))
     };
     /**
      * 全部的item
@@ -449,8 +493,43 @@ export default class CustomerListPage extends Component {
                         onEndReachedThreshold={0.1}
                         key={3}
                     />}
-                <View key={4} tabLabel={'老顾客'}>
-                    <Text>老顾客</Text>
+                <View key={4} tabLabel={'历史客户'}>
+                    <View>
+                        <View/>
+
+                        <View>
+                            <View style={{
+                                marginTop: 10,
+                                marginLeft: 10,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between'
+                            }}>
+                                <Text>{Util.formatDate(this.state.startTime, 'yyyy/MM/dd') + " 至 " + Util.formatDate(this.state.endTime, 'yyyy/MM/dd') + "共有" + this.state.historyCustomerCount + "位"}</Text>
+                                <TouchableOpacity
+                                    style={[styles.list_content_watchReportTouch]}
+                                    onPress={() => {
+                                        console.log('')
+
+                                    }
+                                    }>
+                                    <Text
+                                        style={styles.list_content_watchReport_text}>选择时间</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <FlatList
+                                keyExtractor={(item) => item.last_time}
+                                data={this.state.historyCustomerData}
+                                refreshing={this.state.isHistoryCustomerLoading}
+                                onRefresh={() => this.historyCustomer(1, this.state.startTime, this.state.endTime)}
+                                renderItem={({item, index}) => this.renderItem(item, index, 0)}
+                                ListEmptyComponent={this.emptyComponent}
+                                onEndReached={() => this.historyCustomer(this.state.historyCurrentPage + 1, this.state.startTime, this.state.endTime)}
+                                onEndReachedThreshold={0.1}
+                                key={3}
+                            />
+                        </View>
+
+                    </View>
                 </View>
             </ScrollableTabView>
         )

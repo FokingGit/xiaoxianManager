@@ -169,19 +169,19 @@ module.exports = {
     },
 
     /**
-     * 老顾客
+     * 历史客户
      * @param page
      * @param startTime 开始时间
      * @param endTime 结束时间
      * @returns {Promise<*>}
      */
-    async oldCustomerGetList(page, startTime, endTime) {
+    async historyCustomerGetList(page, startTime, endTime) {
         let params = {};
         let uid = await StorageHelper.getUID();
         params.uid = uid;
         params.page = page;
         params.starttime = startTime;
-        params.endtime = endtime;
+        params.endtime = endTime;
         return execute(CUSTOMER_GETLIST, params)
     },
 
