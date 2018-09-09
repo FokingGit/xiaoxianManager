@@ -22,7 +22,6 @@ const functions = {
     async setPhone(phone) {
         try {
             await AsyncStorage.setItem(KEY_USER_PHONE, phone)
-            DeviceEventEmitter.emit('LoginStateChange', uid);
         } catch (e) {
             console.log(e)
         }

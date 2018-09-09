@@ -92,6 +92,7 @@ export default class LoginPage extends Component {
         });
     }
 
+
     /**
      * 键盘回收事件
      */
@@ -157,12 +158,20 @@ export default class LoginPage extends Component {
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                     marginLeft: 30,
                     marginRight: 30,
+                    paddingLeft: 20,
                     paddingRight: 20,
                     height: 50,
                 }}>
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.gotoFindPsw()
+                        }
+                    >
+                        <Text style={{fontSize: 12, color: '#dd433b'}}>忘记密码</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() =>
                             this.gotiRegister()
@@ -176,6 +185,16 @@ export default class LoginPage extends Component {
         );
 
     }
+
+    gotoFindPsw = () => {
+        this.props.navigation.navigate({
+            routeName: 'FINDPSW',
+            key: 'findpsw',
+            params: {
+                isForget: true
+            }
+        })
+    };
 
     gotiRegister = () => {
         this.props.navigation.navigate({routeName: 'REGISTER', key: 'login-register'})

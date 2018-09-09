@@ -303,7 +303,7 @@ export default class CargoEditOrAddPage extends Component {
                                     });
                             } else {
                                 HttpManager
-                                    .customerEditCargo(this.props.navigation.state.params.cargoInfo.orderid, data)
+                                    .customerEditCargo(this.props.navigation.state.params.cargoInfo.id, data)
                                     .then((response) => {
                                         if (response.data.code === Constant.SUCCESS_CODE) {
                                             //刷新首页

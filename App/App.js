@@ -23,6 +23,7 @@ import {
     markSuccess,
 } from 'react-native-update';
 import SearchPage from "./src/customer/SearchPage";
+import FindPswPage from "./src/account/FindPswPage";
 
 const TAB_STACK = TabNavigator({
         CUSTOMER_HOME: {
@@ -94,6 +95,7 @@ const APPSTACK = StackNavigator(
         CUSTOMER_DETAIL: {screen: CustomerDetailPage},
         CARGO_ADD_EDIT: {screen: CargoEditOrAddPage},
         LOGIN: {screen: LoginPage},
+        FINDPSW: {screen: FindPswPage},
         SETTING: {screen: Setting},
         SEARCH: {screen: SearchPage},
     },
@@ -107,6 +109,7 @@ const LOGIN_STACK = StackNavigator(
     {
         LOGIN: {screen: LoginPage},
         REGISTER: {screen: RegisterPage},
+        FINDPSW: {screen: FindPswPage},
     }, {
         initialRouteName: 'LOGIN',
         navigationOptions: navigationStyle

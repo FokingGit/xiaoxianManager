@@ -18,6 +18,8 @@ const CUSTOMER_GETLIST = `${buildUrl(CUSTOMER)}/getList.php`;//客户列表/搜�
 const ORDER_GETLIST = `${buildUrl(ORDER)}/getList.php`;//客户购买商品列表
 const ORDER_OPERATE = `${buildUrl(ORDER)}/operate.php`;// 添加/修改客户购买商品信息
 const CONFIRM_VISIT = `${buildUrl(CUSTOMER)}/sureVisit.php`;// 确认回访
+const FINDENCRYPTED = `${buildUrl(USER)}/findEncrypted.php`;// 获取密保问题
+const FINDBACKPASS = `${buildUrl(USER)}/findBackPass.php`;// 找回密码
 
 
 /**
@@ -253,5 +255,30 @@ module.exports = {
         params.customer_id = customer_id;
         return execute(CONFIRM_VISIT, params)
     },
+    /**
+     * 根据手机号获取密保问题
+     * @param phone
+     * @returns {Promise<*>}
+     */
+    findEncrypted(phone) {
+        let params = {phone: phone};
+        return execute(FINDENCRYPTED, params)
+    },
+
+    /**
+     * 找回密码
+     * @param phone   手机号
+     * @param answer  密保答案
+     * @param newPass 新密码
+     * @returns {Promise<*>}
+     */
+    findBackpass(phone, answer, newPass) {
+        let params = {
+            phone: phone,
+            answer: answer,
+            newPass: newPass,
+        };
+        return execute(FINDBACKPASS, params)
+    }
 };
 

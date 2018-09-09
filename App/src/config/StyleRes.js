@@ -148,6 +148,22 @@ const Style = StyleSheet.create({
         bottom: 30,
         right: 30,
         left: 30
+    },
+    item_key: {
+        color: ColorRes.fontBlack,
+        fontSize: 14,
+        width: 70
+    },
+    item_input: {
+        fontSize: 14,
+        flex: 1,
+        color: ColorRes.fontPlaceholder,
+        padding: 0
+    },
+    item_line: {
+        height: 1,
+        width: dimenRes.pageBorder,
+        backgroundColor: 'white'
     }
 });
 
