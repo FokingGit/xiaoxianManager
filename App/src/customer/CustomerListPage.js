@@ -8,14 +8,30 @@ import {
     Alert,
     Dimensions,
     StyleSheet,
-    ActivityIndicator, DeviceEventEmitter
+    ActivityIndicator, DeviceEventEmitter, TouchableWithoutFeedback
 } from 'react-native'
 import HttpManager from '../utils/HttpManager'
 import Util from '../utils/Utils'
 import ColorRes from "../config/ColorRes";
+import Style from "../config/StyleRes";
 import Constants from "../config/Constants";
 import DashLine from "./DashLine.js";
 import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
+import DateTimePicker from "react-native-modal-datetime-picker";
+
+let dateMap = new Map();
+dateMap.set('Jan', '01');
+dateMap.set('Feb', '02');
+dateMap.set('Mar', '03');
+dateMap.set('Apr', '04');
+dateMap.set('May', '05');
+dateMap.set('Jun', '06');
+dateMap.set('Jul', '07');
+dateMap.set('Aug', '08');
+dateMap.set('Sep', '09');
+dateMap.set('Oct', '10');
+dateMap.set('Nov', '11');
+dateMap.set('Dec', '12');
 
 /**
  * 客户列表页
@@ -49,6 +65,11 @@ export default class CustomerListPage extends Component {
             historyCurrentPage: 0,
             startTime: parseInt((new Date().getTime() - 30 * 24 * 60 * 60 * 1000) / 1000),
             endTime: parseInt(new Date().getTime() / 1000),
+            isShowChooseTime: false,
+            fakeStartTime: 0,
+            fakeEndTime: 0,
+            isDateStartTimeVisible: false,
+            isDateEndTimeVisible: false,
 
 
             isShowALL: true, //默认是显示全部客户
@@ -314,7 +335,7 @@ export default class CustomerListPage extends Component {
      */
     renderItem = (item, index, type) => {
         return (
-            <View style={styles.list_content}>
+            <View style={this.getStyle(index)}>
                 <View style={styles.list_content_titleView}>
                     <Text
                         style={styles.list_content_carName}> {item.name}</Text>
@@ -493,30 +514,11 @@ export default class CustomerListPage extends Component {
                         onEndReachedThreshold={0.1}
                         key={3}
                     />}
-                <View key={4} tabLabel={'历史客户'}>
-                    <View>
-                        <View/>
-
-                        <View>
-                            <View style={{
-                                marginTop: 10,
-                                marginLeft: 10,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between'
-                            }}>
-                                <Text>{Util.formatDate(this.state.startTime, 'yyyy/MM/dd') + " 至 " + Util.formatDate(this.state.endTime, 'yyyy/MM/dd') + "共有" + this.state.historyCustomerCount + "位"}</Text>
-                                <TouchableOpacity
-                                    style={[styles.list_content_watchReportTouch]}
-                                    onPress={() => {
-                                        console.log('')
-
-                                    }
-                                    }>
-                                    <Text
-                                        style={styles.list_content_watchReport_text}>重新选择时间</Text>
-                                </TouchableOpacity>
-                            </View>
+                <View style={{flex: 1}} key={4} tabLabel={'历史客户'}>
+                    {
+                        this.state.isShowChooseTime ? this.generateChooseTimeComponent() :
                             <FlatList
+                                ListHeaderComponent={this.getHeader()}
                                 keyExtractor={(item) => item.last_time}
                                 data={this.state.historyCustomerData}
                                 refreshing={this.state.isHistoryCustomerLoading}
@@ -525,17 +527,204 @@ export default class CustomerListPage extends Component {
                                 ListEmptyComponent={this.emptyComponent}
                                 onEndReached={() => this.historyCustomer(this.state.historyCurrentPage + 1, this.state.startTime, this.state.endTime)}
                                 onEndReachedThreshold={0.1}
-                                key={3}
                             />
-                        </View>
+                    }
 
-                    </View>
                 </View>
             </ScrollableTabView>
         )
     }
 
 
+    getStyle = (index) => {
+        if (index === 0) {
+            return {
+                width: '100%',
+                backgroundColor: '#fff',
+            }
+        } else {
+            return {
+                width: '100%',
+                backgroundColor: '#fff',
+                marginTop: 10
+            }
+        }
+
+    };
+
+    generateChooseTimeComponent = () => {
+        return (
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+
+                <View style={{width: '75%', height: '75%', backgroundColor: 'white', justifyContent: 'center'}}>
+                    <TouchableOpacity
+                        style={{position: 'absolute', top: 10, left: 10}}
+                        onPress={() => {
+                            this.setState({
+                                isShowChooseTime: false,
+                                fakeEndTime: this.state.endTime,
+                                fakeStartTime: this.state.startTime
+                            })
+                        }}
+                    >
+                        <Image style={{width: 30, height: 30}}
+                               source={require('../../assets/images/search_close.png')}/>
+                    </TouchableOpacity>
+
+                    {/*开始时间*/}
+                    <TouchableWithoutFeedback
+                        style={{marginBottom: 10}}
+                        onPress={
+                            () => this.setState({isDateStartTimeVisible: true})
+                        }
+                    >
+                        <View style={Style.item_bg}>
+                            <Text style={{
+                                color: 'black',
+                                fontSize: 14,
+                                width: 70,
+                                marginLeft: 30,
+                                marginRight: 10
+                            }}>开始时间:</Text>
+                            <Text style={{
+                                fontSize: 14,
+                                color: ColorRes.fontPlaceholder,
+                            }}>
+                                {this.getRegisterDate(this.state.fakeStartTime)}
+                            </Text>
+
+
+                            <DateTimePicker
+                                isVisible={this.state.isDateStartTimeVisible}
+                                onConfirm={(date) => {
+                                    this.extracted(date, true);
+                                }}
+                                mode={'date'}
+                                cancelTextIOS={'取消'}
+                                confirmTextIOS={'确认'}
+                                onCancel={() => this.setState({isDateStartTimeVisible: false})}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    {/*结束时间*/}
+                    <TouchableWithoutFeedback
+                        onPress={
+                            () => this.setState({isDateEndTimeVisible: true})
+                        }
+                    >
+                        <View style={Style.item_bg}>
+                            <Text style={{
+                                color: 'black',
+                                fontSize: 14,
+                                width: 70,
+                                marginLeft: 30,
+                                marginRight: 10
+                            }}>结束时间:</Text>
+                            <Text style={{
+                                fontSize: 14,
+                                color: ColorRes.fontPlaceholder,
+                            }}>
+                                {this.getRegisterDate(this.state.fakeEndTime)}
+                            </Text>
+
+
+                            <DateTimePicker
+                                isVisible={this.state.isDateEndTimeVisible}
+                                onConfirm={(date) => {
+                                    this.extracted(date, false);
+                                }}
+                                mode={'date'}
+                                cancelTextIOS={'取消'}
+                                confirmTextIOS={'确认'}
+                                onCancel={() => this.setState({isDateEndTimeVisible: false})}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableOpacity
+                        style={[Style.style_login_button, {
+                            flex: 1, position: 'absolute', bottom: 10, height: 30,
+                            borderRadius: 15
+                        }]}
+                        onPress={() => {
+                            if (this.state.fakeStartTime > this.state.fakeEndTime) {
+                                Alert.alert('结束时间是不能早于开始时间的哦');
+                                return
+                            }
+                            this.setState({
+                                startTime: this.state.fakeStartTime,
+                                endTime: this.state.fakeEndTime,
+                                isShowChooseTime: false,
+                            });
+                            this.historyCustomer(1, this.state.fakeStartTime, this.state.fakeEndTime)
+                        }}>
+                        <Text style={{fontSize: 16, color: '#fff'}}>
+                            确认
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    };
+
+    getRegisterDate = (date) => {
+        date = parseInt(date)
+        if (Util.isEmpty(date) || date === 0) {
+            return '请选择'
+        } else {
+            let registerDate = new Date(date * 1000);
+            return `${registerDate.getFullYear()}-${registerDate.getMonth() + 1}-${registerDate.getDate()}`;
+        }
+    };
+
+    extracted = (date, isStart) => {
+        let registerDate = date.toString().split(' ');
+        let month = dateMap.get(registerDate[1])
+        let day = registerDate[2];
+        let year = registerDate[3];
+
+        let dateStr = `${year}-${month}-${day}`;
+        let time = parseInt(new Date(dateStr).getTime() / 1000);
+        if (isStart) {
+            this.setState({
+                isDateStartTimeVisible: false,
+                fakeStartTime: time
+            })
+        } else {
+            this.setState({
+                isDateEndTimeVisible: false,
+                fakeEndTime: time
+            })
+        }
+    }
+
+    /**
+     * 设置历史客户的头部组件
+     * @returns {*}
+     */
+    getHeader = () => {
+        return <View style={{
+            marginTop: 10,
+            marginLeft: 10,
+            marginBottom: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+        }}>
+            <Text>{Util.formatDate(this.state.startTime, 'yyyy/MM/dd') + " 至 " + Util.formatDate(this.state.endTime, 'yyyy/MM/dd') + "共有" + this.state.historyCustomerCount + "位"}</Text>
+            <TouchableOpacity
+                style={[styles.list_content_watchReportTouch]}
+                onPress={() => {
+                    this.setState({
+                        isShowChooseTime: true
+                    })
+                }
+                }>
+                <Text
+                    style={styles.list_content_watchReport_text}>重新选择时间</Text>
+            </TouchableOpacity>
+        </View>
+    }
 }
 const styles = StyleSheet.create({
     list_content: {

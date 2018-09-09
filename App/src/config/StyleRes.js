@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native'
 import ColorRes from './ColorRes'
+import dimenRes from "./DimenRes";
 
 const Style = StyleSheet.create({
     button_bg_red: {
@@ -128,6 +129,25 @@ const Style = StyleSheet.create({
         color: '#AAAAAA',
         marginTop: 10,
         alignSelf: "center"
+    },
+    item_bg: {
+        backgroundColor: 'white',
+        paddingLeft: dimenRes.pageBorder,
+        paddingRight: dimenRes.pageBorder,
+        height: dimenRes.itemHeight,
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    style_login_button: {
+        height: 50,
+        borderRadius: 25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#dd433b',
+        position: 'absolute',
+        bottom: 30,
+        right: 30,
+        left: 30
     }
 });
 
