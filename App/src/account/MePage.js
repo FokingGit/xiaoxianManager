@@ -29,7 +29,7 @@ export default class MePage extends Component {
             headerTitle: '个人中心',
             headerTintColor: '#fff',
             headerStyle: {
-                backgroundColor: '#DD433B'
+                backgroundColor: ColorRes.themeRed
             },
         }
     };

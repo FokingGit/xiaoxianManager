@@ -24,6 +24,7 @@ import {
 } from 'react-native-update';
 import SearchPage from "./src/customer/SearchPage";
 import FindPswPage from "./src/account/FindPswPage";
+import ColorRes from "./src/config/ColorRes";
 
 const TAB_STACK = TabNavigator({
         CUSTOMER_HOME: {
@@ -77,13 +78,13 @@ const TAB_STACK = TabNavigator({
                 marginTop: 0,
                 fontSize: 10
             },
-            activeTintColor: '#DD433B',
+            activeTintColor: ColorRes.themeRed,
             inactiveTintColor: '#999999'
         }
     }
 );
 const navigationStyle = {
-    headerStyle: {backgroundColor: '#DD433B'}
+    headerStyle: {backgroundColor: ColorRes.themeRed}
 };
 
 const APPSTACK = StackNavigator(

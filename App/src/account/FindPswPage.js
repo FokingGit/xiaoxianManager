@@ -16,7 +16,7 @@ export default class FindPswPage extends Component {
             headerTitle: '找回密码',
             headerTintColor: '#fff',
             headerStyle: {
-                backgroundColor: '#DD433B'
+                backgroundColor: ColorRes.themeRed
             },
         }
     };

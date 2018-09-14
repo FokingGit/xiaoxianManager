@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import colorRes from "../config/ColorRes";
+import ColorRes from "../config/ColorRes";
 import dimenRes from "../config/DimenRes";
 import Constant from "../config/Constants";
 import {
@@ -40,7 +40,7 @@ export default class CreateCustomerPage extends Component {
                     </Text>
                 </View>),
             headerStyle: {
-                backgroundColor: colorRes.themeRed
+                backgroundColor: ColorRes.themeRed
             },
             headerLeft: (
                 <TouchableOpacity
@@ -62,7 +62,7 @@ export default class CreateCustomerPage extends Component {
                 </TouchableOpacity>
             ),
             headerRight: (
-                <Text style={{color: colorRes.themeRed, fontSize: 16, marginLeft: 8}}>
+                <Text style={{color: ColorRes.themeRed, fontSize: 16, marginLeft: 8}}>
                     取消
                 </Text>
             ),
@@ -106,9 +106,9 @@ export default class CreateCustomerPage extends Component {
 
     render() {
         return (
-            <View style={{backgroundColor: colorRes.grayBackgroud, width: '100%', height: '100%'}}>
+            <View style={{backgroundColor: ColorRes.grayBackgroud, width: '100%', height: '100%'}}>
                 <Text style={{
-                    color: colorRes.fontGray,
+                    color: ColorRes.fontGray,
                     fontSize: 12,
                     marginTop: 20,
                     marginBottom: 8,
@@ -311,7 +311,7 @@ export default class CreateCustomerPage extends Component {
                             borderRadius: 25,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: '#dd433b',
+                            backgroundColor: ColorRes.themeRed,
                             position: 'absolute',
                             bottom: 30,
                             right: 30,
@@ -378,14 +378,14 @@ const Style = StyleSheet.create({
         flexDirection: 'row'
     },
     item_key: {
-        color: colorRes.fontBlack,
+        color: ColorRes.fontBlack,
         fontSize: 14,
         width: 70
     },
     item_input: {
         fontSize: 14,
         flex: 1,
-        color: colorRes.fontPlaceholder,
+        color: ColorRes.fontPlaceholder,
         padding: 0
     },
     item_line: {

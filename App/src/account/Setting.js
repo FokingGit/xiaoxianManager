@@ -7,6 +7,7 @@ import {
 
 } from 'react-native'
 import StorageHelper from "../../src/utils/StorageHelper.js";
+import ColorRes from "../config/ColorRes";
 
 export default class Setting extends Component {
 
@@ -19,6 +20,7 @@ export default class Setting extends Component {
     render() {
         return (
             <View style={styles.container}>
+
 
                 <TouchableOpacity
                     style={styles.style_login_button}
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     exit_button: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#dd433b',
+        backgroundColor: ColorRes.themeRed,
         marginLeft: 15,
         marginRight: 15,
         marginBottom: 24,
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dd433b',
+        backgroundColor: ColorRes.themeRed,
         position: 'absolute',
         bottom: 30,
         right: 30,

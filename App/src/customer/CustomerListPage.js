@@ -77,7 +77,7 @@ export default class CustomerListPage extends Component {
             isShowAlreadyVisit: true,
             isShowOldCustomer: true
 
-        })
+        });
         this.lastSelectedIndex = -1
     }
 
@@ -91,7 +91,7 @@ export default class CustomerListPage extends Component {
                     </Text>
                 </View>),
             headerStyle: {
-                backgroundColor: '#DD433B'
+                backgroundColor: ColorRes.themeRed
             },
             headerRight: (
                 <TouchableOpacity
@@ -427,7 +427,7 @@ export default class CustomerListPage extends Component {
                 tabBarBackgroundColor={'white'}
                 tabBarPosition='top'
                 initialPage={0}
-                tabBarActiveTextColor={'#DD433B'}
+                tabBarActiveTextColor={ColorRes.themeRed}
                 tabBarInactiveTextColor={'#999999'}
                 tabBarTextStyle={{fontSize: 14, marginTop: 10}}
                 scrollWithoutAnimation={false}
@@ -764,7 +764,7 @@ const styles = StyleSheet.create({
         height: 24,
         borderRadius: 2,
         borderWidth: 0.5,
-        borderColor: '#DD433B',
+        borderColor: ColorRes.themeRed,
         alignItems: 'center',
         justifyContent: 'center'
     },

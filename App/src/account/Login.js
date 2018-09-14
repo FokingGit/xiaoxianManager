@@ -20,7 +20,7 @@ export default class LoginPage extends Component {
             headerTitle: '登陆',
             headerTintColor: '#fff',
             headerStyle: {
-                backgroundColor: '#DD433B'
+                backgroundColor: ColorRes.themeRed
             },
         }
     };
@@ -170,14 +170,14 @@ export default class LoginPage extends Component {
                             this.gotoFindPsw()
                         }
                     >
-                        <Text style={{fontSize: 12, color: '#dd433b'}}>忘记密码</Text>
+                        <Text style={{fontSize: 12, color: ColorRes.themeRed}}>忘记密码</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() =>
                             this.gotiRegister()
                         }
                     >
-                        <Text style={{fontSize: 12, color: '#dd433b'}}>立即注册</Text>
+                        <Text style={{fontSize: 12, color: ColorRes.themeRed}}>立即注册</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dd433b'
+        backgroundColor: ColorRes.themeRed
     }
 
 });

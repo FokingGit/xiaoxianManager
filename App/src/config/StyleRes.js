@@ -6,7 +6,7 @@ const Style = StyleSheet.create({
     button_bg_red: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#dd433b',
+        backgroundColor: ColorRes.themeRed,
         marginLeft: 15,
         marginRight: 15,
         marginBottom: 24,
@@ -31,7 +31,7 @@ const Style = StyleSheet.create({
         height: 24,
         borderRadius: 2,
         borderWidth: 0.5,
-        borderColor: '#DD433B',
+        borderColor: ColorRes.themeRed,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -143,7 +143,7 @@ const Style = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dd433b',
+        backgroundColor: ColorRes.themeRed,
         position: 'absolute',
         bottom: 30,
         right: 30,

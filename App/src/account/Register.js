@@ -36,7 +36,7 @@ export default class RegisterPage extends Component {
             headerTitle: '注册',
             headerTintColor: '#fff',
             headerStyle: {
-                backgroundColor: '#DD433B'
+                backgroundColor:ColorRes.themeRed
             },
         }
     };
@@ -316,6 +316,6 @@ const Style = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dd433b'
+        backgroundColor: ColorRes.themeRed
     }
 });

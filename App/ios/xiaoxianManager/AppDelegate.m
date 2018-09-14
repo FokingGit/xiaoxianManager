@@ -19,7 +19,6 @@
   NSURL *jsCodeLocation;
 [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
   
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   
   //if(DEBUG){
   // 原来的jsCodeLocation保留在这里

@@ -36,9 +36,12 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* xiaoxianManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* xiaoxianManagerTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		34CFC367214B4B1500AC6DC0 /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3470B5EB213A2FC00063823D /* libRCTHotUpdate.a */; };
+		34CFC36A214B4C0A00AC6DC0 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CFC368214B4C0A00AC6DC0 /* libbz2.1.0.tbd */; };
+		34CFC36B214B4C0A00AC6DC0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CFC369214B4C0A00AC6DC0 /* libbz2.tbd */; };
+		34CFC376214B87ED00AC6DC0 /* NativeUtilModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CFC375214B87ED00AC6DC0 /* NativeUtilModule.m */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6CDF76D62FB04098A216D9F2 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AC158AD65F2B4ABBB916C4E0 /* libz.tbd */; };
-		7667FE945DB745E8BD1ECBAE /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A31AAECDDD344E289493C331 /* libRCTHotUpdate.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 /* End PBXBuildFile section */
@@ -349,6 +352,10 @@
 		2D02E47B1E0B4A5D006451C7 /* xiaoxianManager-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "xiaoxianManager-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* xiaoxianManager-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xiaoxianManager-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		34CFC368214B4C0A00AC6DC0 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
+		34CFC369214B4C0A00AC6DC0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		34CFC374214B87EC00AC6DC0 /* NativeUtilModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeUtilModule.h; sourceTree = "<group>"; };
+		34CFC375214B87ED00AC6DC0 /* NativeUtilModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeUtilModule.m; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		732D704CF44D438997D91029 /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTHotUpdate.xcodeproj; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -373,6 +380,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34CFC36A214B4C0A00AC6DC0 /* libbz2.1.0.tbd in Frameworks */,
+				34CFC36B214B4C0A00AC6DC0 /* libbz2.tbd in Frameworks */,
+				34CFC367214B4B1500AC6DC0 /* libRCTHotUpdate.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -388,7 +398,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				18B49F41D10F47F2834B9F64 /* libc++.tbd in Frameworks */,
 				6CDF76D62FB04098A216D9F2 /* libz.tbd in Frameworks */,
-				7667FE945DB745E8BD1ECBAE /* libRCTHotUpdate.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,9 +509,9 @@
 		13B07FAE1A68108700A75B9A /* xiaoxianManager */ = {
 			isa = PBXGroup;
 			children = (
-				34A5DA572144FFFF00E5A3DC /* Modules */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				34CFC36D214B837100AC6DC0 /* modules */,
+				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -538,6 +547,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34CFC368214B4C0A00AC6DC0 /* libbz2.1.0.tbd */,
+				34CFC369214B4C0A00AC6DC0 /* libbz2.tbd */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				C23D5FD9F1A048FC94366CE6 /* libc++.tbd */,
 				AC158AD65F2B4ABBB916C4E0 /* libz.tbd */,
@@ -562,13 +573,14 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		34A5DA572144FFFF00E5A3DC /* Modules */ = {
+		34CFC36D214B837100AC6DC0 /* modules */ = {
 			isa = PBXGroup;
 			children = (
+				34CFC374214B87EC00AC6DC0 /* NativeUtilModule.h */,
+				34CFC375214B87ED00AC6DC0 /* NativeUtilModule.m */,
 			);
-			name = Modules;
-			path = xiaoxianManager;
-			sourceTree = SOURCE_ROOT;
+			path = modules;
+			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
@@ -1181,6 +1193,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				34CFC376214B87ED00AC6DC0 /* NativeUtilModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1307,6 +1320,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = foking.shumiao;
 				PRODUCT_NAME = xiaoxianManager;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1330,6 +1344,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = foking.shumiao;
 				PRODUCT_NAME = xiaoxianManager;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
