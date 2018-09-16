@@ -18,7 +18,8 @@
 {
   NSURL *jsCodeLocation;
 [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-  
+  // 启动图片延时: 1秒
+  [NSThread sleepForTimeInterval:1];
   
   //if(DEBUG){
   // 原来的jsCodeLocation保留在这里
