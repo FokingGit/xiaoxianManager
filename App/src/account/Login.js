@@ -105,6 +105,10 @@ export default class LoginPage extends Component {
             <TouchableOpacity style={styles.container}
                               onPress={this.dissmissKeyboardEvent.bind(this)}
                               activeOpacity={1}>
+                <View style={{position: 'absolute', width: '100%', alignItems: 'center', top: 50}}>
+                    <Image source={require('../../assets/images/redshumiao.png')}
+                           style={{width: 60, height: 60,}}/>
+                </View>
                 <View style={styles.input_background_view}>
 
                     <Image style={{height: 30, width: 30, marginLeft: 16}}
