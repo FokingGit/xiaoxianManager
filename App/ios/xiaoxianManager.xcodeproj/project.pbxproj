@@ -40,6 +40,8 @@
 		34CFC36A214B4C0A00AC6DC0 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CFC368214B4C0A00AC6DC0 /* libbz2.1.0.tbd */; };
 		34CFC36B214B4C0A00AC6DC0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CFC369214B4C0A00AC6DC0 /* libbz2.tbd */; };
 		34CFC376214B87ED00AC6DC0 /* NativeUtilModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CFC375214B87ED00AC6DC0 /* NativeUtilModule.m */; };
+		34CFC38A214B941C00AC6DC0 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CFC388214B941C00AC6DC0 /* MBProgressHUD.m */; };
+		34CFC38E214B945C00AC6DC0 /* MBProgressHUD+LJHud.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CFC38C214B945C00AC6DC0 /* MBProgressHUD+LJHud.m */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6CDF76D62FB04098A216D9F2 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AC158AD65F2B4ABBB916C4E0 /* libz.tbd */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -356,6 +358,10 @@
 		34CFC369214B4C0A00AC6DC0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		34CFC374214B87EC00AC6DC0 /* NativeUtilModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeUtilModule.h; sourceTree = "<group>"; };
 		34CFC375214B87ED00AC6DC0 /* NativeUtilModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeUtilModule.m; sourceTree = "<group>"; };
+		34CFC388214B941C00AC6DC0 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		34CFC389214B941C00AC6DC0 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		34CFC38C214B945C00AC6DC0 /* MBProgressHUD+LJHud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+LJHud.m"; sourceTree = "<group>"; };
+		34CFC38D214B945C00AC6DC0 /* MBProgressHUD+LJHud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LJHud.h"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		732D704CF44D438997D91029 /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTHotUpdate.xcodeproj; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -582,6 +588,25 @@
 			path = modules;
 			sourceTree = "<group>";
 		};
+		34CFC387214B941C00AC6DC0 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				34CFC38B214B945C00AC6DC0 /* MBProgressHUD+Categories */,
+				34CFC388214B941C00AC6DC0 /* MBProgressHUD.m */,
+				34CFC389214B941C00AC6DC0 /* MBProgressHUD.h */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		34CFC38B214B945C00AC6DC0 /* MBProgressHUD+Categories */ = {
+			isa = PBXGroup;
+			children = (
+				34CFC38C214B945C00AC6DC0 /* MBProgressHUD+LJHud.m */,
+				34CFC38D214B945C00AC6DC0 /* MBProgressHUD+LJHud.h */,
+			);
+			path = "MBProgressHUD+Categories";
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,6 +657,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				34CFC387214B941C00AC6DC0 /* MBProgressHUD */,
 				13B07FAE1A68108700A75B9A /* xiaoxianManager */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* xiaoxianManagerTests */,
@@ -1193,7 +1219,9 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				34CFC38E214B945C00AC6DC0 /* MBProgressHUD+LJHud.m in Sources */,
 				34CFC376214B87ED00AC6DC0 /* NativeUtilModule.m in Sources */,
+				34CFC38A214B941C00AC6DC0 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1320,7 +1348,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = foking.shumiao;
+				PRODUCT_BUNDLE_IDENTIFIER = com.foking.shumiao;
 				PRODUCT_NAME = xiaoxianManager;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1344,7 +1372,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = foking.shumiao;
+				PRODUCT_BUNDLE_IDENTIFIER = com.foking.shumiao;
 				PRODUCT_NAME = xiaoxianManager;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

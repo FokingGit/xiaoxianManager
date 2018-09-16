@@ -7,6 +7,8 @@
 //
 
 #import "NativeUtilModule.h"
+#import "MBProgressHUD.h"
+#import "MBProgressHUD+LJHud.h"
 
 @implementation NativeUtilModule
 
