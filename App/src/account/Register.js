@@ -35,8 +35,14 @@ export default class RegisterPage extends Component {
         return {
             headerTitle: '注册',
             headerTintColor: '#fff',
+            headerRight:
+                <TouchableOpacity
+                    style={{alignItems: 'center', justifyContent: 'center', marginRight: 16}}
+                >
+                    <Text style={{color: '#fff', fontFamily: 'PingFangSC-Regular', fontSize: 16}}>获取注册码</Text>
+                </TouchableOpacity>,
             headerStyle: {
-                backgroundColor:ColorRes.themeRed
+                backgroundColor: ColorRes.themeRed
             },
         }
     };
@@ -88,7 +94,7 @@ export default class RegisterPage extends Component {
                     marginTop: 20,
                     marginBottom: 8,
                     marginLeft: dimenRes.pageBorder
-                }}>请填写账号信息</Text>
+                }}>请填写账号信息(如果没有注册码,请点击右上角)</Text>
 
                 {/*注册码*/}
                 <View style={Style.item_bg}>
