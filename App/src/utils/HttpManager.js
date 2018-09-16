@@ -20,6 +20,8 @@ const ORDER_OPERATE = `${buildUrl(ORDER)}/operate.php`;// 添加/修改客户购
 const CONFIRM_VISIT = `${buildUrl(CUSTOMER)}/sureVisit.php`;// 确认回访
 const FINDENCRYPTED = `${buildUrl(USER)}/findEncrypted.php`;// 获取密保问题
 const FINDBACKPASS = `${buildUrl(USER)}/findBackPass.php`;// 找回密码
+const DELETE_CUSTOMER = `${buildUrl(CUSTOMER)}/delete.php`;// 删除客户
+const DELETE_ORDER = `${buildUrl(ORDER)}/delete.php`;// 删除商品
 
 
 /**
@@ -279,6 +281,26 @@ module.exports = {
             newPass: newPass,
         };
         return execute(FINDBACKPASS, params)
+    },
+    /**
+     * 删除某一个用户
+     * @param customer_id 用户id
+     * @returns {Promise<void>}
+     */
+    async deleteCustomer(customer_id) {
+        let params = {};
+        let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.customer_id = customer_id;
+        return execute(DELETE_CUSTOMER, params)
+    },
+    /**
+     * 删除商品
+     * @param order_id
+     * @returns {Promise<*>}
+     */
+    deleteOrder(order_id) {
+        return execute(DELETE_ORDER, {order_id: order_id})
     }
 };
 

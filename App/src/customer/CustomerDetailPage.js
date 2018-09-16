@@ -98,12 +98,61 @@ export default class CustomerDetailPage extends Component {
         })
     };
 
+    /**
+     * 删除用户
+     * @param customer_id 客户id
+     */
+    deleteCustomer = (customer_id) => {
+        HttpManager.deleteCustomer(customer_id).then(() => {
+            console.log('删除成功客户')
+            DeviceEventEmitter.emit(Constants.REFRESH_HOME, Constants.FROM_DELETE);
+            this.props.navigation.goBack()
+        })
+    };
+
+
+    /**
+     * 删除商品
+     * @param order_id 商品id
+     */
+    deleteOrder = (order_id) => {
+        HttpManager.deleteOrder(order_id).then(() => {
+            console.log('删除成功商品')
+            let displayData = this.state.displayData;
+            for (let i = 0; i < displayData.length; i++) {
+                if (displayData[i].id === order_id) {
+                    displayData.splice(i, 1)
+                    this.setState({
+                        displayData: Util.clone(displayData)
+                    });
+                    return;
+                }
+            }
+        })
+    };
+
     renderItem = (item, index) => {
         return (
             <View style={styles.list_content}>
                 <View style={styles.list_content_titleView}>
                     <Text
                         style={styles.list_content_carName}> {item.cargo_name}</Text>
+
+
+                    <TouchableOpacity style={styles.list_content_watchReportTouch}
+                                      onPress={() => {
+                                          //todo 确认回访
+                                          Alert.alert('提示', "删除该商品？", [
+                                              {text: '点错了'},
+                                              {
+                                                  text: '是', onPress: () => this.deleteOrder(item.id)
+                                              }
+                                          ])
+                                      }
+                                      }>
+                        <Text
+                            style={styles.list_content_watchReport_text}>删除</Text>
+                    </TouchableOpacity>
 
                     <TouchableOpacity style={styles.list_content_detailTouch}
                                       onPress={() => {
@@ -145,6 +194,22 @@ export default class CustomerDetailPage extends Component {
                     <View style={styles.list_content_titleView}>
                         <Text
                             style={styles.list_content_carName}> {this.state.customerDetail.name}</Text>
+
+                        <TouchableOpacity style={styles.list_content_watchReportTouch}
+                                          onPress={() => {
+                                              //todo 确认回访
+                                              Alert.alert('提示', "删除该客户？", [
+                                                  {text: '点错了'},
+                                                  {
+                                                      text: '是',
+                                                      onPress: () => this.deleteCustomer(this.props.navigation.state.params.customerDetail.id)
+                                                  }
+                                              ])
+                                          }
+                                          }>
+                            <Text
+                                style={styles.list_content_watchReport_text}>删除</Text>
+                        </TouchableOpacity>
 
                         <TouchableOpacity style={styles.list_content_detailTouch}
                                           onPress={() => {
@@ -271,6 +336,19 @@ const styles = StyleSheet.create({
         fontFamily: 'PingFangSC-Regular',
         fontSize: 14,
         color: '#777'
+    },
+    list_content_watchReport_text: {
+        fontFamily: 'PingFangSC-Regular',
+        fontSize: 12,
+        color: '#fff'
+    },
+    list_content_watchReportTouch: {
+        marginRight: 15,
+        width: 88,
+        borderRadius: 2,
+        backgroundColor: ColorRes.themeRed,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     list_content_rowText: {
         marginLeft: 8,

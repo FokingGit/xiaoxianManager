@@ -121,16 +121,20 @@ export default class CustomerListPage extends Component {
         });
         this.emitter = DeviceEventEmitter.addListener(Constants.REFRESH_HOME, (data) => {
             this.refs.scrollableTabView.goToPage(0);
-            this.fetchAllFirstPageData()
+            this.fetchNetData()
         })
     }
 
     componentDidMount() {
-        this.fetchAllFirstPageData();
-        this.handleNeedVisitedNetWork(1, 1)
-        this.handleNeedVisitedNetWork(1, 2)
-        this.historyCustomer(1, this.state.startTime, this.state.endTime)
+        this.fetchNetData();
     }
+
+    fetchNetData = () => {
+        this.fetchAllFirstPageData();
+        this.handleNeedVisitedNetWork(1, 1);
+        this.handleNeedVisitedNetWork(1, 2);
+        this.historyCustomer(1, this.state.startTime, this.state.endTime);
+    };
 
     componentWillUnmount() {
         this.emitter.remove()
@@ -597,7 +601,7 @@ export default class CustomerListPage extends Component {
                             <DateTimePicker
                                 isVisible={this.state.isDateStartTimeVisible}
                                 onConfirm={(date) => {
-                                    this.extracted(date, true);
+                                    this.fetchNetData(date, true);
                                 }}
                                 mode={'date'}
                                 cancelTextIOS={'取消'}
@@ -632,7 +636,7 @@ export default class CustomerListPage extends Component {
                             <DateTimePicker
                                 isVisible={this.state.isDateEndTimeVisible}
                                 onConfirm={(date) => {
-                                    this.extracted(date, false);
+                                    this.fetchNetData(date, false);
                                 }}
                                 mode={'date'}
                                 cancelTextIOS={'取消'}
