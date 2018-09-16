@@ -45,15 +45,19 @@ export default class CreateCustomerPage extends Component {
             headerLeft: (
                 <TouchableOpacity
                     onPress={() => {
-                        Alert.alert('用户信息尚未保存,是否退出', null,
-                            [
-                                {text: "取消"},
-                                {
-                                    text: "退出", onPress: () => {
-                                        navigation.goBack()
-                                    }
-                                },
-                            ]);
+                        if (!Util.isEmpty(navigation.state.params) && navigation.state.params.isDatachange()) {
+                            Alert.alert('用户信息尚未保存,是否退出', null,
+                                [
+                                    {text: "取消"},
+                                    {
+                                        text: "退出", onPress: () => {
+                                            navigation.goBack()
+                                        }
+                                    },
+                                ]);
+                        } else {
+                            navigation.goBack()
+                        }
                     }}
                 >
                     <Text style={{color: '#ffffff', fontSize: 16, marginLeft: 8}}>
@@ -71,6 +75,9 @@ export default class CreateCustomerPage extends Component {
     };
 
     componentWillMount() {
+        this.props.navigation.setParams({
+            isDatachange: this.isDatachange
+        });
         BackHandler.addEventListener('hardwareBackPress', this.showExitAlert);
     }
 
@@ -89,16 +96,40 @@ export default class CreateCustomerPage extends Component {
     }
 
     showExitAlert = () => {
-        Alert.alert('用户信息尚未保存,是否退出', null,
-            [
-                {text: "取消"},
-                {
-                    text: "退出", onPress: () => {
-                        this.props.navigation.goBack()
-                    }
-                },
-            ]);
+        if (this.isDatachange()) {
+            Alert.alert('用户信息尚未保存,是否退出', null,
+                [
+                    {text: "取消"},
+                    {
+                        text: "退出", onPress: () => {
+                            this.props.navigation.goBack()
+                        }
+                    },
+                ]);
+            return true
+        }
     };
+
+    /**
+     * 编辑的时候判断数据发生变化
+     *
+     * */
+    isDatachange = () => {
+        if (!this.props.navigation.state.params.isCreate) {
+            let params = this.props.navigation.state.params;
+            if (this.state.name === params.customerDetail.name
+                && this.state.age === params.customerDetail.age
+                && this.state.phone === params.customerDetail.phone
+                && this.state.cargo_price === params.customerDetail.cargo_price
+                && this.state.job === params.customerDetail.job
+                && this.state.skindesc === params.customerDetail.skindesc
+            ) {
+                return false
+            }
+        }
+        return true;
+    };
+
 
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.showExitAlert);
@@ -327,6 +358,16 @@ export default class CreateCustomerPage extends Component {
                                 address: this.state.address,
                                 skindesc: this.state.skindesc,
                             };
+                            if (Util.isEmpty(this.state.name)) {
+                                Alert.alert('提示', '客户的名字是不可以为空的哦')
+                                return
+                            }
+
+                            if (Util.isEmpty(this.state.phone)) {
+                                Alert.alert('提示', '客户的电话是不可以为空的哦')
+                                return
+                            }
+
                             if (this.props.navigation.state.params.isCreate) {
                                 HttpManager
                                     .addCustomer(data)
@@ -341,6 +382,10 @@ export default class CreateCustomerPage extends Component {
                                         }
                                     });
                             } else {
+                                if (!this.isDatachange()) {
+                                    Alert.alert('提示', '用户数据没有发生改变是不需要保存的');
+                                    return
+                                }
                                 HttpManager
                                     .editCustomer(this.props.navigation.state.params.customerDetail.id, data)
                                     .then((response) => {

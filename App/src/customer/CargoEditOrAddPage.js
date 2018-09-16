@@ -61,15 +61,19 @@ export default class CargoEditOrAddPage extends Component {
             headerLeft: (
                 <TouchableOpacity
                     onPress={() => {
-                        Alert.alert('商品信息尚未保存,是否退出', null,
-                            [
-                                {text: "取消"},
-                                {
-                                    text: "退出", onPress: () => {
-                                        navigation.goBack()
-                                    }
-                                },
-                            ]);
+                        if (!Util.isEmpty(navigation.state.params) && navigation.state.params.isDatachange()) {
+                            Alert.alert('商品信息尚未保存,是否退出', null,
+                                [
+                                    {text: "取消"},
+                                    {
+                                        text: "退出", onPress: () => {
+                                            navigation.goBack()
+                                        }
+                                    },
+                                ]);
+                        } else {
+                            navigation.goBack()
+                        }
                     }}
                 >
                     <Text style={{color: '#ffffff', fontSize: 16, marginLeft: 8}}>
@@ -83,6 +87,20 @@ export default class CargoEditOrAddPage extends Component {
                 </Text>
             ),
             gesturesEnabled: false
+        }
+    };
+    showExitAlert = () => {
+        if (this.isDatachange()) {
+            Alert.alert('商品信息尚未保存,是否退出', null,
+                [
+                    {text: "取消"},
+                    {
+                        text: "退出", onPress: () => {
+                            this.props.navigation.goBack()
+                        }
+                    },
+                ]);
+            return true
         }
     };
 
@@ -106,10 +124,16 @@ export default class CargoEditOrAddPage extends Component {
             }
         }
         this.props.navigation.setParams({
-            isCreate: this.props.navigation.state.params.isCreate
-        })
+            isCreate: this.props.navigation.state.params.isCreate,
+            isDatachange: this.isDatachange
+        });
+
+        BackHandler.addEventListener('hardwareBackPress', this.showExitAlert);
     }
 
+    componentWillUnMount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.showExitAlert);
+    }
 
     getRegisterDate = (date) => {
         date = parseInt(date)
@@ -129,13 +153,32 @@ export default class CargoEditOrAddPage extends Component {
 
         let dateStr = `${year}-${month}-${day}`;
         console.log(dateStr)
-        let time = parseInt(new Date(dateStr).getTime()/1000);
+        let time = parseInt(new Date(dateStr).getTime() / 1000);
         console.log(time)
         this.setState({
             isDateTimePickerVisible: false,
             deal_time: time
         })
-    }
+    };
+
+
+    /**
+     * 编辑的时候判断数据发生变化
+     *
+     * */
+    isDatachange = () => {
+        if (!this.state.isCreate) {
+            let params = this.props.navigation.state.params;
+            if (this.state.cargo_name === params.cargoInfo.cargo_name
+                && this.state.cargo_price === params.cargoInfo.cargo_price
+                && this.state.deal_time === params.cargoInfo.deal_time
+                && this.state.customer_reason === params.cargoInfo.customer_reason
+            ) {
+                return false
+            }
+        }
+        return true;
+    };
 
     render() {
         return (
@@ -288,6 +331,16 @@ export default class CargoEditOrAddPage extends Component {
                                 cargo_name: this.state.cargo_name,
                             };
 
+                            if (Util.isEmpty(this.state.cargo_name)) {
+                                Alert.alert('提示', '商品的名字是一定要写的哦');
+                                return
+                            }
+
+                            if (Util.isEmpty(this.state.deal_time) && parseInt(this.state.deal_time) === 0) {
+                                Alert.alert('提示', '成交时间是一定要写的哦');
+                                return
+                            }
+
                             if (this.state.isCreate) {
                                 HttpManager
                                     .customerAddCargo(this.props.navigation.state.params.customer_id, data)
@@ -302,6 +355,10 @@ export default class CargoEditOrAddPage extends Component {
                                         }
                                     });
                             } else {
+                                if (!this.isDatachange()) {
+                                    Alert.alert('提示', '商品数据没有发生改变是不需要保存的');
+                                    return
+                                }
                                 HttpManager
                                     .customerEditCargo(this.props.navigation.state.params.cargoInfo.id, data)
                                     .then((response) => {
