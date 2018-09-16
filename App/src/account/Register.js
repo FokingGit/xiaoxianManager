@@ -200,23 +200,7 @@ export default class RegisterPage extends Component {
                 <View style={Style.item_bg}>
                     <Text style={Style.item_key}>密保问题:</Text>
                     {
-                        Platform.OS === 'ios' ?
-                            <TextInput
-                                underlineColorAndroid="transparent"
-                                placeholder='请输入您想设置的问题'
-                                returnKeyType={'done'}
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            question: evt.nativeEvent.text
-                                        })
-                                    }
-                                }
-                                value={this.state.question}
-                                style={Style.item_input}>
-
-                            </TextInput>
-                            : <TextInput
+                        <TextInput
                                 underlineColorAndroid="transparent"
                                 placeholder='请输入您想设置的问题'
                                 returnKeyType={'done'}
@@ -239,23 +223,7 @@ export default class RegisterPage extends Component {
                 <View style={Style.item_bg}>
                     <Text style={Style.item_key}>密保答案:</Text>
                     {
-                        Platform.OS === 'ios' ?
-                            <TextInput
-                                underlineColorAndroid="transparent"
-                                returnKeyType={'done'}
-                                placeholder='请输入对应答案'
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            answer: evt.nativeEvent.text
-                                        })
-                                    }
-                                }
-                                value={this.state.answer}
-                                style={Style.item_input}>
-
-                            </TextInput>
-                            : <TextInput
+                         <TextInput
                                 underlineColorAndroid="transparent"
                                 returnKeyType={'done'}
                                 placeholder='请输入对应答案'

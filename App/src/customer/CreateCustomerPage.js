@@ -150,30 +150,18 @@ export default class CreateCustomerPage extends Component {
                 <View style={Style.item_bg}>
                     <Text style={Style.item_key}>姓名:</Text>
                     {
-                        Platform.OS === 'ios'
-                            ? <TextInput
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            name: evt.nativeEvent.text
-                                        })
-                                    }
+                        <TextInput
+                            underlineColorAndroid="transparent"
+                            onChangeText={
+                                (text) => {
+                                    this.setState({
+                                        name: text
+                                    })
                                 }
-                                value={this.state.name}
-                                style={Style.item_input}>
-                            </TextInput>
-                            : <TextInput
-                                underlineColorAndroid="transparent"
-                                onChangeText={
-                                    (text) => {
-                                        this.setState({
-                                            name: text
-                                        })
-                                    }
-                                }
-                                value={this.state.name}
-                                style={Style.item_input}>
-                            </TextInput>
+                            }
+                            value={this.state.name}
+                            style={Style.item_input}>
+                        </TextInput>
                     }
 
                 </View>
@@ -221,33 +209,19 @@ export default class CreateCustomerPage extends Component {
                 <View style={Style.item_bg}>
                     <Text style={Style.item_key}>工作:</Text>
                     {
-                        Platform.OS === 'ios' ?
-                            <TextInput
-                                underlineColorAndroid="transparent"
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            job: evt.nativeEvent.text
-                                        })
-                                    }
+                        <TextInput
+                            underlineColorAndroid="transparent"
+                            onChangeText={
+                                (evt) => {
+                                    this.setState({
+                                        job: evt
+                                    })
                                 }
-                                value={this.state.job}
-                                style={Style.item_input}>
+                            }
+                            value={this.state.job}
+                            style={Style.item_input}>
 
-                            </TextInput>
-                            : <TextInput
-                                underlineColorAndroid="transparent"
-                                onChangeText={
-                                    (evt) => {
-                                        this.setState({
-                                            job: evt
-                                        })
-                                    }
-                                }
-                                value={this.state.job}
-                                style={Style.item_input}>
-
-                            </TextInput>
+                        </TextInput>
                     }
                 </View>
                 <View style={Style.item_line}/>
@@ -256,32 +230,19 @@ export default class CreateCustomerPage extends Component {
                 <View style={Style.item_bg}>
                     <Text style={Style.item_key}>地址:</Text>
                     {(
-                        Platform.OS === 'ios' ?
-                            <TextInput
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            address: evt.nativeEvent.text
-                                        })
-                                    }
+                        <TextInput
+                            onChangeText={
+                                (evt) => {
+                                    this.setState({
+                                        address: evt
+                                    })
                                 }
-                                style={Style.item_input}
-                                underlineColorAndroid="transparent"
-                                value={this.state.address}
-                            >
-                            </TextInput> : <TextInput
-                                onChangeText={
-                                    (evt) => {
-                                        this.setState({
-                                            address: evt
-                                        })
-                                    }
-                                }
-                                style={Style.item_input}
-                                underlineColorAndroid="transparent"
-                                value={this.state.address}
-                            >
-                            </TextInput>
+                            }
+                            style={Style.item_input}
+                            underlineColorAndroid="transparent"
+                            value={this.state.address}
+                        >
+                        </TextInput>
                     )
                     }
                 </View>
@@ -300,37 +261,21 @@ export default class CreateCustomerPage extends Component {
                 }}>
                     {
 
-                        Platform.OS === 'ios' ?
-                            <TextInput
-                                multiline={true}
-                                placeholder='肤质描述'
-                                underlineColorAndroid="transparent"
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            skindesc: evt.nativeEvent.text
-                                        })
-                                    }
+                        <TextInput
+                            multiline={true}
+                            placeholder='肤质描述'
+                            underlineColorAndroid="transparent"
+                            onChangeText={
+                                (evt) => {
+                                    this.setState({
+                                        skindesc: evt
+                                    })
                                 }
-                                value={this.state.skindesc}
-                                style={Style.item_input}>
+                            }
+                            value={this.state.skindesc}
+                            style={Style.item_input}>
 
-                            </TextInput>
-                            : <TextInput
-                                multiline={true}
-                                placeholder='肤质描述'
-                                underlineColorAndroid="transparent"
-                                onChangeText={
-                                    (evt) => {
-                                        this.setState({
-                                            skindesc: evt
-                                        })
-                                    }
-                                }
-                                value={this.state.skindesc}
-                                style={Style.item_input}>
-
-                            </TextInput>
+                        </TextInput>
                     }
                 </View>
 

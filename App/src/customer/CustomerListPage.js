@@ -303,11 +303,11 @@ export default class CustomerListPage extends Component {
      */
     historyCustomer = (page, startTime, endTime) => {
         let displayData = [];
-        if (page === 1) {
-            this.setState({
-                isHistoryCustomerLoading: true
-            })
-        }
+        // if (page === 1) {
+        //     this.setState({
+        //         isHistoryCustomerLoading: true
+        //     })
+        // }
         HttpManager
             .historyCustomerGetList(page, startTime, endTime)
             .then((response) => {
@@ -425,6 +425,7 @@ export default class CustomerListPage extends Component {
 
 
     render() {
+        let chooseTimeComponent = this.generateChooseTimeComponent();
         return (
             <ScrollableTabView
                 ref='scrollableTabView'
@@ -520,7 +521,7 @@ export default class CustomerListPage extends Component {
                     />}
                 <View style={{flex: 1}} key={4} tabLabel={'历史客户'}>
                     {
-                        this.state.isShowChooseTime ? this.generateChooseTimeComponent() :
+                        this.state.isShowChooseTime ? chooseTimeComponent :
                             <FlatList
                                 ListHeaderComponent={this.getHeader()}
                                 keyExtractor={(item) => item.last_time}
@@ -601,7 +602,7 @@ export default class CustomerListPage extends Component {
                             <DateTimePicker
                                 isVisible={this.state.isDateStartTimeVisible}
                                 onConfirm={(date) => {
-                                    this.fetchNetData(date, true);
+                                    this.extracted(date, true);
                                 }}
                                 mode={'date'}
                                 cancelTextIOS={'取消'}
@@ -636,7 +637,7 @@ export default class CustomerListPage extends Component {
                             <DateTimePicker
                                 isVisible={this.state.isDateEndTimeVisible}
                                 onConfirm={(date) => {
-                                    this.fetchNetData(date, false);
+                                    this.extracted(date, false);
                                 }}
                                 mode={'date'}
                                 cancelTextIOS={'取消'}

@@ -195,19 +195,7 @@ export default class CargoEditOrAddPage extends Component {
                 <View style={Style.item_bg}>
                     <Text style={Style.item_key}>商品名称:</Text>
                     {
-                        Platform.OS === 'ios'
-                            ? <TextInput
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            cargo_name: evt.nativeEvent.text
-                                        })
-                                    }
-                                }
-                                value={this.state.cargo_name}
-                                style={Style.item_input}>
-                            </TextInput>
-                            : <TextInput
+                        <TextInput
                                 underlineColorAndroid="transparent"
                                 onChangeText={
                                     (text) => {
@@ -286,22 +274,7 @@ export default class CargoEditOrAddPage extends Component {
                 }}>
                     {
 
-                        Platform.OS === 'ios' ?
-                            <TextInput
-                                placeholder='购买原因'
-                                underlineColorAndroid="transparent"
-                                onEndEditing={
-                                    (evt) => {
-                                        this.setState({
-                                            customer_reason: evt.nativeEvent.text
-                                        })
-                                    }
-                                }
-                                value={this.state.customer_reason}
-                                style={Style.item_input}>
-
-                            </TextInput>
-                            : <TextInput
+                         <TextInput
                                 placeholder='购买原因'
                                 underlineColorAndroid="transparent"
                                 onChangeText={
