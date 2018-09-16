@@ -24,6 +24,7 @@ import {
 } from 'react-native-update';
 import SearchPage from "./src/customer/SearchPage";
 import FindPswPage from "./src/account/FindPswPage";
+import GetRegisterCode from "./src/account/GetRegisterCode";
 import ColorRes from "./src/config/ColorRes";
 
 const TAB_STACK = TabNavigator({
@@ -111,6 +112,7 @@ const LOGIN_STACK = StackNavigator(
         LOGIN: {screen: LoginPage},
         REGISTER: {screen: RegisterPage},
         FINDPSW: {screen: FindPswPage},
+        GETREGISTERCODE: {screen: GetRegisterCode},
     }, {
         initialRouteName: 'LOGIN',
         navigationOptions: navigationStyle

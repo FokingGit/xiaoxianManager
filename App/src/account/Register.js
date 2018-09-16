@@ -38,6 +38,7 @@ export default class RegisterPage extends Component {
             headerRight:
                 <TouchableOpacity
                     style={{alignItems: 'center', justifyContent: 'center', marginRight: 16}}
+                    onPress={() => navigation.navigate({routeName: 'GETREGISTERCODE',key:'GETREGISTERCODE'})}
                 >
                     <Text style={{color: '#fff', fontFamily: 'PingFangSC-Regular', fontSize: 16}}>获取注册码</Text>
                 </TouchableOpacity>,
