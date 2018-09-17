@@ -313,7 +313,7 @@ export default class CargoEditOrAddPage extends Component {
                                 }
                             }
                             value={this.state.customer_reason}
-                            style={StyleRes.item_input}>
+                            style={[StyleRes.item_input]}>
 
                         </TextInput>
                     }

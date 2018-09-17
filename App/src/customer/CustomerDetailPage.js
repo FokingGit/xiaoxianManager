@@ -176,7 +176,7 @@ export default class CustomerDetailPage extends Component {
                 </View>
                 <View style={styles.list_content_access_infoView}>
                     <Text style={styles.list_content_rowTitle}>购买时间:</Text>
-                    <Text style={styles.list_content_rowText}>{Util.formatDate(item.deal_time)}</Text>
+                    <Text style={styles.list_content_rowText}>{Util.formatDate(item.deal_time, 'yyyy-MM-dd')}</Text>
                 </View>
                 <View style={[styles.list_content_access_infoView, {
                     marginBottom: 10,
@@ -269,7 +269,7 @@ export default class CustomerDetailPage extends Component {
 
                 <FlatList
                     style={{marginTop: 10}}
-                    keyExtractor={({item, index}) => String(index)}
+                    keyExtractor={(item, index) => String(item.id)}
                     renderItem={({item, index}) => this.renderItem(item, index)}
                     data={this.state.displayData}
                 />

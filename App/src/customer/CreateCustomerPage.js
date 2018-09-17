@@ -281,7 +281,7 @@ export default class CreateCustomerPage extends Component {
                     backgroundColor: 'white',
                     paddingLeft: dimenRes.pageBorder,
                     paddingRight: dimenRes.pageBorder,
-                    height: 200,
+                    height: 200 - 50,
                     marginTop: 10,
                     padding: 10,
                     alignItems: 'flex-start',
