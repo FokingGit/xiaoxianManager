@@ -9,6 +9,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RCTHotUpdate.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @implementation AppDelegate
 
@@ -17,10 +18,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [self configKeyboardManager];
   NSURL *jsCodeLocation;
 [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
   // 启动图片延时: 1秒
-  [NSThread sleepForTimeInterval:2];
+  [NSThread sleepForTimeInterval:1];
   
   //if(DEBUG){
   // 原来的jsCodeLocation保留在这里
@@ -44,6 +46,13 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+#pragma mark - Private Methods
+- (void)configKeyboardManager {
+  [IQKeyboardManager sharedManager].enable = YES;
+  [IQKeyboardManager sharedManager].shouldShowToolbarPlaceholder = NO;
+  [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 60;
 }
 
 @end

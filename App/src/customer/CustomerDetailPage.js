@@ -179,7 +179,7 @@ export default class CustomerDetailPage extends Component {
                     <Text style={styles.list_content_rowText}>{Util.formatDate(item.deal_time)}</Text>
                 </View>
                 <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
-                    <Text style={styles.list_content_rowTitle}>购买原因:</Text>
+                    <Text style={styles.list_content_rowTitle} selectable={true}>购买原因:</Text>
                     <Text
                         style={styles.list_content_rowText}>{item.customer_reason}</Text>
                 </View>
@@ -229,6 +229,7 @@ export default class CustomerDetailPage extends Component {
 
                     <View style={styles.list_content_access_stateView}>
                         <Text
+                            selectable={true}
                             style={styles.list_content_assessNumber}>{this.state.customerDetail.phone}</Text>
                         <View style={styles.list_content_assessPartingLine}/>
                         <Text
@@ -237,15 +238,21 @@ export default class CustomerDetailPage extends Component {
                     <DashLine backgroundColor={'#b0b0b0'} len={50} width={screenW - 30}/>
                     <View style={styles.list_content_access_infoView}>
                         <Text style={styles.list_content_rowTitle}>工作:</Text>
-                        <Text style={styles.list_content_rowText}>{this.state.customerDetail.job}</Text>
+                        <Text selectable={true}
+                              style={styles.list_content_rowText}>{this.state.customerDetail.job}</Text>
                     </View>
                     <View style={styles.list_content_access_infoView}>
                         <Text style={styles.list_content_rowTitle}>住址:</Text>
-                        <Text style={styles.list_content_rowText}>{this.state.customerDetail.address}</Text>
+                        <Text selectable={true}
+                              style={styles.list_content_rowText}>{this.state.customerDetail.address}</Text>
                     </View>
-                    <View style={[styles.list_content_access_infoView]}>
-                        <Text style={styles.list_content_rowTitle}>肤质描述:</Text>
-                        <Text style={styles.list_content_rowText}>{this.state.customerDetail.skindesc}</Text>
+                    <View style={[styles.list_content_access_infoView, {alignItems: 'flex-start'}]}>
+                        <Text style={[styles.list_content_rowTitle]}>肤质描述:</Text>
+                        <Text selectable={true}
+                              style={[styles.list_content_rowText, {
+                                  flex: 1,
+                                  marginRight: 10
+                              }]}>{this.state.customerDetail.skindesc}</Text>
                     </View>
                     <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
                         <Text style={styles.list_content_rowTitle}>上次操作时间:</Text>

@@ -105,7 +105,6 @@ export default class RegisterPage extends Component {
                         placeholder='请输入注册码'
                         placeholderTextColor='#aaa'
                         keyboardType={'email-address'}
-                        returnKeyType={'done'}
                         onChangeText={
                             (text) => {
                                 this.setState({
@@ -126,7 +125,6 @@ export default class RegisterPage extends Component {
                         value={this.state.account}
                         keyboardType={'numeric'}
                         placeholderTextColor='#aaa'
-                        returnKeyType={'done'}
                         placeholder='请输入手机号'
                         onChangeText={
                             (text) => {
@@ -149,7 +147,6 @@ export default class RegisterPage extends Component {
                         value={this.state.pwd}
                         secureTextEntry={true}
                         placeholder='请输入密码'
-                        returnKeyType={'done'}
                         placeholderTextColor='#aaa'
                         onChangeText={
                             (text) => {
@@ -171,7 +168,6 @@ export default class RegisterPage extends Component {
                     <TextInput
                         value={this.state.confirm}
                         placeholder='请再次输入密码'
-                        returnKeyType={'done'}
                         secureTextEntry={true}
                         placeholderTextColor='#aaa'
                         onChangeText={
@@ -203,7 +199,6 @@ export default class RegisterPage extends Component {
                         <TextInput
                                 underlineColorAndroid="transparent"
                                 placeholder='请输入您想设置的问题'
-                                returnKeyType={'done'}
                                 onChangeText={
                                     (evt) => {
                                         this.setState({
@@ -225,7 +220,6 @@ export default class RegisterPage extends Component {
                     {
                          <TextInput
                                 underlineColorAndroid="transparent"
-                                returnKeyType={'done'}
                                 placeholder='请输入对应答案'
                                 onChangeText={
                                     (evt) => {

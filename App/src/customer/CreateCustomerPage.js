@@ -292,6 +292,7 @@ export default class CreateCustomerPage extends Component {
                         <TextInput
                             multiline={true}
                             placeholder='肤质描述'
+                            returnKeyType='next'
                             underlineColorAndroid="transparent"
                             onChangeText={
                                 (evt) => {

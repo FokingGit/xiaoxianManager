@@ -116,6 +116,7 @@ export default class FindPswPage extends Component {
                     <TextInput
                         underlineColorAndroid="transparent"
                         placeholder='请输入您的账号'
+                        keyboardType={'numeric'}
                         onChangeText={
                             (text) => {
                                 this.setState({

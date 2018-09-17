@@ -36,6 +36,7 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* xiaoxianManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* xiaoxianManagerTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		34C84861214F8A7E00A32321 /* IQKeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C84860214F8A7D00A32321 /* IQKeyboardManager.framework */; };
 		34CFC367214B4B1500AC6DC0 /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3470B5EB213A2FC00063823D /* libRCTHotUpdate.a */; };
 		34CFC36A214B4C0A00AC6DC0 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CFC368214B4C0A00AC6DC0 /* libbz2.1.0.tbd */; };
 		34CFC36B214B4C0A00AC6DC0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CFC369214B4C0A00AC6DC0 /* libbz2.tbd */; };
@@ -354,6 +355,7 @@
 		2D02E47B1E0B4A5D006451C7 /* xiaoxianManager-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "xiaoxianManager-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* xiaoxianManager-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xiaoxianManager-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		34C84860214F8A7D00A32321 /* IQKeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IQKeyboardManager.framework; sourceTree = "<group>"; };
 		34CFC368214B4C0A00AC6DC0 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 		34CFC369214B4C0A00AC6DC0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		34CFC374214B87EC00AC6DC0 /* NativeUtilModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeUtilModule.h; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				34CFC367214B4B1500AC6DC0 /* libRCTHotUpdate.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
+				34C84861214F8A7E00A32321 /* IQKeyboardManager.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -515,6 +518,7 @@
 		13B07FAE1A68108700A75B9A /* xiaoxianManager */ = {
 			isa = PBXGroup;
 			children = (
+				34C8485F214F8A5600A32321 /* sdk-framework */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				34CFC36D214B837100AC6DC0 /* modules */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -577,6 +581,14 @@
 				A31AAECDDD344E289493C331 /* libRCTHotUpdate.a */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		34C8485F214F8A5600A32321 /* sdk-framework */ = {
+			isa = PBXGroup;
+			children = (
+				34C84860214F8A7D00A32321 /* IQKeyboardManager.framework */,
+			);
+			path = "sdk-framework";
 			sourceTree = "<group>";
 		};
 		34CFC36D214B837100AC6DC0 /* modules */ = {
@@ -1337,12 +1349,17 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = RW88LNT8FN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/sdk-framework",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 				);
 				INFOPLIST_FILE = xiaoxianManager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1362,12 +1379,17 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RW88LNT8FN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/sdk-framework",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 				);
 				INFOPLIST_FILE = xiaoxianManager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

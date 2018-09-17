@@ -55,6 +55,9 @@ export default class Setting extends Component {
         if (index === 0) {
             this.props.navigation.navigate({
                 routeName: "FINDPSW",
+                params: {
+                    isForget: false
+                }
             })
         }
     }
