@@ -7,6 +7,7 @@ import {
     Image,
     TouchableOpacity,
     Keyboard,
+    ActivityIndicator,
     Alert
 } from 'react-native';
 import ColorRes from "../config/ColorRes";
@@ -30,7 +31,8 @@ export default class LoginPage extends Component {
         this.state = {
             account: '',
             pwd: '',
-            isShowClear: false
+            isShowClear: false,
+            isLogining: false
         }
     }
 
@@ -46,6 +48,10 @@ export default class LoginPage extends Component {
             return
         }
 
+        this.setState({
+            isLogining: true
+        })
+
         HttpManager
             .login(parseInt(this.state.account), this.state.pwd)
             .then((response) => {
@@ -55,9 +61,15 @@ export default class LoginPage extends Component {
                 } else {
                     Alert.alert('请检查用户名和密码！')
                 }
+                this.setState({
+                    isLogining: false
+                })
             })
             .catch(function (error) {
-                alert(error)
+                Alert.alert('提示', '登陆失败，请确认网络连接')
+                this.setState({
+                    isLogining: false
+                })
             })
     }
 
@@ -146,17 +158,25 @@ export default class LoginPage extends Component {
                                value={this.state.pwd}
                                returnKeyType='search'/>
                 </View>
-                <TouchableOpacity style={[styles.style_login_button, {
-                    position: 'absolute',
-                    bottom: 30,
-                    right: 30,
-                    left: 30
-                }]}
-                                  onPress={this.loginEvent.bind(this)}
+                <TouchableOpacity
+                    style={[styles.style_login_button, {
+                        position: 'absolute',
+                        bottom: 30,
+                        right: 30,
+                        left: 30
+                    }]}
+                    onPress={this.loginEvent.bind(this)}
                 >
-                    <Text style={{fontSize: 16, color: '#fff'}}>
-                        登录
-                    </Text>
+                    {
+                        this.state.isLogining ?
+                            <ActivityIndicator
+                                size={'small'}
+                                color={'white'}/> :
+                            <Text style={{fontSize: 16, color: '#fff'}}>
+                                登录
+                            </Text>
+                    }
+
                 </TouchableOpacity>
 
                 <View style={{

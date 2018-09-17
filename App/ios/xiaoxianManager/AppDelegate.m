@@ -14,12 +14,13 @@
 
 
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
 [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
   // 启动图片延时: 1秒
-  [NSThread sleepForTimeInterval:1];
+  [NSThread sleepForTimeInterval:2];
   
   //if(DEBUG){
   // 原来的jsCodeLocation保留在这里
