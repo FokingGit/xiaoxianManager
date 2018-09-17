@@ -11,6 +11,7 @@ App/node_modules
 App/.DS_Store
 #Android
 App/android/.gradle
+App/build
 App/android/.idea
 App/android/build
 App/android/app/build
