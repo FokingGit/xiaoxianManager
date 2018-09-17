@@ -164,7 +164,9 @@ export default class CustomerListPage extends Component {
                 })
             })
             .catch((e) => {
-                console.log(e.toString())
+                this.setState({
+                    isAllCustomerLoading: false,
+                })
             });
 
     };
@@ -190,7 +192,13 @@ export default class CustomerListPage extends Component {
                     allCustomerData: Util.clone(displayData),
                     isAllCustomerLoading: false
                 })
+            })
+            .catch((e) => {
+                this.setState({
+                    isAllCustomerLoading: false,
+                })
             });
+
 
     };
 
@@ -232,10 +240,30 @@ export default class CustomerListPage extends Component {
                         })
                     }
                 } else {
-                    console.log(response);
+                    if (type === 1) {
+                        //待回访
+                        this.setState({
+                            isNeedVisiteLoading: false,
+                        })
+                    } else if (type === 2) {
+                        this.setState({
+                            isVisitedLoading: false,
+                        })
+                    }
                 }
             })
-            .catch((e) => console.log(e.toString()))
+            .catch((e) => {
+                if (type === 1) {
+                    //待回访
+                    this.setState({
+                        isNeedVisiteLoading: false,
+                    })
+                } else if (type === 2) {
+                    this.setState({
+                        isVisitedLoading: false,
+                    })
+                }
+            })
     };
 
     emptyComponent = () => {

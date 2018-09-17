@@ -23,7 +23,7 @@ export default class CreateCustomerPage extends Component {
         super(props)
         this.state = ({
             name: '',
-            age: 0,
+            age: '',
             phone: '',
             job: '',
             address: '',
@@ -78,7 +78,29 @@ export default class CreateCustomerPage extends Component {
         this.props.navigation.setParams({
             isDatachange: this.isDatachange
         });
-        BackHandler.addEventListener('hardwareBackPress', this.showExitAlert);
+        //页面将获取焦点
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                if (!this.props.isReadOnlyCheck)
+                    BackHandler.addEventListener("hardwareBackPress", this.showExitAlert)
+            }
+        );
+        //页面将获取焦点
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                if (!this.props.isReadOnlyCheck)
+                    BackHandler.removeEventListener("hardwareBackPress", this.showExitAlert)
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription.remove();
+        this.willBlurSubscription.remove();
+
+
     }
 
     componentDidMount() {
@@ -126,14 +148,20 @@ export default class CreateCustomerPage extends Component {
             ) {
                 return false
             }
+        } else {
+            if (Util.isEmpty(this.state.name)
+                && Util.isEmpty(this.state.phone)
+                && Util.isEmpty(this.state.cargo_price)
+                && Util.isEmpty(this.state.job)
+                && Util.isEmpty(this.state.skindesc)
+                && Util.isEmpty(this.state.age)
+            ) {
+                return false
+            }
         }
         return true;
     };
 
-
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.showExitAlert);
-    }
 
     render() {
         return (
@@ -295,14 +323,7 @@ export default class CreateCustomerPage extends Component {
                         }}
 
                         onPress={() => {
-                            let data = {
-                                name: this.state.name,
-                                age: parseInt(this.state.age),
-                                job: this.state.job,
-                                phone: this.state.phone,
-                                address: this.state.address,
-                                skindesc: this.state.skindesc,
-                            };
+
                             if (Util.isEmpty(this.state.name)) {
                                 Alert.alert('提示', '客户的名字是不可以为空的哦')
                                 return
@@ -312,6 +333,14 @@ export default class CreateCustomerPage extends Component {
                                 Alert.alert('提示', '客户的电话是不可以为空的哦')
                                 return
                             }
+                            let data = {
+                                name: this.state.name,
+                                age: this.state.age,
+                                job: this.state.job,
+                                phone: parseInt(this.state.phone),
+                                address: this.state.address,
+                                skindesc: this.state.skindesc,
+                            };
 
                             if (this.props.navigation.state.params.isCreate) {
                                 HttpManager
@@ -340,7 +369,7 @@ export default class CreateCustomerPage extends Component {
                                             console.log('编辑成功');
                                             this.props.navigation.goBack()
                                         } else {
-                                            Alert.alert('编辑失败');
+                                            Alert.alert('编辑失败,请稍后重试');
                                         }
                                     });
                             }

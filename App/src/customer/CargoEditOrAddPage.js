@@ -39,8 +39,8 @@ export default class CargoEditOrAddPage extends Component {
         super(props)
         this.state = ({
             cargo_name: '',
-            cargo_price: 0,
-            deal_time: 0,
+            cargo_price: '',
+            deal_time: '',
             customer_reason: '',
             isCreate: true,
             isDateTimePickerVisible: false
@@ -128,11 +128,29 @@ export default class CargoEditOrAddPage extends Component {
             isDatachange: this.isDatachange
         });
 
-        BackHandler.addEventListener('hardwareBackPress', this.showExitAlert);
+        //页面将获取焦点
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                if (!this.props.isReadOnlyCheck)
+                    BackHandler.addEventListener("hardwareBackPress", this.showExitAlert)
+            }
+        );
+        //页面将获取焦点
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                if (!this.props.isReadOnlyCheck)
+                    BackHandler.removeEventListener("hardwareBackPress", this.showExitAlert)
+            }
+        );
     }
 
-    componentWillUnMount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.showExitAlert);
+    componentWillUnmount() {
+        this.willFocusSubscription.remove();
+        this.willBlurSubscription.remove();
+
+
     }
 
     getRegisterDate = (date) => {
@@ -176,6 +194,15 @@ export default class CargoEditOrAddPage extends Component {
             ) {
                 return false
             }
+        } else {
+            if (Util.isEmpty(this.state.cargo_name)
+                && Util.isEmpty(this.state.phone)
+                && Util.isEmpty(this.state.cargo_price)
+                && Util.isEmpty(this.state.deal_time)
+                && Util.isEmpty(this.state.customer_reason)
+            ) {
+                return false
+            }
         }
         return true;
     };
@@ -196,17 +223,17 @@ export default class CargoEditOrAddPage extends Component {
                     <Text style={Style.item_key}>商品名称:</Text>
                     {
                         <TextInput
-                                underlineColorAndroid="transparent"
-                                onChangeText={
-                                    (text) => {
-                                        this.setState({
-                                            cargo_name: text
-                                        })
-                                    }
+                            underlineColorAndroid="transparent"
+                            onChangeText={
+                                (text) => {
+                                    this.setState({
+                                        cargo_name: text
+                                    })
                                 }
-                                value={this.state.cargo_name}
-                                style={Style.item_input}>
-                            </TextInput>
+                            }
+                            value={this.state.cargo_name}
+                            style={Style.item_input}>
+                        </TextInput>
                     }
 
                 </View>
@@ -274,35 +301,40 @@ export default class CargoEditOrAddPage extends Component {
                 }}>
                     {
 
-                         <TextInput
-                                placeholder='购买原因'
-                                underlineColorAndroid="transparent"
-                                onChangeText={
-                                    (evt) => {
-                                        this.setState({
-                                            customer_reason: evt
-                                        })
-                                    }
+                        <TextInput
+                            placeholder='购买原因'
+                            underlineColorAndroid="transparent"
+                            onChangeText={
+                                (evt) => {
+                                    this.setState({
+                                        customer_reason: evt
+                                    })
                                 }
-                                value={this.state.customer_reason}
-                                style={Style.item_input}>
+                            }
+                            value={this.state.customer_reason}
+                            style={Style.item_input}>
 
-                            </TextInput>
+                        </TextInput>
                     }
                 </View>
 
 
                 <View style={{flex: 1, justifyContent: 'flex-end'}}>
                     <TouchableOpacity
-                        style={[styleRes.button_bg_red, {alignSelf: 'stretch'}]}
+                        style={{
+                            height: 50,
+                            borderRadius: 25,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: colorRes.themeRed,
+                            position: 'absolute',
+                            bottom: 30,
+                            right: 30,
+                            left: 30
+                        }}
 
                         onPress={() => {
-                            let data = {
-                                customer_reason: this.state.customer_reason,
-                                deal_time: parseInt(this.state.deal_time),
-                                cargo_price: this.state.cargo_price,
-                                cargo_name: this.state.cargo_name,
-                            };
+
 
                             if (Util.isEmpty(this.state.cargo_name)) {
                                 Alert.alert('提示', '商品的名字是一定要写的哦');
@@ -313,6 +345,13 @@ export default class CargoEditOrAddPage extends Component {
                                 Alert.alert('提示', '成交时间是一定要写的哦');
                                 return
                             }
+
+                            let data = {
+                                customer_reason: this.state.customer_reason,
+                                deal_time: parseInt(this.state.deal_time),
+                                cargo_price: this.state.cargo_price,
+                                cargo_name: this.state.cargo_name,
+                            };
 
                             if (this.state.isCreate) {
                                 HttpManager
@@ -341,7 +380,7 @@ export default class CargoEditOrAddPage extends Component {
                                             console.log('编辑成功');
                                             this.props.navigation.goBack()
                                         } else {
-                                            Alert.alert('编辑失败');
+                                            Alert.alert('编辑失败，请稍后重试');
                                         }
                                     });
                             }
