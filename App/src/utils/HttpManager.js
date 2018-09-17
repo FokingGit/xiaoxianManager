@@ -8,6 +8,7 @@ const BASE_URL = 'http://43.226.69.182';
 const USER = 'user';
 const CUSTOMER = 'customer';
 const ORDER = 'order';
+const LIUCHENG = 'liucheng';
 
 
 const GET_CODE = `${buildUrl(USER)}/getCode.php`; //获取注册码
@@ -22,6 +23,7 @@ const FINDENCRYPTED = `${buildUrl(USER)}/findEncrypted.php`;// 获取密保问�
 const FINDBACKPASS = `${buildUrl(USER)}/findBackPass.php`;// 找回密码
 const DELETE_CUSTOMER = `${buildUrl(CUSTOMER)}/delete.php`;// 删除客户
 const DELETE_ORDER = `${buildUrl(ORDER)}/delete.php`;// 删除商品
+const GET_REGISTER = `${buildUrl(LIUCHENG)}/getList.php`;// 获取注册流程
 
 
 /**
@@ -309,5 +311,9 @@ module.exports = {
         params.customer_id = customer_id;
         return execute(CUSTOMER_GETLIST, params)
     },
+    getRegisterStep(){
+        let params = {};
+        return execute(GET_REGISTER,params)
+    }
 };
 

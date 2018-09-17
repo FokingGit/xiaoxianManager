@@ -1,20 +1,22 @@
 import React, {Component} from "react"
 import {
     View,
-    ScrollView,
+    FlatList,
     Text,
     Image, Platform, ActivityIndicator
 } from "react-native";
 import Util from '../utils/Utils'
+import HttpManager from '../utils/HttpManager'
 import ColorRes from "../config/ColorRes";
-import NativeManager from "../native/native";
+import Constants from "../config/Constants";
 
 export default class GetRegisterCodePage extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            isLoading: false
+            isLoading: true,
+            displayData: []
         }
     }
 
@@ -25,22 +27,61 @@ export default class GetRegisterCodePage extends Component {
         }
     };
 
+    componentDidMount() {
+        this.fetchRrgisterData()
+    }
+
+    fetchRrgisterData = () => {
+        HttpManager
+            .getRegisterStep()
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    this.setState({
+                        displayData: Util.clone(response.data.data),
+                        isLoading: false
+                    })
+                }
+            })
+            .catch(e => {
+                console.log(e.toString())
+            });
+    };
+
+    renderItem = (item, index) => {
+        return (
+            <View>
+                <Text style={{
+                    fontSize: 15,
+                    marginTop: 10,
+                    marginBottom: 10,
+                    marginLeft: 10,
+                    color: 'black'
+                }}>{index + 1 + '.' + item.name}</Text>
+                <View style={{width: '100%', alignItems: 'center'}}>
+                    <Image style={{alignItems: 'center', width: 270, height: 430}}
+                           source={{uri: item.pic}}/></View>
+            </View>
+        )
+    };
+
     render() {
         return (
-            <ScrollView>
-                <Text style={{fontSize: 15, marginTop: 10, marginBottom: 10, marginLeft: 10}}>1.添加客服微信</Text>
-                <View style={{width: '100%', alignItems: 'center'}}>
-                    <Image style={{alignItems: 'center'}}
-                           source={require('../../assets/images/weChat_service.png')}/></View>
-
-                <Text style={{fontSize: 15, marginTop: 10, marginBottom: 10, marginLeft: 10}}>2.联系客服,转账获取注册码</Text>
-                <View style={{width: '100%', alignItems: 'center'}}>
-                    <Image source={require('../../assets/images/getCode.png')}/></View>
-                <Text style={{fontSize: 15, marginTop: 10, marginBottom: 10, marginLeft: 10}}>3.填写注册码,继续注册</Text>
-                <View style={{width: '100%', alignItems: 'center'}}>
-                    <Image source={require('../../assets/images/register.png')}/></View>
-
-            </ScrollView>
+            this.state.isLoading ?
+                <View
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}><ActivityIndicator
+                    size={"large"}
+                    color={ColorRes.themeRed}
+                /></View> :
+                <FlatList
+                    data={this.state.displayData}
+                    keyExtractor={(item) => item.name}
+                    renderItem={({item, index}) => this.renderItem(item, index)}
+                />
         )
 
     }
