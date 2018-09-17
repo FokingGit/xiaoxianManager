@@ -378,6 +378,8 @@ export default class CargoEditOrAddPage extends Component {
                                         if (response.data.code === Constant.SUCCESS_CODE) {
                                             //刷新首页
                                             DeviceEventEmitter.emit(Constant.REFRESH_CUSTOMER, Constant.FROM_CREATE);
+                                            DeviceEventEmitter.emit(Constant.REFRESH_CUSTOMER_DETAIL, Constant.FROM_CREATE);
+                                            DeviceEventEmitter.emit(Constant.REFRESH_HOME, Constant.FROM_CREATE);
                                             console.log('编辑成功');
                                             this.props.navigation.goBack()
                                         } else {

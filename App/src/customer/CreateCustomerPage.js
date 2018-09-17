@@ -144,6 +144,7 @@ export default class CreateCustomerPage extends Component {
                 && this.state.phone === params.customerDetail.phone
                 && this.state.cargo_price === params.customerDetail.cargo_price
                 && this.state.job === params.customerDetail.job
+                && this.state.address === params.customerDetail.address
                 && this.state.skindesc === params.customerDetail.skindesc
             ) {
                 return false
@@ -154,6 +155,7 @@ export default class CreateCustomerPage extends Component {
                 && Util.isEmpty(this.state.cargo_price)
                 && Util.isEmpty(this.state.job)
                 && Util.isEmpty(this.state.skindesc)
+                && Util.isEmpty(this.state.address)
                 && Util.isEmpty(this.state.age)
             ) {
                 return false
@@ -367,7 +369,7 @@ export default class CreateCustomerPage extends Component {
                                         if (response.data.code === Constant.SUCCESS_CODE) {
                                             //刷新首页
                                             DeviceEventEmitter.emit(Constant.REFRESH_HOME, Constant.FROM_CREATE);
-                                            console.log('编辑成功');
+                                            DeviceEventEmitter.emit(Constant.REFRESH_CUSTOMER_DETAIL, Constant.FROM_CREATE);
                                             this.props.navigation.goBack()
                                         } else {
                                             Alert.alert('编辑失败,请稍后重试');

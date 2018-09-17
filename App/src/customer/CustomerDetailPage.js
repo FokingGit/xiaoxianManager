@@ -51,10 +51,14 @@ export default class CustomerDetailPage extends Component {
         this.emitter = DeviceEventEmitter.addListener(Constants.REFRESH_CUSTOMER, (data) => {
             this.fetchData()
         })
+        this.emitterCustomer = DeviceEventEmitter.addListener(Constants.REFRESH_CUSTOMER_DETAIL, (data) => {
+            this.fetchCustomerData()
+        })
     }
 
     componentWillUnmount() {
         this.emitter.remove()
+        this.emitterCustomer.remove()
     }
 
     componentDidMount() {
@@ -83,6 +87,21 @@ export default class CustomerDetailPage extends Component {
             });
     };
 
+    fetchCustomerData = () => {
+        HttpManager
+            .getCustomerDetail(this.props.navigation.state.params.customerDetail.id)
+            .then((response) => {
+                if (response.data.code === Constants.SUCCESS_CODE) {
+                    this.setState({
+                        customerDetail: Util.clone(response.data.data)
+                    })
+                }
+
+            })
+            .catch(e => {
+                console.log(e.toString())
+            });
+    }
     /**
      * 跳转添加商品
      */

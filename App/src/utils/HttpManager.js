@@ -301,6 +301,13 @@ module.exports = {
      */
     deleteOrder(order_id) {
         return execute(DELETE_ORDER, {order_id: order_id})
-    }
+    },
+    async getCustomerDetail(customer_id) {
+        let params = {};
+        let uid = await StorageHelper.getUID();
+        params.uid = uid;
+        params.customer_id = customer_id;
+        return execute(CUSTOMER_GETLIST, params)
+    },
 };
 
