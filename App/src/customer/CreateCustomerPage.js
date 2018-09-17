@@ -13,7 +13,7 @@ import {
     BackHandler,
     DeviceEventEmitter
 } from "react-native";
-import styleRes from '../config/StyleRes'
+import StyleRes from '../config/StyleRes'
 import HttpManager from '../utils/HttpManager'
 import Util from '../utils/Utils'
 
@@ -175,8 +175,8 @@ export default class CreateCustomerPage extends Component {
                 }}>请根据情况完善以下资料</Text>
 
                 {/*姓名*/}
-                <View style={Style.item_bg}>
-                    <Text style={Style.item_key}>姓名:</Text>
+                <View style={StyleRes.item_bg}>
+                    <Text style={StyleRes.item_key}>姓名:</Text>
                     {
                         <TextInput
                             underlineColorAndroid="transparent"
@@ -188,16 +188,16 @@ export default class CreateCustomerPage extends Component {
                                 }
                             }
                             value={this.state.name}
-                            style={Style.item_input}>
+                            style={StyleRes.item_input}>
                         </TextInput>
                     }
 
                 </View>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*年龄*/}
-                <View style={Style.item_bg}>
-                    <Text style={Style.item_key}>年龄:</Text>
+                <View style={StyleRes.item_bg}>
+                    <Text style={StyleRes.item_key}>年龄:</Text>
                     <TextInput
                         value={this.state.age}
                         onChangeText={
@@ -208,15 +208,15 @@ export default class CreateCustomerPage extends Component {
                             }
                         }
                         underlineColorAndroid="transparent"
-                        style={Style.item_input}>
+                        style={StyleRes.item_input}>
 
                     </TextInput>
                 </View>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*联系方式*/}
-                <View style={Style.item_bg}>
-                    <Text style={Style.item_key}>联系方式:</Text>
+                <View style={StyleRes.item_bg}>
+                    <Text style={StyleRes.item_key}>联系方式:</Text>
                     <TextInput
                         value={this.state.phone}
                         underlineColorAndroid="transparent"
@@ -227,15 +227,15 @@ export default class CreateCustomerPage extends Component {
                                 })
                             }
                         }
-                        style={Style.item_input}>
+                        style={StyleRes.item_input}>
 
                     </TextInput>
                 </View>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*工作*/}
-                <View style={Style.item_bg}>
-                    <Text style={Style.item_key}>工作:</Text>
+                <View style={StyleRes.item_bg}>
+                    <Text style={StyleRes.item_key}>工作:</Text>
                     {
                         <TextInput
                             underlineColorAndroid="transparent"
@@ -247,16 +247,16 @@ export default class CreateCustomerPage extends Component {
                                 }
                             }
                             value={this.state.job}
-                            style={Style.item_input}>
+                            style={StyleRes.item_input}>
 
                         </TextInput>
                     }
                 </View>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*地址*/}
-                <View style={Style.item_bg}>
-                    <Text style={Style.item_key}>地址:</Text>
+                <View style={StyleRes.item_bg}>
+                    <Text style={StyleRes.item_key}>地址:</Text>
                     {(
                         <TextInput
                             onChangeText={
@@ -266,7 +266,7 @@ export default class CreateCustomerPage extends Component {
                                     })
                                 }
                             }
-                            style={Style.item_input}
+                            style={StyleRes.item_input}
                             underlineColorAndroid="transparent"
                             value={this.state.address}
                         >
@@ -274,7 +274,7 @@ export default class CreateCustomerPage extends Component {
                     )
                     }
                 </View>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*肤质描述*/}
                 <View style={{
@@ -302,7 +302,7 @@ export default class CreateCustomerPage extends Component {
                                 }
                             }
                             value={this.state.skindesc}
-                            style={Style.item_input}>
+                            style={StyleRes.item_input}>
 
                         </TextInput>
                     }
@@ -387,30 +387,3 @@ export default class CreateCustomerPage extends Component {
 
 }
 
-
-const Style = StyleSheet.create({
-    item_bg: {
-        backgroundColor: 'white',
-        paddingLeft: dimenRes.pageBorder,
-        paddingRight: dimenRes.pageBorder,
-        height: dimenRes.itemHeight,
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    item_key: {
-        color: ColorRes.fontBlack,
-        fontSize: 14,
-        width: 70
-    },
-    item_input: {
-        fontSize: 14,
-        flex: 1,
-        color: ColorRes.fontPlaceholder,
-        padding: 0
-    },
-    item_line: {
-        height: 1,
-        width: dimenRes.pageBorder,
-        backgroundColor: 'white'
-    }
-});

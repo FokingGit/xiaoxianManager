@@ -11,7 +11,7 @@ import {
     TouchableWithoutFeedback,
     StyleSheet, BackHandler, DeviceEventEmitter
 } from "react-native";
-import styleRes from '../config/StyleRes'
+import StyleRes from '../config/StyleRes'
 import Util from '../utils/Utils'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import HttpManager from "../utils/HttpManager";
@@ -154,10 +154,10 @@ export default class CargoEditOrAddPage extends Component {
     }
 
     getRegisterDate = (date) => {
-        date = parseInt(date)
-        if (Util.isEmpty(date) || date === 0) {
+        if (Util.isEmpty(date) || parseInt(date) === 0) {
             return ''
         } else {
+            date = parseInt(date)
             let registerDate = new Date(date * 1000);
             return `${registerDate.getFullYear()}-${registerDate.getMonth() + 1}-${registerDate.getDate()}`;
         }
@@ -219,8 +219,8 @@ export default class CargoEditOrAddPage extends Component {
                 }}>请根据情况完善以下资料</Text>
 
                 {/*商品名称*/}
-                <View style={Style.item_bg}>
-                    <Text style={Style.item_key}>商品名称:</Text>
+                <View style={StyleRes.item_bg}>
+                    <Text style={StyleRes.item_key}>商品名称:</Text>
                     {
                         <TextInput
                             underlineColorAndroid="transparent"
@@ -232,16 +232,16 @@ export default class CargoEditOrAddPage extends Component {
                                 }
                             }
                             value={this.state.cargo_name}
-                            style={Style.item_input}>
+                            style={StyleRes.item_input}>
                         </TextInput>
                     }
 
                 </View>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*商品价格*/}
-                <View style={Style.item_bg}>
-                    <Text style={Style.item_key}>商品价格:</Text>
+                <View style={StyleRes.item_bg}>
+                    <Text style={StyleRes.item_key}>商品价格:</Text>
                     <TextInput
                         value={String(this.state.cargo_price)}
                         onChangeText={
@@ -252,11 +252,11 @@ export default class CargoEditOrAddPage extends Component {
                             }
                         }
                         underlineColorAndroid="transparent"
-                        style={Style.item_input}>
+                        style={StyleRes.item_input}>
 
                     </TextInput>
                 </View>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*成交时间*/}
                 <TouchableWithoutFeedback
@@ -264,11 +264,11 @@ export default class CargoEditOrAddPage extends Component {
                         () => this.setState({isDateTimePickerVisible: true})
                     }
                 >
-                    <View style={Style.item_bg}>
-                        <Text style={Style.item_key}>成交时间:</Text>
+                    <View style={StyleRes.item_bg}>
+                        <Text style={StyleRes.item_key}>成交时间:</Text>
                         <Text style={{
                             fontSize: 14,
-                            color: colorRes.fontPlaceholder,
+                            color: colorRes.fontBlack,
                         }}>
                             {this.getRegisterDate(this.state.deal_time)}
                         </Text>
@@ -286,7 +286,7 @@ export default class CargoEditOrAddPage extends Component {
                         />
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={Style.item_line}/>
+                <View style={StyleRes.item_line}/>
 
                 {/*购买原因*/}
                 <View style={{
@@ -302,7 +302,8 @@ export default class CargoEditOrAddPage extends Component {
                     {
 
                         <TextInput
-                            placeholder='购买原因'
+                            placeholder='购买备注'
+                            multiline={true}
                             underlineColorAndroid="transparent"
                             onChangeText={
                                 (evt) => {
@@ -312,7 +313,7 @@ export default class CargoEditOrAddPage extends Component {
                                 }
                             }
                             value={this.state.customer_reason}
-                            style={Style.item_input}>
+                            style={StyleRes.item_input}>
 
                         </TextInput>
                     }
@@ -394,29 +395,3 @@ export default class CargoEditOrAddPage extends Component {
         )
     }
 }
-const Style = StyleSheet.create({
-    item_bg: {
-        backgroundColor: 'white',
-        paddingLeft: dimenRes.pageBorder,
-        paddingRight: dimenRes.pageBorder,
-        height: dimenRes.itemHeight,
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    item_key: {
-        color: colorRes.fontBlack,
-        fontSize: 14,
-        width: 70
-    },
-    item_input: {
-        fontSize: 14,
-        flex: 1,
-        color: colorRes.fontPlaceholder,
-        padding: 0
-    },
-    item_line: {
-        height: 1,
-        width: dimenRes.pageBorder,
-        backgroundColor: 'white'
-    }
-});

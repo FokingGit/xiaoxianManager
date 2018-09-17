@@ -157,7 +157,7 @@ const Style = StyleSheet.create({
     item_input: {
         fontSize: 14,
         flex: 1,
-        color: ColorRes.fontPlaceholder,
+        color: ColorRes.fontBlack,
         padding: 0
     },
     item_line: {

@@ -178,10 +178,16 @@ export default class CustomerDetailPage extends Component {
                     <Text style={styles.list_content_rowTitle}>购买时间:</Text>
                     <Text style={styles.list_content_rowText}>{Util.formatDate(item.deal_time)}</Text>
                 </View>
-                <View style={[styles.list_content_access_infoView, {marginBottom: 10}]}>
-                    <Text style={styles.list_content_rowTitle} selectable={true}>购买原因:</Text>
+                <View style={[styles.list_content_access_infoView, {
+                    marginBottom: 10,
+                    alignItems: 'flex-start',
+                }]}>
+                    <Text style={styles.list_content_rowTitle} selectable={true}>购买备注:</Text>
                     <Text
-                        style={styles.list_content_rowText}>{item.customer_reason}</Text>
+                        style={[styles.list_content_rowText, {
+                            flex: 1,
+                            marginRight: 10
+                        }]}>{item.customer_reason}</Text>
                 </View>
             </View>
         )
