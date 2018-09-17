@@ -18,22 +18,9 @@ const functions = {
     checkUpdate() {
         checkUpdate(appKey).then(info => {
             if (info.expired) {
-
             } else if (info.upToDate) {
-                Alert.alert('已是最新')
             } else {
-                Alert.alert('提示', '需要更新', [
-                    {
-                        text: '是', onPress: () => {
-                            this.doUpdate(info)
-                        }
-                    },
-                    {
-                        text: '否', onPress: () => {
-
-                        }
-                    },
-                ]);
+                this.doUpdate(info)
 
             }
         });

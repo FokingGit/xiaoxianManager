@@ -164,7 +164,7 @@ export default class CustomerListPage extends Component {
                 })
             })
             .catch((e) => {
-                Alert.alert(e)
+                console.log(e.toString())
             });
 
     };
@@ -235,7 +235,7 @@ export default class CustomerListPage extends Component {
                     console.log(response);
                 }
             })
-            .catch((e) => Alert.alert(e.toString()))
+            .catch((e) => console.log(e.toString()))
     };
 
     emptyComponent = () => {
@@ -292,7 +292,7 @@ export default class CustomerListPage extends Component {
                     console.log(response);
                 }
             })
-            .catch((e) => Alert.alert(e.toString()))
+            .catch((e) => console.log(e.toString()))
     };
 
     /**
@@ -303,11 +303,6 @@ export default class CustomerListPage extends Component {
      */
     historyCustomer = (page, startTime, endTime) => {
         let displayData = [];
-        // if (page === 1) {
-        //     this.setState({
-        //         isHistoryCustomerLoading: true
-        //     })
-        // }
         HttpManager
             .historyCustomerGetList(page, startTime, endTime)
             .then((response) => {
@@ -328,7 +323,7 @@ export default class CustomerListPage extends Component {
                     console.log(response);
                 }
             })
-            .catch(e => Alert.alert(e.toString()))
+            .catch(e => console.log(e.toString()))
     };
     /**
      * 全部的item

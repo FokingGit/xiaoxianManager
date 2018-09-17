@@ -79,7 +79,7 @@ export default class CustomerDetailPage extends Component {
                 })
             })
             .catch(e => {
-                Alert.alert(e)
+                console.log(e.toString())
             });
     };
 
