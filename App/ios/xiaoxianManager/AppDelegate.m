@@ -21,15 +21,15 @@
   [self configKeyboardManager];
   NSURL *jsCodeLocation;
 [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-  // 启动图片延时: 1秒
+  // 启动图片延时: 1秒`  
   [NSThread sleepForTimeInterval:1];
   
   //if(DEBUG){
   // 原来的jsCodeLocation保留在这里
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+ // jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   //} else {
   // 非DEBUG情况下启用热更新
-  //jsCodeLocation=[RCTHotUpdate bundleURL];
+  jsCodeLocation=[RCTHotUpdate bundleURL];
     
   //}
   
