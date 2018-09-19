@@ -36,6 +36,7 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* xiaoxianManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* xiaoxianManagerTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		34A31A072151005000800F3F /* libfishhook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6841FA4F8DC00B85C8A /* libfishhook.a */; };
 		34C84861214F8A7E00A32321 /* IQKeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C84860214F8A7D00A32321 /* IQKeyboardManager.framework */; };
 		34CFC367214B4B1500AC6DC0 /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3470B5EB213A2FC00063823D /* libRCTHotUpdate.a */; };
 		34CFC36A214B4C0A00AC6DC0 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CFC368214B4C0A00AC6DC0 /* libbz2.1.0.tbd */; };
@@ -388,6 +389,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34A31A072151005000800F3F /* libfishhook.a in Frameworks */,
 				34CFC36A214B4C0A00AC6DC0 /* libbz2.1.0.tbd in Frameworks */,
 				34CFC36B214B4C0A00AC6DC0 /* libbz2.tbd in Frameworks */,
 				34CFC367214B4B1500AC6DC0 /* libRCTHotUpdate.a in Frameworks */,
@@ -1349,6 +1351,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = RW88LNT8FN;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/sdk-framework",
@@ -1359,7 +1362,7 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 				);
 				INFOPLIST_FILE = xiaoxianManager/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1379,6 +1382,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RW88LNT8FN;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/sdk-framework",
@@ -1389,7 +1393,7 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 				);
 				INFOPLIST_FILE = xiaoxianManager/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

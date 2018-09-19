@@ -3,7 +3,8 @@ import Util from "./Utils"
 import md5 from "react-native-md5"
 import StorageHelper from './StorageHelper'
 
-const BASE_URL = 'http://43.226.69.182';
+// const BASE_URL = 'http://43.226.69.182';
+const BASE_URL = 'http://45.62.105.17';
 
 const USER = 'user';
 const CUSTOMER = 'customer';

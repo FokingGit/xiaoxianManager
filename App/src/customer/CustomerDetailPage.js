@@ -50,7 +50,7 @@ export default class CustomerDetailPage extends Component {
 
         this.emitter = DeviceEventEmitter.addListener(Constants.REFRESH_CUSTOMER, (data) => {
             this.fetchData()
-        })
+        });
         this.emitterCustomer = DeviceEventEmitter.addListener(Constants.REFRESH_CUSTOMER_DETAIL, (data) => {
             this.fetchCustomerData()
         })

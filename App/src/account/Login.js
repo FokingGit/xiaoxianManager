@@ -50,7 +50,7 @@ export default class LoginPage extends Component {
 
         this.setState({
             isLogining: true
-        })
+        });
 
         HttpManager
             .login(parseInt(this.state.account), this.state.pwd)
@@ -59,7 +59,7 @@ export default class LoginPage extends Component {
                     StorageHelper.setUID(String(response.data.data.uid));
                     StorageHelper.setPhone(String(this.state.account))
                 } else {
-                    Alert.alert('请检查用户名和密码！')
+                    Alert.alert(response.data.msg)
                 }
                 this.setState({
                     isLogining: false

@@ -122,11 +122,15 @@ export default class SearchPage extends Component {
      * @param text 输入内容
      */
     searchAction = () => {
+        if (Util.isEmpty(this.state.searchContent)) {
+            Alert.alert('搜索内容不能为空哦～')
+            return
+        }
         this.searchValuationList(1, this.state.searchContent);
         var searchContent = this.state.searchContent;
         Keyboard.dismiss();
         console.log(searchContent);
-    }
+    };
 
     setSearchContentAction = (searchContent) => {
         this.setState({
@@ -166,11 +170,11 @@ export default class SearchPage extends Component {
                 </View>
                 <DashLine backgroundColor={'#b0b0b0'} len={50} width={screenW - 30}/>
                 {
-                        <View style={[StyleRes.list_content_access_infoView, {marginBottom: 10}]}>
-                            <Text style={StyleRes.list_content_rowTitle}>上次操作时间:</Text>
-                            <Text
-                                style={StyleRes.list_content_rowText}>{Util.formatDate(item.last_time)}</Text>
-                        </View>
+                    <View style={[StyleRes.list_content_access_infoView, {marginBottom: 10}]}>
+                        <Text style={StyleRes.list_content_rowTitle}>上次操作时间:</Text>
+                        <Text
+                            style={StyleRes.list_content_rowText}>{Util.formatDate(item.last_time)}</Text>
+                    </View>
                 }
 
             </View>
